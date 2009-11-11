@@ -7,6 +7,36 @@ def readWord(offset, signed = False):
 	else:
 		return struct.unpack_from('>H', game, offset)[0]
 
+def getOperands(types):
+    global initial_pc #hack to make getOperands work. TODO: remove!!
+    tmp = []	
+    for type in types:
+	if (type == 0):
+	    tmp.append(readWord(initial_pc))
+	    initial_pc += 2
+	if (type == 1):
+	    tmp.append(ord(game[initial_pc]))
+	    initial_pc += 1
+	if (type == 2):
+	    print 'operand type variable not implemeted.'
+	    tmp.append(0)
+	    initial_pc += 1
+    return tmp
+    
+def op_call_vs(operands):
+    global initial_pc #hack to make this work. TODO: remove!!
+    print 'call_vs', operands
+    address = operands[0] * 8 #unpacked v8 address
+    print address
+    # push call stack
+    initial_pc = address
+    num_locals = ord(game[initial_pc])
+    initial_pc += 1
+    print num_locals
+    #if ver < 5 read local vals
+    return 0
+
+
 file = open(sys.argv[1])
 game = file.read()
 file.close()
@@ -65,6 +95,54 @@ print header_ext_table_loc
 isRunning = True
 while (isRunning):
 	#fetch
+	opcode = ord(game[initial_pc])
+	initial_pc += 1
+	print opcode
+	if ((opcode & 192) == 192):
+	    print 'variable form'
+	    #next byte gives 4 operand types, from left to right
+	    #11 omitts all subsequent operands
+	    operands = []
+	    mask = 192
+	    mask_pos = 3
+	    types = ord(game[initial_pc])
+	    initial_pc += 1
+	    while (mask > 0):
+		tmp = (types & mask) >> (2 * mask_pos)
+		if (tmp == 3): break
+		operands.append(tmp)
+		mask >>= 2
+		mask_pos -= 1
+	    print types, operands
+	    #bit 5 gives operand count
+	    #0 == 2 operands, 1 == var. # of operands
+	    if (not (opcode & 32) and (len(operands) != 2)): print 'illegal number of operands'
+	    opcode &= 0xF
+	    print opcode
+	    if (opcode == 0):
+		# call/call_vs
+		#push call stack
+		result = op_call_vs(getOperands(operands))
+		#store result
+	    #for ops call_vs2 and call_vn2 a second byte of operand types is given
+	elif ((opcode & 192) == 128):
+	    print 'short form'
+	    #bits 4 and 5 give operand type:
+	    #00 == large const (word), 01 == small const (byte), 10 == variable (byte), 11 == omitted
+	    #0 or 1 operands	
+	    #opcode in bits 0-3
+	elif (opcode == 0xBE):
+	    print 'extended form'
+	    #always var. # of operands
+	    #opcode in next byte
+	    #next next byte gives 4 operand types, from left to right
+	    #11 omitts all subsequent operands
+	else:
+	    print 'long form'
+	    #always 2 operands
+	    #opcode in bits 0-4
+	    #bits 6 and 5 give operand types
+	    #0 == small const, 1 == variable
 	#decode
 	#exec
 	isRunning = False
