@@ -12,20 +12,35 @@ class Processor:
 	self.num_locals = 0
 	self.num_args = 0
 	self.is_running = False
+	self.exec_count = 0
+
+    def print_state(self):
+	print self.pc
+	self.stack.print_me()
+	for i in range(256):
+	    if (i % 16 == 0): print
+	    if (i == 0):
+		print 'SSSS',
+	    elif (self.num_locals < i < 16):
+		print 'NONE',
+	    else:
+		value = self.get_variable(i)
+		print "%04x" % value,
 
     def get_operands(self, types, signed = False):
 	tmp = []	
 	for type in types:
-	    if (type == 0):
+	    if (type == 0): # large constant
 		tmp.append(self.heap.read_word(self.pc, signed))
 		self.pc += 2
-	    elif (type == 1):
+	    elif (type == 1): # small constant
 		#TODO: check if signed bytes are needed
 		tmp.append(self.heap.read_byte(self.pc))
 		self.pc += 1
-	    elif (type == 2):
+	    elif (type == 2): # variable by value
 		variable_number = self.heap.read_byte(self.pc)
 		self.pc += 1
+		print 'getting variable', variable_number
 		tmp.append(self.get_variable(variable_number))
 	return tmp
     
@@ -89,24 +104,34 @@ class Processor:
 	self.pc += 1
 	if (offset & 128):
 	    condition = not condition
+	    print 'branch on True'
+	else:
+	    print 'branch on False'
+
 	if not (offset & 64):
 	    offset = ((offset & 0x3f) << 8) + self.heap.read_byte(self.pc)
 	    self.pc += 1
+	    print 'branch address is 2 bytes.'
 	else:
 	    offset &= 0x3f
+	    print 'branch address is 1 bytes.'
+
 	if (not condition):
 	    if (offset < 2):
-		ops_return(offset)
+		print 'return from branch', offset
+		self.ops_return(offset)
 	    else:
-		self.pc += offset -2
+		self.pc += offset - 2
 
     def ops_return(self, return_value):
 	self.pc, result_variable, self.num_locals, self.num_args = self.stack.pop_frame()
 	if not (result_variable == None):
 	    self.set_variable(result_variable, return_value)
+	    print 'storing in variable', result_variable
 
     def ops_store(self, value):
 	result_variable = self.heap.read_byte(self.pc)
+	print 'storing in variable', result_variable
 	self.pc += 1
 	self.set_variable(result_variable, value)
 
@@ -128,26 +153,42 @@ class Processor:
 	print "operand types 0x%02x" % packed_types, types
 	#bit 5 gives operand count
 	#0 == 2 operands, 1 == var. # of operands
-	if (not (opcode & 32) and (len(types) != 2)): print 'Illegal number of operands.'
+	if (not (opcode & 32)): print 'forcing 2 operands.'
+	if (not (opcode & 32) and not (opcode == 0x1) and (len(types) != 2)): print 'Illegal number of operands.'
 	opcode &= 0x1F # lower 5 bits give operator type
 	print "actual opcode 0x%02x" % opcode
 
 	if (opcode == 0x0):
-	    print 'call_vs', types
-	    self.ops_call(self.get_operands(types), True)
+	    operands = self.get_operands(types)
+	    print 'call_vs', operands
+	    self.ops_call(operands, True)
 	    print self.num_locals, self.num_args
-	elif (opcode == 0x15):
-	    print 'sub', types
+	elif (opcode == 0x1):
+	    if (opcode & 32):
+		print 'WARNING: opcode not implemented correctly.'
+	    operands = self.get_operands(types)
+	    print 'je', operands
+	    condition = False
+	    for operand in operands[1:]:
+		if (operand == operands[0]):
+		    condition = True
+	    self.ops_branch(condition)
+	elif (opcode == 0x9):
 	    operands = self.get_operands(types, True)
+	    print 'and', operands
+	    self.ops_store(operands[0] & operands[1])
+	elif (opcode == 0x15):
+	    operands = self.get_operands(types, True)
+	    print 'sub', operands
 	    self.ops_store(operands[0] - operands[1])
 	elif (opcode == 0x19):
-	    print 'call_vn', types
-	    self.ops_call(self.get_operands(types), False)
+	    operands = self.get_operands(types)
+	    print 'call_vn', operands
+	    self.ops_call(operands, False)
 	    print self.num_locals, self.num_args
 	elif (opcode == 0x1F):
-	    print 'check_arg_count', types
 	    operands = self.get_operands(types)
-	    print operands, self.num_args
+	    print 'check_arg_count', operands, self.num_args
 	    self.ops_branch(operands[0] <= self.num_args)
 	else:
 	    self.is_running = False
@@ -156,12 +197,24 @@ class Processor:
 
     def decode_short(self, opcode):
 	print 'short form'
-	#bits 4 and 5 give operand type:
+	#bits 5 and 4 give operand type:
+	types = [(opcode & 0x30) >> 4]
+	if (types[0] == 3):
+	    types = []
+	    print 'WARNING: 0 operands.'
+	print 'operand types', types
 	#00 == large const (word), 01 == small const (byte), 10 == variable (byte), 11 == omitted
 	#0 or 1 operands	
-	#opcode in bits 0-3
-	self.is_running = False
-	print 'Unkown operator. Halting'
+	opcode &= 0xF # lower 4 bits give operator type
+	print "actual opcode 0x%02x" % opcode
+
+	if (opcode == 0xB):
+	    operands = self.get_operands(types)
+	    print 'ret', operands
+	    self.ops_return(operands[0])
+	else:
+	    self.is_running = False
+	    print 'Unkown operator. Halting'
 
     def decode_extended(self):
 	print 'extended form'
@@ -180,25 +233,32 @@ class Processor:
 	    types[0] = 2
 	if (opcode & 0x10):
 	    types[1] = 2
+	print 'operand types', types
 	opcode &= 0x1F # lower 5 bits give operator type
 	print "actual opcode 0x%02x" % opcode
 	if (opcode == 0x1):
-	    print 'je', types
 	    operands = self.get_operands(types, True)
+	    print 'je', operands
 	    self.ops_branch(operands[0] == operands[1])
 	elif (opcode == 0x2):
-	    print 'jl', types
 	    operands = self.get_operands(types, True)
+	    print 'jl', operands
 	    self.ops_branch(operands[0] < operands[1])
 	elif (opcode == 0x3):
-	    print 'jg', types
 	    operands = self.get_operands(types, True)
-	    print operands
+	    print 'jg', operands
 	    self.ops_branch(operands[0] > operands[1])
-	elif (opcode == 0x12):
-	    print 'get_prop_addr', types
+	elif (opcode == 0xD):
 	    operands = self.get_operands(types)
-	    print operands
+	    print 'store', operands
+	    self.set_variable(operands[0], operands[1])
+	elif (opcode == 0xF):
+	    operands = self.get_operands(types)
+	    print 'loadw', operands
+	    self.ops_store(self.heap.read_word(operands[0] + 2 * operands[1]))
+	elif (opcode == 0x12):
+	    operands = self.get_operands(types)
+	    print 'get_prop_addr', operands
 	else:
 	    self.is_running = False
 	    print 'Unkown operator. Halting'
@@ -208,9 +268,11 @@ class Processor:
 	self.is_running = True
 
 	while (self.is_running):
+		self.print_state()
 		opcode = self.heap.read_byte(self.pc)
 		self.pc += 1
-		print '\nOpcode:', opcode
+		self.exec_count += 1
+		print '\nOpcode:', opcode, self.exec_count
 		if ((opcode & 192) == 192):
 		    self.decode_variable(opcode)
 		elif ((opcode & 192) == 128):
@@ -219,6 +281,7 @@ class Processor:
 		    self.decode_extended()
 		else:
 		    self.decode_long(opcode)
+		self.print_state()
 		#decode
 		#exec
 

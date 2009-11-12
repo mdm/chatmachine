@@ -33,7 +33,7 @@ class Stack:
 	self.frame_start = self.stack.pop()
 	return self.stack.pop()
 
-    def rewind(target_size):
+    def rewind(self, target_size):
 	self.stack = self.stack[:target_size]
 
     def print_me(self):

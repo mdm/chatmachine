@@ -63,7 +63,7 @@ class Header:
 	return self.heap.read_word(0x18)
 
     def get_file_length(self):
-	return self.heap.read_word(0x1A)
+	return self.heap.read_word(0x1A) # TODO: multiply by version-dependant constant
 
     def get_checksum(self):
 	return self.heap.read_word(0x1C)
