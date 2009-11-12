@@ -1,150 +1,231 @@
 import sys
 import struct
+import heap
+import stack
 
-def readWord(offset, signed = False):
-	if (signed):
-		return struct.unpack_from('>h', game, offset)[0]
-	else:
-		return struct.unpack_from('>H', game, offset)[0]
+class Processor:
+    def __init__(self, heap):
+	self.heap = heap
+	self.header = self.heap.get_header()
+	self.pc = self.header.get_initial_pc()
+	self.stack = stack.Stack()
+	self.num_locals = 0
+	self.num_args = 0
+	self.is_running = False
 
-def getOperands(types):
-    global initial_pc #hack to make getOperands work. TODO: remove!!
-    tmp = []	
-    for type in types:
-	if (type == 0):
-	    tmp.append(readWord(initial_pc))
-	    initial_pc += 2
-	if (type == 1):
-	    tmp.append(ord(game[initial_pc]))
-	    initial_pc += 1
-	if (type == 2):
-	    print 'operand type variable not implemeted.'
-	    tmp.append(0)
-	    initial_pc += 1
-    return tmp
+    def get_operands(self, types, signed = False):
+	tmp = []	
+	for type in types:
+	    if (type == 0):
+		tmp.append(self.heap.read_word(self.pc, signed))
+		self.pc += 2
+	    elif (type == 1):
+		#TODO: check if signed bytes are needed
+		tmp.append(self.heap.read_byte(self.pc))
+		self.pc += 1
+	    elif (type == 2):
+		variable_number = self.heap.read_byte(self.pc)
+		self.pc += 1
+		tmp.append(self.get_variable(variable_number))
+	return tmp
     
-def op_call_vs(operands):
-    global initial_pc #hack to make this work. TODO: remove!!
-    print 'call_vs', operands
-    address = operands[0] * 8 #unpacked v8 address
-    print address
-    # push call stack
-    initial_pc = address
-    num_locals = ord(game[initial_pc])
-    initial_pc += 1
-    print num_locals
-    #if ver < 5 read local vals
-    return 0
+    def unpack_address(self, address):
+	if (self.header.get_z_version() < 4): return address * 2
+	elif (self.header.get_z_version() < 6): return address * 4
+	elif (self.header.get_z_version() == 8): return address * 8
+	else: return 0 #TODO: unsupported version error
 
-
-file = open(sys.argv[1])
-game = file.read()
-file.close()
-
-print len(game)
-version = ord(game[0])
-print 'Version:', version
-highmem_base = readWord(0x4)
-print 'High-mem base address:', highmem_base
-initial_pc = readWord(0x6)
-print 'Initial program counter:', initial_pc
-dictionary_loc = readWord(0x8)
-object_table_loc = readWord(0xA)
-global_var_table_loc = readWord(0xC)
-print dictionary_loc, object_table_loc, global_var_table_loc
-staticmem_base = readWord(0xE)
-print 'Static memory base address:', staticmem_base
-flags2 = readWord(0x10)
-if (flags2 & 1): print 'Transcripting is on.'
-if (flags2 & 2): print 'Game forces fixed-pitch font.'
-if (flags2 & 4): print 'Interpreter requests status line redraw.'
-if (flags2 & 8): print 'Game wants to use pictures.'
-if (flags2 & 16): print 'Game wants to use UNDO opcodes.'
-if (flags2 & 32): print 'Game wants to use a mouse.'
-if (flags2 & 64): print 'Game wants to use colours.'
-if (flags2 & 128): print 'Game wants to use sound effects.'
-if (flags2 & 256): print 'Game wants to use menus.'
-abbr_table_loc = readWord(0x18)
-print abbr_table_loc
-file_length = readWord(0x1A)
-print 'File length:', file_length
-checksum = readWord(0x1C)
-print 'Checksum:', checksum
-interpreter_number = ord(game[0x1E])
-interpreter_version = ord(game[0x1F])
-print 'Interpreter:', interpreter_number, interpreter_version
-screen_height_chars = ord(game[0x20])
-screen_width_chars = ord(game[0x21])
-print 'Screen size (chars):', screen_width_chars, screen_height_chars
-screen_width_units = readWord(0x22)
-screen_height_units = readWord(0x24)
-print 'Screen size (units):', screen_width_units, screen_height_units
-font_width_units = ord(game[0x26])
-font_height_units = ord(game[0x27])
-print 'Font size (units):', font_width_units, font_height_units
-default_bg_color = ord(game[0x2C])
-default_fg_color = ord(game[0x2D])
-print 'Default colors (bg, fg):', default_bg_color, default_fg_color
-term_char_table_loc = readWord(0x2E)
-print term_char_table_loc
-alphabet_table_loc = readWord(0x34)
-print alphabet_table_loc
-header_ext_table_loc = readWord(0x36)
-print header_ext_table_loc
-
-isRunning = True
-while (isRunning):
-	#fetch
-	opcode = ord(game[initial_pc])
-	initial_pc += 1
-	print opcode
-	if ((opcode & 192) == 192):
-	    print 'variable form'
-	    #next byte gives 4 operand types, from left to right
-	    #11 omitts all subsequent operands
-	    operands = []
-	    mask = 192
-	    mask_pos = 3
-	    types = ord(game[initial_pc])
-	    initial_pc += 1
-	    while (mask > 0):
-		tmp = (types & mask) >> (2 * mask_pos)
-		if (tmp == 3): break
-		operands.append(tmp)
-		mask >>= 2
-		mask_pos -= 1
-	    print types, operands
-	    #bit 5 gives operand count
-	    #0 == 2 operands, 1 == var. # of operands
-	    if (not (opcode & 32) and (len(operands) != 2)): print 'illegal number of operands'
-	    opcode &= 0xF
-	    print opcode
-	    if (opcode == 0):
-		# call/call_vs
-		#push call stack
-		result = op_call_vs(getOperands(operands))
-		#store result
-	    #for ops call_vs2 and call_vn2 a second byte of operand types is given
-	elif ((opcode & 192) == 128):
-	    print 'short form'
-	    #bits 4 and 5 give operand type:
-	    #00 == large const (word), 01 == small const (byte), 10 == variable (byte), 11 == omitted
-	    #0 or 1 operands	
-	    #opcode in bits 0-3
-	elif (opcode == 0xBE):
-	    print 'extended form'
-	    #always var. # of operands
-	    #opcode in next byte
-	    #next next byte gives 4 operand types, from left to right
-	    #11 omitts all subsequent operands
+    def get_variable(self, variable_number):
+	if (variable_number == 0):
+	    return self.stack.pop()
+	elif (variable_number < 16):
+	    return self.stack.get_value(variable_number - 1)
+	elif (variable_number < 256):
+	    return self.heap.read_word(self.header.get_globals_table_location() + 2 * (variable_number - 16))
 	else:
-	    print 'long form'
-	    #always 2 operands
-	    #opcode in bits 0-4
-	    #bits 6 and 5 give operand types
-	    #0 == small const, 1 == variable
-	#decode
-	#exec
-	isRunning = False
+	    print 'Illegal variable:', variable_number
+	    return 0
+
+    def set_variable(self, variable_number, value):
+	if (variable_number == 0):
+	    self.stack.push(value)
+	elif (variable_number < 16):
+	    self.stack.set_value(variable_number - 1, value)
+	elif (variable_number < 256):
+	    self.heap.write_word(self.header.get_globals_table_location() + 2 * (variable_number - 16))
+	else:
+	    print 'Illegal variable:', variable_number
+	    return 0
+
+    def ops_call(self, operands, store_result):
+	address = self.unpack_address(operands[0])
+	print address
+	if (address == 0):
+	    print 'call to address 0 not implemented.'
+	else:
+	    if (store_result):
+		result_variable = self.heap.read_byte(self.pc)
+		self.pc += 1
+	    else:
+		result_variable = None
+	    self.stack.push_frame(self.pc, result_variable, self.num_locals, self.num_args)
+	    #TODO: push num_locals to avoid referencing non-existing local?
+	    self.pc = address
+	    self.num_args = len(operands) - 1
+	    self.num_locals = self.heap.read_byte(self.pc)
+	    self.pc += 1
+	    for i in range(self.num_locals):
+		if (self.header.get_z_version < 5):
+		    self.stack.push(self.heap.read_word(self.pc))
+		    self.pc += 2
+		else:
+		    self.stack.push(0)
+	    operands = operands[1:self.num_locals + 1]
+	    for i in range(len(operands)):
+		self.set_variable(i + 1, operands[i])
+
+    def ops_branch(self, condition):
+	offset = self.heap.read_byte(self.pc)
+	self.pc += 1
+	if (offset & 128):
+	    condition = not condition
+	if not (offset & 64):
+	    offset = ((offset & 0x3f) << 8) + self.heap.read_byte(self.pc)
+	    self.pc += 1
+	else:
+	    offset &= 0x3f
+	if (not condition):
+	    if (offset < 2):
+		ops_return(offset)
+	    else:
+		self.pc += offset -2
+
+    def ops_return(self, return_value):
+	self.pc, result_variable, self.num_locals, self.num_args = self.stack.pop_frame()
+	if not (result_variable == None):
+	    self.set_variable(result_variable, return_value)
+
+    def ops_store(self, value):
+	result_variable = self.heap.read_byte(self.pc)
+	self.pc += 1
+	self.set_variable(result_variable, value)
+
+    def decode_variable(self, opcode):
+	print 'variable form'
+	#next byte gives 4 operand types, from left to right
+	#11 omitts all subsequent operands
+	types = []
+	mask = 192
+	mask_pos = 3
+	packed_types = self.heap.read_byte(self.pc)
+	self.pc += 1
+	while (mask > 0):
+	    tmp = (packed_types & mask) >> (2 * mask_pos)
+	    if (tmp == 3): break
+	    types.append(tmp)
+	    mask >>= 2
+	    mask_pos -= 1
+	print "operand types 0x%02x" % packed_types, types
+	#bit 5 gives operand count
+	#0 == 2 operands, 1 == var. # of operands
+	if (not (opcode & 32) and (len(types) != 2)): print 'Illegal number of operands.'
+	opcode &= 0x1F # lower 5 bits give operator type
+	print "actual opcode 0x%02x" % opcode
+
+	if (opcode == 0x0):
+	    print 'call_vs', types
+	    self.ops_call(self.get_operands(types), True)
+	    print self.num_locals, self.num_args
+	elif (opcode == 0x15):
+	    print 'sub', types
+	    operands = self.get_operands(types, True)
+	    self.ops_store(operands[0] - operands[1])
+	elif (opcode == 0x19):
+	    print 'call_vn', types
+	    self.ops_call(self.get_operands(types), False)
+	    print self.num_locals, self.num_args
+	elif (opcode == 0x1F):
+	    print 'check_arg_count', types
+	    operands = self.get_operands(types)
+	    print operands, self.num_args
+	    self.ops_branch(operands[0] <= self.num_args)
+	else:
+	    self.is_running = False
+	    print 'Unkown operator. Halting.'
+	#for ops call_vs2 and call_vn2 a second byte of operand types is given
+
+    def decode_short(self, opcode):
+	print 'short form'
+	#bits 4 and 5 give operand type:
+	#00 == large const (word), 01 == small const (byte), 10 == variable (byte), 11 == omitted
+	#0 or 1 operands	
+	#opcode in bits 0-3
+	self.is_running = False
+	print 'Unkown operator. Halting'
+
+    def decode_extended(self):
+	print 'extended form'
+	#always var. # of operands
+	#opcode in next byte
+	#next next byte gives 4 operand types, from left to right
+	#11 omitts all subsequent operands
+	self.is_running = False
+	print 'Unkown operator. Halting'
+
+    def decode_long(self, opcode):
+	print 'long form'
+	#bits 6 and 5 give operand types
+	types = [1, 1]
+	if (opcode & 0x20):
+	    types[0] = 2
+	if (opcode & 0x10):
+	    types[1] = 2
+	opcode &= 0x1F # lower 5 bits give operator type
+	print "actual opcode 0x%02x" % opcode
+	if (opcode == 0x1):
+	    print 'je', types
+	    operands = self.get_operands(types, True)
+	    self.ops_branch(operands[0] == operands[1])
+	elif (opcode == 0x2):
+	    print 'jl', types
+	    operands = self.get_operands(types, True)
+	    self.ops_branch(operands[0] < operands[1])
+	elif (opcode == 0x3):
+	    print 'jg', types
+	    operands = self.get_operands(types, True)
+	    print operands
+	    self.ops_branch(operands[0] > operands[1])
+	elif (opcode == 0x12):
+	    print 'get_prop_addr', types
+	    operands = self.get_operands(types)
+	    print operands
+	else:
+	    self.is_running = False
+	    print 'Unkown operator. Halting'
+
+    def run(self):
+	# fetch-and-execute loop
+	self.is_running = True
+
+	while (self.is_running):
+		opcode = self.heap.read_byte(self.pc)
+		self.pc += 1
+		print '\nOpcode:', opcode
+		if ((opcode & 192) == 192):
+		    self.decode_variable(opcode)
+		elif ((opcode & 192) == 128):
+		    self.decode_short(opcode)
+		elif (opcode == 0xBE):
+		    self.decode_extended()
+		else:
+		    self.decode_long(opcode)
+		#decode
+		#exec
+
+
+heap = heap.Heap(sys.argv[1])
+print heap
+cpu = Processor(heap)
+cpu.run()
 
 print 'Goodbye'
