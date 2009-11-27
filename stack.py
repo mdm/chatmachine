@@ -26,7 +26,7 @@ class Stack:
 	self.push((return_address, result_variable, num_locals, num_args))
 	self.push(self.frame_start)
 	self.frame_start = len(self.stack)
-	self.print_me()
+	#self.print_me()
 	
     def pop_frame(self):
 	self.rewind(self.frame_start)
