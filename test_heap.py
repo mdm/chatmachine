@@ -72,19 +72,21 @@ class TestHeap(unittest.TestCase):
 
 class TestHeader(unittest.TestCase):
     def setUp(self):
-        bronze = heap.Heap('Bronze.z8')
-        curses = heap.Heap('curses.z5')
-        etude = heap.Heap('etude.z5')
+        self.bronze = heap.Heap('Bronze.z8')
+        self.curses = heap.Heap('curses.z5')
+        self.zork1 = heap.Heap('zork1.z5')
 
     def test_get_z_version(self):
-        self.fail()
+	self.assertEquals(self.bronze.get_header().get_z_version(), 8)
+	self.assertEquals(self.curses.get_header().get_z_version(), 5)
+	self.assertEquals(self.zork1.get_header().get_z_version(), 3)
 
 
 class TestObjectTable(unittest.TestCase):
     def setUp(self):
-        bronze = heap.Heap('Bronze.z8')
-        curses = heap.Heap('curses.z5')
-        etude = heap.Heap('etude.z5')
+        self.bronze = heap.Heap('Bronze.z8')
+        self.curses = heap.Heap('curses.z5')
+        self.zork1 = heap.Heap('zork1.z5')
 
 if __name__ == '__main__':
     unittest.main()

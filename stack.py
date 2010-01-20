@@ -1,40 +1,44 @@
 class Stack:
     def __init__(self):
-	self.stack = []
-	self.frame_start = 0 # first index after frame header
+	self.stack = [[]]
+        self.locals = [[]]
+        self.calls = []
 
     def push(self, value):
-	self.stack.append(value)
+	self.stack[-1].append(value)
 
     def pop(self):
-	if (len(self.stack) <= self.frame_start):
-	    print 'Illegal stack pop.'
-	else:
-	    return self.stack.pop()
+        return self.stack[-1].pop()
+
+    def peek(self):
+        return self.stack[-1][-1]
 
     def get_size(self):
-	return len(self.stack)
+	return len(self.stack[-1])
 
-    def get_value(self, frame_offset):
-	return self.stack[self.frame_start + frame_offset]
+    def get_local(self, var_nr):
+	return self.locals[-1][var_nr]
 
-    def set_value(self, frame_offset, value):
-	self.stack[self.frame_start + frame_offset] = value
+    def set_local(self, var_nr, value):
+	self.locals[-1][var_nr] = value
 
-    def push_frame(self, return_address, result_variable, num_locals, num_args):
-	# pushing frame header
-	self.push((return_address, result_variable, num_locals, num_args))
-	self.push(self.frame_start)
-	self.frame_start = len(self.stack)
-	#self.print_me()
+    def get_num_locals(self):
+        return len(self.locals[-1])
+
+    def set_num_locals(self, num_locals):
+        self.locals[-1] = [0] * num_locals
+        #print self.locals
+
+    def push_call(self, return_address, result_variable, arg_count):
+	self.stack.append([])
+	self.locals.append([])
+        self.calls.append((return_address, result_variable, arg_count, frame_start))
 	
-    def pop_frame(self):
-	self.rewind(self.frame_start)
-	self.frame_start = self.stack.pop()
-	return self.stack.pop()
-
-    def rewind(self, target_size):
-	self.stack = self.stack[:target_size]
+    def pop_call(self):
+	self.stack.pop()
+	self.locals.pop()
+	return self.calls.pop()
 
     def print_me(self):
 	print self.frame_start, self.stack
+

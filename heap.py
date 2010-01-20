@@ -5,6 +5,7 @@ import logging
 import zstring
 
 logger = logging.getLogger('heap')
+logger.setLevel(logging.WARNING)
 
 class Heap:
     def __init__(self, filename):
@@ -31,10 +32,16 @@ class Heap:
         logger.debug("read [%04X]" % word)
         return word
 
-    def write_word(self, address, value, signed = False):
+    def write_word(self, address, value):
         if not (0 <= address < (len(self.data) - 2)): raise IndexError
         if not (0 <= value <= 0xFFFF): raise ValueError
         struct.pack_into('>H', self.data, address, value)
+
+    def read_string(self, address):
+        string = zstring.ZString()
+        while(string.add(self.read_word(address))):
+            address += 2
+        return (address + 2, string)
 
     def get_header(self):
         return self.header
@@ -138,12 +145,12 @@ class ObjectTable:
 
         if (version < 4):
             if (attribute_number < 16):
-                is_set = self.heap.read_word(object_addr) &     (1 << (15 - attribute_number))
+                is_set = self.heap.read_word(object_addr) & (1 << (15 - attribute_number))
             else:
                 is_set = self.heap.read_word(object_addr + 2) & (1 << (31 - attribute_number))
         else:
             if (attribute_number < 16):
-                is_set = self.heap.read_word(object_addr) &     (1 << (15 - attribute_number))
+                is_set = self.heap.read_word(object_addr) & (1 << (15 - attribute_number))
             elif (attribute_number < 32):
                 is_set = self.heap.read_word(object_addr + 2) & (1 << (31 - attribute_number))
             else:
@@ -153,6 +160,24 @@ class ObjectTable:
             return True
         else:
             return False
+
+    def set_object_attribute(self, object_number, attribute_number):
+        #TODO: check for illegal attribute numbers
+        version = self.header.get_z_version()
+        object_addr = self.get_object_addr(object_number)
+
+        if (version < 4):
+            if (attribute_number < 16):
+                self.heap.write_word(object_addr, self.heap.read_word(object_addr) | (1 << (15 - attribute_number)))
+            else:
+                self.heap.write_word(object_addr + 2, self.heap.read_word(object_addr + 2) | (1 << (31 - attribute_number)))
+        else:
+            if (attribute_number < 16):
+                self.heap.write_word(object_addr, self.heap.read_word(object_addr) | (1 << (15 - attribute_number)))
+            elif (attribute_number < 32):
+                self.heap.write_word(object_addr + 2, self.heap.read_word(object_addr + 2) | (1 << (31 - attribute_number)))
+            else:
+                self.heap.write_word(object_addr + 4, self.heap.read_word(object_addr + 4) | (1 << (47 - attribute_number)))
 
     def get_object_parent(self, object_number):
         version = self.header.get_z_version()
@@ -256,6 +281,7 @@ class ObjectTable:
                 property_addr += offset + size
                 number = self.get_property_number(property_addr)
         
+        logger.warning('property does not exist.')
         return 0
 
     def get_property(self, object_number, property_number):
@@ -269,6 +295,15 @@ class ObjectTable:
         else:
             print 'ERROR: size > 2. get_prop undefined.'
 
-
+    def set_property(self, object_number, property_number, value):
+        property_addr = self.get_property_addr(object_number, property_number)
+        offset, size = self.get_property_length(property_addr)
+        
+        if (size == 1):
+            return self.heap.write_byte(property_addr + offset)
+        elif (size == 2):
+            return self.heap.write_word(property_addr + offset)
+        else:
+            print 'ERROR: size > 2. set_prop undefined.'
 
 
