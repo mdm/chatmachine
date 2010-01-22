@@ -32,13 +32,15 @@ class Stack:
     def push_call(self, return_address, result_variable, arg_count):
 	self.stack.append([])
 	self.locals.append([])
-        self.calls.append((return_address, result_variable, arg_count, frame_start))
+        self.calls.append((return_address, result_variable, arg_count))
 	
     def pop_call(self):
 	self.stack.pop()
 	self.locals.pop()
 	return self.calls.pop()
 
-    def print_me(self):
-	print self.frame_start, self.stack
+    def print_current(self):
+	print len(self.stack), self.stack[-1]
+	print len(self.locals), self.locals[-1]
+        print len(self.calls), self.calls[-1]
 

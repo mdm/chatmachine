@@ -49,6 +49,15 @@ class Heap:
     def get_object_table(self):
         return self.object_table
 
+    def get_terminating_chars(self):
+        chars = []
+        addr = self.header.get_terminating_chars_table_location()
+        char = self.read_byte(addr)
+        while (char > 0):
+            chars.append(char)
+            addr += 1
+            char = self.read_byte(addr)
+
 
 class Header:
     #STATUS_TYPE, FILE_SPLIT, STATUS_AVAILABLE, SCREEN_SPLIT_AVAILABLE, VARIABLE_DEFAULT_FONT = 1, 2, 4, 5, 6
@@ -57,6 +66,9 @@ class Header:
 
     def get_z_version(self):
         return self.heap.read_byte(0x0)
+
+    def get_flags1(self):
+        return self.heap.read_byte(0x1)
 
     def get_high_memory_base(self):
         return self.heap.read_word(0x4)
@@ -111,6 +123,19 @@ class Header:
 
     def get_header_extension_table_location(self):
         return self.heap.read_word(0x36)
+    
+    def set_flags1_v3(self, use_score, has_two_discs, do_censor, has_no_statusline, has_screen_splitting, has_variable_pitch_default_font):
+        self.heap.write_byte(0x1, value)
+
+    def set_flags1_v458(self, has_colors, has_pictures, has_boldface, has_italic, has_monospace, has_sound, has_timed_input):
+        self.heap.write_byte(0x1, value)
+
+    def set_flags2(self, do_transcript, do_redraw_statusline, use_pictures, use_undo, use_mouse, use_colors, use_sound, use_menus):
+        self.heap.write_byte(0x1, value)
+
+    # flags
+
+    #def set_has_status_line
 
 
 class ObjectTable:
@@ -118,10 +143,10 @@ class ObjectTable:
         self.heap = heap
         self.header = self.heap.get_header()
 
-    def get_default_property(self, property_number):
+    def get_default_property_data(self, property_number):
         object_table = self.header.get_object_table_location()
         #TODO: check for illegal property numbers
-        return sel.heap.read_word(2 * (property_number - 1))
+        return self.heap.read_word(2 * (property_number - 1))
 
     def get_object_addr(self, object_number):
         #TODO: check for illegal object numbers
@@ -191,6 +216,17 @@ class ObjectTable:
         logger.debug("parent of %d is %d" % (object_number, parent))
         return parent
 
+    def set_object_parent(self, object_number, parent):
+        version = self.header.get_z_version()
+        object_addr = self.get_object_addr(object_number)
+
+        if (version < 4):
+            self.heap.write_byte(object_addr + 4, parent)
+        else:
+            self.heap.write_word(object_addr + 6, parent)
+
+        logger.debug("parent of %d is %d" % (object_number, parent))
+
     def get_object_sibling(self, object_number):
         version = self.header.get_z_version()
         object_addr = self.get_object_addr(object_number)
@@ -202,6 +238,15 @@ class ObjectTable:
 
         return sibling
 
+    def set_object_sibling(self, object_number, sibling):
+        version = self.header.get_z_version()
+        object_addr = self.get_object_addr(object_number)
+
+        if (version < 4):
+            self.heap.write_byte(object_addr + 5, sibling)
+        else:
+            self.heap.write_word(object_addr + 8, sibling)
+
     def get_object_child(self, object_number):
         version = self.header.get_z_version()
         object_addr = self.get_object_addr(object_number)
@@ -212,6 +257,15 @@ class ObjectTable:
             child = self.heap.read_word(object_addr + 10)
 
         return child
+
+    def set_object_child(self, object_number, child):
+        version = self.header.get_z_version()
+        object_addr = self.get_object_addr(object_number)
+
+        if (version < 4):
+            self.heap.write_byte(object_addr + 6, child)
+        else:
+            self.heap.write_word(object_addr + 10, child)
 
     def get_object_properties_table(self, object_number):
         version = self.header.get_z_version()
@@ -234,68 +288,94 @@ class ObjectTable:
         #print short_name_words
         return string
 
-    def get_property_number(self, property_addr):
+    def get_property_info_forwards(self, property_info_addr):
         version = self.header.get_z_version()
-        size_byte = self.heap.read_byte(property_addr)
+        size_byte = self.heap.read_byte(property_info_addr)
 
         if (version < 4):
             number = size_byte & 0x1f
         else:
             number = size_byte & 0x3f
-        return number
+        
+        if (version < 4):
+            size = (size_byte >> 5) + 1
+        else:
+            if (size_byte & 128):
+                size_byte = self.heap.read_byte(property_info_addr + 1)
+                size = size_byte & 0x3f
+                if (size == 0):
+                    size = 64
+                elif (size < 3):
+                    print 'WARNING: Property', number, 'has size', size, 'encoded as two bytes!'
+            else:
+                size = (size_byte >> 6) + 1
 
-    def get_property_length(self, property_addr):
+        return (number, size)
+
+    def get_property_info_backwards(self, property_data_addr):
         version = self.header.get_z_version()
-        size_byte = self.heap.read_byte(property_addr)
-        offset = 1
+        size_byte = self.heap.read_byte(property_data_addr - 1)
 
         if (version < 4):
             size = (size_byte >> 5) + 1
         else:
             if (size_byte & 128):
-                size_byte = self.heap.read_byte(property_addr + 1)
-                offset = 2
                 size = size_byte & 0x3f
                 if (size == 0):
                     size = 64
+                elif (size < 3):
+                    print 'WARNING: Property', number, 'has size', size, 'encoded as two bytes!'
+                size_byte = self.heap.read_byte(property_data_addr - 2)
             else:
                 size = (size_byte >> 6) + 1
 
-        return (offset, size)
+        if (version < 4):
+            number = size_byte & 0x1f
+        else:
+            number = size_byte & 0x3f
+        
+        return (number, size)
 
-    def get_property_addr(self, object_number, property_number):
+    def get_property_data_addr(self, object_number, property_number):
         #TODO: check for illegal property numbers
         version = self.header.get_z_version()
         properties_table = self.get_object_properties_table(object_number)
         short_name_words = self.heap.read_byte(properties_table)
 
-        property_addr = properties_table + 1 + 2 * short_name_words
-        number = self.get_property_number(property_addr)
+        property_info_addr = properties_table + 1 + 2 * short_name_words
+        number, size = self.get_property_info_forwards(property_info_addr)
         while (number > 0):
-            offset, size = self.get_property_length(property_addr)
-
-            logger.debug("%d %d %d %d" % (property_addr, number, offset, size))
+            logger.debug("%d %d %d" % (property_info_addr, number, size))
             if (number == property_number):
-                return property_addr
+                if (version < 4) or (size < 3):
+                    return property_info_addr + 1
+                else:
+                    return property_info_addr + 2
             else:
-                property_addr += offset + size
-                number = self.get_property_number(property_addr)
+                if (version < 4) or (size < 3):
+                    property_info_addr += size + 1
+                else:
+                    property_info_addr += size + 2
+                number, size = self.get_property_info_forwards(property_info_addr)
         
         logger.warning('property does not exist.')
         return 0
 
-    def get_property(self, object_number, property_number):
-        property_addr = self.get_property_addr(object_number, property_number)
-        offset, size = self.get_property_length(property_addr)
-        
-        if (size == 1):
-            return self.heap.read_byte(property_addr + offset)
-        elif (size == 2):
-            return self.heap.read_word(property_addr + offset)
-        else:
-            print 'ERROR: size > 2. get_prop undefined.'
+    def get_property_data(self, object_number, property_number):
+        property_data_addr = self.get_property_data_addr(object_number, property_number)
 
-    def set_property(self, object_number, property_number, value):
+        if (property_data_addr == 0):
+            return self.get_default_property_data(property_number)
+        else:
+            number, size = self.get_property_info_backwards(property_data_addr)
+            if (size == 1):
+                return self.heap.read_byte(property_data_addr)
+            elif (size == 2):
+                return self.heap.read_word(property_data_addr)
+            else:
+                print 'ERROR: size > 2. get_prop undefined.'
+
+    def set_property_data(self, object_number, property_number, value):
         property_addr = self.get_property_addr(object_number, property_number)
         offset, size = self.get_property_length(property_addr)
         

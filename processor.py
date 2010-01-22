@@ -5,20 +5,31 @@ import logging
 import zoperator
 import heap
 import stack
-import stream
+import streams
 import zstring
 
 logging.basicConfig(filename='Bronze.log', filemode='wb', level=logging.DEBUG)
 logger = logging.getLogger('processor')
 
 class Processor:
-    def __init__(self, heap):
+    def __init__(self, heap, debug = False):
         self.heap = heap
+
+        self.debug = debug
+        self.breakpoints = []
+
         self.header = self.heap.get_header()
         self.pc = self.header.get_initial_pc()
         self.object_table = self.heap.get_object_table()
         self.stack = stack.Stack()
-        self.output = stream.OutputStream()
+        self.output = {}
+        self.output['screen'] = streams.ConsoleWriter()
+        self.output['transcript'] = streams.FileWriter()
+        self.output['memory'] = streams.MemoryWriter()
+        self.output['command'] = streams.FileWriter()
+        self.input = {}
+        self.input['keyboard'] = stream.ConsoleReader()
+        self.input['file'] = stream.FileReader()
         self.arg_count = 0
         self.is_running = False
         self.exec_count = 0
@@ -135,6 +146,21 @@ class Processor:
         else:
             return self.return_helper(offset)
 
+    def output_helper(self, string, is_echo = False):
+        version = self.header.get_z_version()
+        if (version < 3):
+            self.output['screen'].selected = True
+
+        if self.output['memory'].selected:
+            self.output['memory'].write(string)
+        else:
+            if self.output['screen'].selected and not is_echo:
+                self.output['screen'].write(string)
+            if self.output['transcript'].selected:
+                self.output['transcript'].write(string)
+            if self.output['command'].selected and is_echo:
+                self.output['command'].write(string)
+
     def op2str(self, pc, name, head, tail):
             return ("@%04x: " % pc) + name + ' ' + str(head) + str(tail)
 
@@ -223,8 +249,33 @@ class Processor:
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, '', head, tail))
             logger.debug('insert_obj ' + str(operands))
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
+
+            parent = self.object_table.get_object_parent(operands[0])
+            self.object_table.set_object_parent(operands[0], 0)
+            sibling = self.object_table.get_object_sibling(operands[0])
+            self.object_table.set_object_sibling(operands[0], 0)
+
+            if (parent > 0):
+                parent_child = self.object_table.get_object_child(parent)
+                if (parent_child == operands[0]):
+                    self.object_table.set_object_child(parent, sibling)
+                else:
+                    other_sibling = parent_child
+                    next = self.object_table.get_object_sibling(other_sibling)
+                    while (next > 0) and not (next == operands[0]):
+                        other_sibling = next
+                        next = self.object_table.get_object_sibling(other_sibling)
+                    if (next == 0):
+                        print 'ERROR: Malformed object tree.'
+                        self.is_running = False
+                    else:
+                        self.object_table.set_object_sibling(other_sibling, sibling)
+
+            new_sibling = self.object_table.get_object_child(operands[1])
+            self.object_table.set_object_sibling(operands[0], new_sibling)
+            self.object_table.set_object_child(operands[1], operands[0])
+
+            self.pc = tail.get_new_pc()
         elif (opcode == 0xF):
             tail = zoperator.Tail(head, True, False, False)
             logger.debug(self.op2str(self.pc, 'loadw', head, tail))
@@ -236,7 +287,7 @@ class Processor:
         elif (opcode == 0x11):
             tail = zoperator.Tail(head, True, False, False)
             logger.debug(self.op2str(self.pc, 'get_prop', head, tail))
-            self.pc = self.store_helper(tail, self.object_table.get_property(operands[0], operands[1]))
+            self.pc = self.store_helper(tail, self.object_table.get_property_data(operands[0], operands[1]))
             #print "%04x" % self.get_variable(255)
         elif (opcode == 0x12):
             tail = zoperator.Tail(head, True, False, False)
@@ -246,7 +297,7 @@ class Processor:
             #print "%04x" % prop_addr
             #print self.object_table.get_property_number(prop_addr)
             #print "%04x" % self.object_table.get_property(operands[0], operands[1])
-            self.pc = self.store_helper(tail, self.object_table.get_property_addr(operands[0], operands[1]))
+            self.pc = self.store_helper(tail, self.object_table.get_property_data_addr(operands[0], operands[1]))
         elif (opcode == 0x13):
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, '', head, tail))
@@ -332,8 +383,8 @@ class Processor:
         elif (opcode == 0x4):
             tail = zoperator.Tail(head, True, False, False)
             logger.debug(self.op2str(self.pc, 'get_prop_len', head, tail))
-            length = self.object_table.get_property_length(operands[0])[1]
-            self.pc = self.store_helper(tail, length)
+            number, size = self.object_table.get_property_info_backwards(operands[0])
+            self.pc = self.store_helper(tail, size)
         elif (opcode == 0x5):
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, 'inc', head, tail))
@@ -349,7 +400,7 @@ class Processor:
             logger.debug(self.op2str(self.pc, 'print_addr', head, tail))
             addr = operands[0]
             self.pc, string = self.heap.read_string(addr)
-            self.output.show(string)
+            self.output_helper(string)
             self.pc = tail.get_new_pc()
         elif (opcode == 0x8):
             tail = zoperator.Tail(head, True, False, False)
@@ -365,7 +416,7 @@ class Processor:
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, '', head, tail))
             logger.debug('print_obj ' + str(operands))
-            self.output.show(self.object_table.get_object_short_name(operands[0]))
+            self.output_helper(self.object_table.get_object_short_name(operands[0]))
             self.is_running = False
             print 'NOT IMPLEMENTED. Halting.'
         elif (opcode == 0xB):
@@ -383,7 +434,7 @@ class Processor:
             logger.debug(self.op2str(self.pc, 'print_paddr', head, tail))
             addr = self.unpack_address(operands[0])
             self.pc, string = self.heap.read_string(addr)
-            self.output.show(string)
+            self.output_helper(string)
             self.pc = tail.get_new_pc()
         elif (opcode == 0xE):
             tail = zoperator.Tail(head, False, False, False)
@@ -422,7 +473,7 @@ class Processor:
             tail = zoperator.Tail(head, False, False, True)
             logger.debug(self.op2str(self.pc, 'print', head, tail))
             self.pc, string = self.heap.read_string(tail.get_new_pc())
-            self.output.show(string)
+            self.output_helper(string)
             #TODO: include string and length handling with tail
         elif (opcode == 0x3):
             tail = zoperator.Tail(head, False, False, False)
@@ -490,7 +541,7 @@ class Processor:
         elif (opcode == 0xB):
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, 'new_line', head, tail))
-            self.output.new_line()
+            self.output_helper("\n")
             self.pc = tail.get_new_pc()
         elif (opcode == 0xC):
             tail = zoperator.Tail(head, False, False, False)
@@ -571,12 +622,12 @@ class Processor:
         elif (opcode == 0x5):
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, 'print_char', head, tail))
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
+            self.output_helper(chr(operands[0]))
+            self.pc = tail.get_new_pc()
         elif (opcode == 0x6):
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, 'print_num', head, tail))
-            self.output.show(self.signed_word(operands[0]))
+            self.output_helper(self.signed_word(operands[0]))
             self.pc = tail.get_new_pc()
         elif (opcode == 0x7):
             tail = zoperator.Tail(head, True, False, False)
@@ -632,8 +683,8 @@ class Processor:
         elif (opcode == 0x11):
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, 'set_text_style', head, tail))
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
+            self.output['screen'].set_text_style(operands[0])
+            self.pc = tail.get_new_pc()
         elif (opcode == 0x12):
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, 'buffer_mode', head, tail))
@@ -677,8 +728,8 @@ class Processor:
         elif (opcode == 0x1A):
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, 'call_vn2', head, tail))
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
+            self.pc = self.call_helper(tail, operands)
+            logger.debug("locals %d, args %d" % (self.stack.get_num_locals(), self.arg_count))
         elif (opcode == 0x1B):
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, 'tokenise', head, tail))
@@ -770,27 +821,95 @@ class Processor:
             self.is_running = False
             print 'Unkown operator. Halting.'
 
-    def run(self):
-        # fetch-and-execute loop
-        self.is_running = True
+    def execute(self):
+        head = zoperator.Head(self.heap, self.pc)
+        #TODO: use ints for optype
+        if (head.get_optype() == '2OP'):
+            self.execute_2OP(head)
+        elif (head.get_optype() == '1OP'):
+            self.execute_1OP(head)
+        elif (head.get_optype() == '0OP'):
+            self.execute_0OP(head)
+        elif (head.get_optype() == 'VAR'):
+            self.execute_VAR(head)
+        elif (head.get_optype() == 'EXT'):
+            self.execute_EXT(head)
+        self.exec_count += 1
 
-        while (self.is_running):
-                head = zoperator.Head(self.heap, self.pc)
-		#TODO: use ints for optype
-		if (head.get_optype() == '2OP'):
-		    self.execute_2OP(head)
-		elif (head.get_optype() == '1OP'):
-		    self.execute_1OP(head)
-		elif (head.get_optype() == '0OP'):
-		    self.execute_0OP(head)
-		elif (head.get_optype() == 'VAR'):
-		    self.execute_VAR(head)
-		elif (head.get_optype() == 'EXT'):
-		    self.execute_EXT(head)
-                self.exec_count += 1
+    def run(self):
+        print 'Properties of object 52: 0x%x' % self.object_table.get_object_properties_table(52)
+        print 'Property address of property 2: 0x%x' % self.object_table.get_property_data_addr(52, 2)
+        print 'Property info of property 2:', self.object_table.get_property_info_backwards(self.object_table.get_property_data_addr(52, 2))
+        # fetch-and-execute loop
+
+        if self.debug:
+            while (True):
+                cmd = raw_input('Debugger@0x%x: ' % self.pc).upper().split()
+                if (len(cmd) > 0):
+                    if (cmd[0] == 'QUIT'):
+                        break
+                    elif (cmd[0] == 'RUN'):
+                        self.is_running = True
+                        while (self.is_running):
+                            if self.pc in self.breakpoints:
+                                self.is_running = False
+                                print 'Breaking at 0x%x' % self.pc
+                            else:
+                                self.execute()
+                    elif (cmd[0] == 'STEP'):
+                            self.execute()
+                    elif (cmd[0] == 'BREAK'):
+                        if (len(cmd) > 1):
+                            breakpoint =  int(cmd[1], 16)
+                            self.breakpoints.append(breakpoint)
+                        print 'Breakpoints:'
+                        for breakpoint in sorted(self.breakpoints):
+                            print '%x' % breakpoint
+                    elif (cmd[0] == 'UNBREAK'):
+                        if (len(cmd) > 1):
+                            breakpoint =  int(cmd[1], 16)
+                            self.breakpoints.remove(breakpoint)
+                        print 'Breakpoints:'
+                        for breakpoint in sorted(self.breakpoints):
+                            print '%x' % breakpoint
+                    elif (cmd[0] == 'PRINT'):
+                        print cmd[1]
+                        if (cmd[1][0] == 'L'):
+                            variable_number = int(cmd[1][1:], 16) 
+                            
+                            print 'Local variable %x: 0x%04x' % (variable_number, self.get_variable(1 + variable_number))
+                        elif (cmd[1][0] == 'G'):
+                            variable_number =  int(cmd[1][1:], 16) 
+                            print 'Global variable %x: 0x%04x' % (variable_number, self.get_variable(16 + variable_number))
+                        elif (cmd[1] == 'SP'):
+                            print 'Stack:'
+                            self.stack.print_current()
+                            if (self.stack.get_size() > 0):
+                                print 'Top of stack: 0x%04x' % self.stack.peek()
+                        else:
+                            addr = int(cmd[1], 16)
+                            print 'Memory at %x: %04x' % (addr, self.heap.read_word(addr))
+                    elif (cmd[0] == 'TRACE'):
+                        pass
+                    elif (cmd[0] == 'UNTRACE'):
+                        pass
+                    elif (cmd[0] == 'RESET'):
+                        self.pc = self.header.get_initial_pc()
+                    else:
+                        print 'Unknown debugger command', cmd
+                else:
+                    print 'Unknown debugger command', cmd
+        else:
+            self.is_running = True
+            while (self.is_running):
+                self.execute()
+
+    def reset(self):
+        pass
 
 
 heap = heap.Heap(sys.argv[1])
+#cpu = Processor(heap, True)
 cpu = Processor(heap)
 cpu.run()
 

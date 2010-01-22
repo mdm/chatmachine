@@ -95,8 +95,20 @@ class Head:
             self.operand_types.append(tmp)
             mask >>= 2
             mask_pos -= 1
-        #for ops call_vs2 and call_vn2 a second byte of operand types is given
-	
+
+        # for ops call_vs2 and call_vn2 a second byte of operand types is given
+        if (self.optype == 'VAR') and (self.opcode in [0x1A, 0xC]):
+            mask = 0b11000000
+            mask_pos = 3
+            packed_types = self.code.read_byte(self.pc)
+            self.pc += 1
+            while (mask > 0):
+                tmp = (packed_types & mask) >> (2 * mask_pos)
+                if (tmp == 3): break
+                self.operand_types.append(tmp)
+                mask >>= 2
+                mask_pos -= 1
+            
         self.operand_values = self.get_operand_values(self.operand_types)
 
     def decode_short(self, first_byte):
