@@ -8,11 +8,8 @@ class OutputStream(object):
         print 'ERROR: Output stream does not implement write()'
 
 class InputStream(object):
-    def __init__(self):
-        self.selected = False
-
-    def read(self, terminating_chars):
-        pass
+    def read(self, max_len, time, terminating_chars):
+        print 'ERROR: Input stream does not implement read()'
 
 
 class ScreenWriter(OutputStream):
@@ -62,9 +59,10 @@ class MemoryWriter(OutputStream):
 
 
 class ConsoleReader(InputStream):
-    pass
+    def read(self, max_len, time, terminating_chars):
+        return raw_input()[:max_len] + "\n"
 
 class FileReader(InputStream):
-    def read(self, terminating_chars):
+    def read(self, max_len, time, terminating_chars):
         pass
 

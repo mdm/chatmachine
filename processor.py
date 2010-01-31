@@ -1,6 +1,7 @@
 import sys
 import struct
 import logging
+from string import whitespace
 
 import zoperator
 import heap
@@ -21,6 +22,7 @@ class Processor:
         self.header = self.heap.get_header()
         self.pc = self.header.get_initial_pc()
         self.object_table = self.heap.get_object_table()
+        self.dictionary = self.heap.get_dictionary()
         self.stack = stack.Stack()
         self.output = {}
         self.output['screen'] = streams.ConsoleWriter()
@@ -28,8 +30,9 @@ class Processor:
         self.output['memory'] = streams.MemoryWriter()
         self.output['command'] = streams.FileWriter()
         self.input = {}
-        self.input['keyboard'] = stream.ConsoleReader()
-        self.input['file'] = stream.FileReader()
+        self.input['keyboard'] = streams.ConsoleReader()
+        self.input['file'] = streams.FileReader()
+        self.selected_input = 'keyboard'
         self.arg_count = 0
         self.is_running = False
         self.exec_count = 0
@@ -161,6 +164,64 @@ class Processor:
             if self.output['command'].selected and is_echo:
                 self.output['command'].write(string)
 
+    def parse_helper(self, parse_buffer, input, dictionary):
+        version = self.header.get_z_version()
+        max_words = self.heap.read_byte(parse_buffer)
+        separators = dictionary.get_word_separators()
+        words = []
+        word = ''
+        index = 0
+        start = 0
+        for char in input.lower():
+            if (char in whitespace) and not (word == ''):
+                words.append((start, word))
+                word = ''
+                start = index + 1
+            elif char in separators:
+                words.append((start, word))
+                words.append((index, char))
+                word = ''
+                start = index + 1
+            else:
+                word += char
+            index += 1
+        words.append((start, word))
+        print words
+        words = words[:max_words]
+        self.heap.write_byte(parse_buffer + 1, len(words))
+        parse_buffer += 2
+        for start, word in words[:max_words]:
+            encoded = zstring.ZString()
+            encoded.encode(word)
+            small = 1
+            big = dictionary.get_num_entries()
+            while small <= big:
+                avg = (small + big) / 2
+                pivot = dictionary.get_encoded_text(avg)
+                for a, b in zip(pivot, encoded.pack_words()):
+                    a = a & 0x7fff
+                    b = b & 0x7fff
+                    if not (a == b):
+                        break  # for
+
+                if (a == b):
+                    break  # while
+                elif (a < b):
+                    small = avg + 1
+                else:
+                    big = avg - 1
+            if (a == b):
+                self.heap.write_word(parse_buffer, dictionary.get_entry_addr(avg))
+            else:
+                self.heap.write_word(parse_buffer, 0)
+            # write number of letters in word and start position
+            self.heap.write_byte(parse_buffer + 2, len(word))
+            if (version < 5):
+                self.heap.write_byte(parse_buffer + 3, start + 1)
+            else:
+                self.heap.write_byte(parse_buffer + 3, start + 2)
+            parse_buffer += 4
+
     def op2str(self, pc, name, head, tail):
             return ("@%04x: " % pc) + name + ' ' + str(head) + str(tail)
 
@@ -252,10 +313,10 @@ class Processor:
 
             parent = self.object_table.get_object_parent(operands[0])
             self.object_table.set_object_parent(operands[0], 0)
-            sibling = self.object_table.get_object_sibling(operands[0])
-            self.object_table.set_object_sibling(operands[0], 0)
 
             if (parent > 0):
+                sibling = self.object_table.get_object_sibling(operands[0])
+                self.object_table.set_object_sibling(operands[0], 0)
                 parent_child = self.object_table.get_object_child(parent)
                 if (parent_child == operands[0]):
                     self.object_table.set_object_child(parent, sibling)
@@ -410,8 +471,29 @@ class Processor:
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, '', head, tail))
             logger.debug('remove_obj ' + str(operands))
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
+
+            parent = self.object_table.get_object_parent(operands[0])
+            self.object_table.set_object_parent(operands[0], 0)
+
+            if (parent > 0):
+                sibling = self.object_table.get_object_sibling(operands[0])
+                self.object_table.set_object_sibling(operands[0], 0)
+                parent_child = self.object_table.get_object_child(parent)
+                if (parent_child == operands[0]):
+                    self.object_table.set_object_child(parent, sibling)
+                else:
+                    other_sibling = parent_child
+                    next = self.object_table.get_object_sibling(other_sibling)
+                    while (next > 0) and not (next == operands[0]):
+                        other_sibling = next
+                        next = self.object_table.get_object_sibling(other_sibling)
+                    if (next == 0):
+                        print 'ERROR: Malformed object tree.'
+                        self.is_running = False
+                    else:
+                        self.object_table.set_object_sibling(other_sibling, sibling)
+
+            self.pc = tail.get_new_pc()
         elif (opcode == 0xA):
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, '', head, tail))
@@ -605,20 +687,34 @@ class Processor:
             self.is_running = False
             print 'NOT IMPLEMENTED. Halting.'
         elif (opcode == 0x4):
-            tail = zoperator.Tail(head, False, False, False)
             version = self.header.get_z_version()
             if (version < 4):
+                tail = zoperator.Tail(head, False, False, False)
                 logger.debug(self.op2str(self.pc, 'sread', head, tail))
                 #TODO: redisplay status line
+                self.is_running = False
+                print 'NOT IMPLEMENTED. Halting.'
                 #TODO: read until CR
             elif (version == 4):
+                tail = zoperator.Tail(head, False, False, False)
                 logger.debug(self.op2str(self.pc, 'sread', head, tail))
                 #TODO: read until CR
+                self.is_running = False
+                print 'NOT IMPLEMENTED. Halting.'
             else:
+                tail = zoperator.Tail(head, True, False, False)
                 logger.debug(self.op2str(self.pc, 'aread', head, tail))
                 #TODO: read until CR or any other terminating character
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
+                max_len = self.heap.read_byte(operands[0])
+                input = self.input[self.selected_input].read(max_len, 0, '')
+                self.heap.write_byte(operands[0] + 1, len(input) - 1)
+                addr = operands[0] + 2
+                for char in input[:-1]:
+                    self.heap.write_byte(addr, ord(char))
+                    addr += 1
+                if not (operands[1] == 0):
+                    self.parse_helper(operands[1], input[:-1], self.dictionary)
+                self.pc = self.store_helper(tail, ord(input[-1]))
         elif (opcode == 0x5):
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, 'print_char', head, tail))
@@ -657,8 +753,7 @@ class Processor:
         elif (opcode == 0xC):
             tail = zoperator.Tail(head, True, False, False)
             logger.debug(self.op2str(self.pc, 'call_vs2', head, tail))
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
+            self.pc = self.call_helper(tail, operands)
         elif (opcode == 0xD):
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, 'erase_window', head, tail))
@@ -837,9 +932,6 @@ class Processor:
         self.exec_count += 1
 
     def run(self):
-        print 'Properties of object 52: 0x%x' % self.object_table.get_object_properties_table(52)
-        print 'Property address of property 2: 0x%x' % self.object_table.get_property_data_addr(52, 2)
-        print 'Property info of property 2:', self.object_table.get_property_info_backwards(self.object_table.get_property_data_addr(52, 2))
         # fetch-and-execute loop
 
         if self.debug:

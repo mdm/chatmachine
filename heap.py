@@ -14,6 +14,7 @@ class Heap:
         story_file.close()
         self.header = Header(self)
         self.object_table = ObjectTable(self)
+        self.dictionary = Dictionary(self, self.header.get_dictionary_location())
 
     def read_byte(self, address):
         if not (0 <= address < (len(self.data) - 1)): raise IndexError
@@ -39,7 +40,7 @@ class Heap:
 
     def read_string(self, address):
         string = zstring.ZString()
-        while(string.add(self.read_word(address))):
+        while(string.unpack_word(self.read_word(address))):
             address += 2
         return (address + 2, string)
 
@@ -49,6 +50,9 @@ class Heap:
     def get_object_table(self):
         return self.object_table
 
+    def get_dictionary(self):
+        return self.dictionary
+    
     def get_terminating_chars(self):
         chars = []
         addr = self.header.get_terminating_chars_table_location()
@@ -386,4 +390,39 @@ class ObjectTable:
         else:
             print 'ERROR: size > 2. set_prop undefined.'
 
+
+class Dictionary:
+    def __init__(self, heap, location):
+        self.heap = heap
+        self.header = self.heap.get_header()
+        self.location = location
+        location += self.heap.read_byte(location) + 1
+        self.entry_length = self.heap.read_byte(location)
+        self.num_entries = self.heap.read_word(location + 1)
+        self.first_entry = location + 3
+
+    def get_word_separators(self):
+        num_separators = self.heap.read_byte(self.location)
+        separators = ''
+        for i in range(num_separators):
+            separators += chr(self.heap.read_byte(self.location + i + 1))
+        return separators
+
+    def get_num_entries(self):
+        return self.num_entries
+
+    def get_entry_addr(self, number): # this is 1-based
+        return self.first_entry + (number - 1) * self.entry_length
+
+    def get_encoded_text(self, number): # this is 1-based
+        version = self.header.get_z_version()
+        addr = self.get_entry_addr(number)
+        encoded = []
+        if (version < 4):
+            for i in range(2):
+                encoded.append(self.heap.read_word(addr + i * 2))
+        else:
+            for i in range(3):
+                encoded.append(self.heap.read_word(addr + i * 2))
+        return encoded
 
