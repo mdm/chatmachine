@@ -310,6 +310,8 @@ class Processor:
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, '', head, tail))
             logger.debug('insert_obj ' + str(operands))
+            self.object_table.dump_dot_file('objects_%d.dot' % self.pc, 232)
+            print '[insert_obj %d %d]' % (operands[0], operands[1])
 
             parent = self.object_table.get_object_parent(operands[0])
             self.object_table.set_object_parent(operands[0], 0)
@@ -334,9 +336,11 @@ class Processor:
 
             new_sibling = self.object_table.get_object_child(operands[1])
             self.object_table.set_object_sibling(operands[0], new_sibling)
+            self.object_table.set_object_parent(operands[0], operands[1])
             self.object_table.set_object_child(operands[1], operands[0])
 
             self.pc = tail.get_new_pc()
+            self.object_table.dump_dot_file('objects_%d.dot' % self.pc, 232)
         elif (opcode == 0xF):
             tail = zoperator.Tail(head, True, False, False)
             logger.debug(self.op2str(self.pc, 'loadw', head, tail))
@@ -471,8 +475,22 @@ class Processor:
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, '', head, tail))
             logger.debug('remove_obj ' + str(operands))
+            self.object_table.dump_dot_file('objects_%d.dot' % self.pc, 232)
+            print '[remove_obj %d]' % operands[0]
 
             parent = self.object_table.get_object_parent(operands[0])
+            sibling = self.object_table.get_object_sibling(operands[0])
+            child = self.object_table.get_object_child(operands[0])
+            parent_child = self.object_table.get_object_child(parent)
+
+            print '***', operands[0]
+            print '***', parent, sibling, child
+
+            print '##', parent_child
+            while (self.object_table.get_object_sibling(parent_child)):
+                parent_child = self.object_table.get_object_sibling(parent_child)
+                print '##', parent_child
+
             self.object_table.set_object_parent(operands[0], 0)
 
             if (parent > 0):
@@ -494,6 +512,7 @@ class Processor:
                         self.object_table.set_object_sibling(other_sibling, sibling)
 
             self.pc = tail.get_new_pc()
+            self.object_table.dump_dot_file('objects_%d.dot' % self.pc, 232)
         elif (opcode == 0xA):
             tail = zoperator.Tail(head, False, False, False)
             logger.debug(self.op2str(self.pc, '', head, tail))
@@ -558,9 +577,11 @@ class Processor:
             self.output_helper(string)
             #TODO: include string and length handling with tail
         elif (opcode == 0x3):
-            tail = zoperator.Tail(head, False, False, False)
-            logger.debug(self.op2str(self.pc, '', head, tail))
-            logger.debug('print_ret')
+            tail = zoperator.Tail(head, False, False, True)
+            logger.debug(self.op2str(self.pc, 'print_ret', head, tail))
+            self.pc, string = self.heap.read_string(tail.get_new_pc())
+            self.output_helper(string)
+            self.pc = self.return_helper(1)
             self.is_running = False
             print 'NOT IMPLEMENTED. Halting.'
         elif (opcode == 0x4):
@@ -933,6 +954,7 @@ class Processor:
 
     def run(self):
         # fetch-and-execute loop
+        self.object_table.dump_dot_file('objects_%d.dot' % self.pc, 232)
 
         if self.debug:
             while (True):

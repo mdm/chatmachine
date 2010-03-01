@@ -389,6 +389,23 @@ class ObjectTable:
             return self.heap.write_word(property_addr + offset)
         else:
             print 'ERROR: size > 2. set_prop undefined.'
+    
+    def dump_dot_file(self, filename, num_objects):
+        dotfile = open(filename, 'wb')
+        dotfile.write("digraph object_tree {\n")
+        for obj in range(1, num_objects + 1):
+            dotfile.write("    %d;\n" % obj)
+            parent = self.get_object_parent(obj)
+            if (parent > 0):
+                dotfile.write("    %d -> %d [style=dotted, color=red];\n" % (obj, parent))
+            child = self.get_object_child(obj)
+            if (child > 0):
+                dotfile.write("    %d -> %d [color=green];\n" % (obj, child))
+            sibling = self.get_object_sibling(obj)
+            if (sibling > 0):
+                dotfile.write("    %d -> %d [color=blue];\n" % (obj, sibling))
+        dotfile.write("}\n")
+        dotfile.close()
 
 
 class Dictionary:
