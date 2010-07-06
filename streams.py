@@ -1,68 +1,67 @@
-import sys
-
-class OutputStream(object):
+class Writer(object):
     def __init__(self):
         self.selected = False
 
-    def write(self, data):
-        print 'ERROR: Output stream does not implement write()'
-
-class InputStream(object):
-    def read(self, max_len, time, terminating_chars):
-        print 'ERROR: Input stream does not implement read()'
-
-
-class ScreenWriter(OutputStream):
-    def __init__(self):
-        super(ScreenWriter, self).__init__()
+    def select(self):
         self.selected = True
 
+    def deselect(self):
+        self.selected = False
+
     def write(self, data):
-        pass
-
-    def get_features(self):
-        pass
-
-    def set_text_style(self):
-        pass
-
-class ConsoleWriter(ScreenWriter):
-    def __init__(self):
-        super(ConsoleWriter, self).__init__()
-        self.esc = "%s[" % chr(27)
-        self.ansi('2J')  # clear screen
-        self.ansi('H')  # move to top left
-
-    def write(self, string):
-        sys.stdout.write(str(string))
-
-    def ansi(self, cmd):
-        self.write("%s%s" % (self.esc, cmd))
-
-    def set_text_style(self, style):
-        if (style == 0):
-            self.ansi('0m')  # reset
-        elif (style == 1):
-            self.ansi('7m')  # reverse video
-        elif (style == 2):
-            self.ansi('1m')  # bold
-        elif (style == 4):
-            self.ansi('4m')  # italic --> underlined
-        elif (style == 8):
-            pass
-
-class FileWriter(OutputStream):
-    pass
-
-class MemoryWriter(OutputStream):
-    pass
+        print 'ERROR: Stream writer does not implement write()'
 
 
-class ConsoleReader(InputStream):
+class Reader(object):
+    def read(self, max_len, time, terminating_chars):
+        print 'ERROR: Stream reader does not implement read()'
+
+
+
+
+class ScreenWriter(Writer):
+    def __init__(self, screen):
+        self.selected = False
+        self.screen = screen
+
+    def write(self, data):
+        self.screen.write(data)
+
+
+class FileWriter(Writer):
+    def __init__(self, file):
+       self.selected = False
+       self.file = file
+
+
+class MemoryWriter(Writer):
+    def __init__(self, memory):
+        self.selected = False
+        self.memory = memory
+        self.tables = []
+
+    def select(self, table):
+        self.selected = True
+        self.tables.append(table)
+
+    def deselect(self):
+        self.selected = False
+        self.tables.pop()
+
+
+
+
+class KeyboardReader(Reader):
+    def __init__(self, keyboard):
+        self.keyboard = keyboard
+
     def read(self, max_len, time, terminating_chars):
         return raw_input()[:max_len] + "\n"
 
-class FileReader(InputStream):
+class FileReader(Reader):
+    def __init__(self, file):
+        self.file = file
+
     def read(self, max_len, time, terminating_chars):
         pass
 

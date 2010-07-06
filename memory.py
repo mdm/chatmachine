@@ -4,37 +4,36 @@ import logging
 
 import zstring
 
-logger = logging.getLogger('heap')
+logger = logging.getLogger('memory')
 logger.setLevel(logging.WARNING)
 
-class Heap:
+class Memory:
     def __init__(self, filename):
         story_file = open(filename)
         self.data = ctypes.create_string_buffer(story_file.read())
-        story_file.close()
         self.header = Header(self)
         self.object_table = ObjectTable(self)
         self.dictionary = Dictionary(self, self.header.get_dictionary_location())
 
     def read_byte(self, address):
-        if not (0 <= address < (len(self.data) - 1)): raise IndexError
+        if not (0 <= address < len(self.data)): raise IndexError
         byte = struct.unpack_from('B', self.data, address)[0]
         logger.debug("read [%02X]" % byte)
         return byte
 
     def write_byte(self, address, value):
-        if not (0 <= address < (len(self.data) - 1)): raise IndexError
+        if not (0 <= address < len(self.data)): raise IndexError
         if not (0 <= value <= 0xFF): raise ValueError
         struct.pack_into('B', self.data, address, value)
 
     def read_word(self, address):
-        if not (0 <= address < (len(self.data) - 2)): raise IndexError
+        if not (0 <= address < (len(self.data) - 1)): raise IndexError
         word = struct.unpack_from('>H', self.data, address)[0]
         logger.debug("read [%04X]" % word)
         return word
 
     def write_word(self, address, value):
-        if not (0 <= address < (len(self.data) - 2)): raise IndexError
+        if not (0 <= address < (len(self.data) - 1)): raise IndexError
         if not (0 <= value <= 0xFFFF): raise ValueError
         struct.pack_into('>H', self.data, address, value)
 
