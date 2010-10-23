@@ -1,4 +1,5 @@
 import sys
+import cProfile
 
 import memory
 import stack
@@ -34,5 +35,5 @@ in_file = streams.FileReader(input_file)
 processor = processor.Processor(memory, stack, out_screen, out_transcript, out_memory, out_command, in_keyboard, in_file)
 
 
-processor.run()
+cProfile.run(processor.run(), 'profile.txt')
 print 'Goodbye'

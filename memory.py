@@ -38,10 +38,14 @@ class Memory:
         struct.pack_into('>H', self.data, address, value)
 
     def read_string(self, address):
-        string = zstring.ZString()
-        while(string.unpack_word(self.read_word(address))):
+        words = []
+        words.append(self.read_word(address))
+        while not (words[-1] & 0x8000):
             address += 2
-        return (address + 2, string)
+            words.append(self.read_word(address))
+        string = zstring.ZString()
+        string.unpack_words(words)
+        return (address + 2), string.decode()
 
     def get_header(self):
         return self.header
@@ -206,6 +210,24 @@ class ObjectTable:
                 self.heap.write_word(object_addr + 2, self.heap.read_word(object_addr + 2) | (1 << (31 - attribute_number)))
             else:
                 self.heap.write_word(object_addr + 4, self.heap.read_word(object_addr + 4) | (1 << (47 - attribute_number)))
+
+    def clear_object_attribute(self, object_number, attribute_number):
+        #TODO: check for illegal attribute numbers
+        version = self.header.get_z_version()
+        object_addr = self.get_object_addr(object_number)
+
+        if (version < 4):
+            if (attribute_number < 16):
+                self.heap.write_word(object_addr, self.heap.read_word(object_addr) & ~(1 << (15 - attribute_number)))
+            else:
+                self.heap.write_word(object_addr + 2, self.heap.read_word(object_addr + 2) & ~(1 << (31 - attribute_number)))
+        else:
+            if (attribute_number < 16):
+                self.heap.write_word(object_addr, self.heap.read_word(object_addr) & ~(1 << (15 - attribute_number)))
+            elif (attribute_number < 32):
+                self.heap.write_word(object_addr + 2, self.heap.read_word(object_addr + 2) & ~(1 << (31 - attribute_number)))
+            else:
+                self.heap.write_word(object_addr + 4, self.heap.read_word(object_addr + 4) & ~(1 << (47 - attribute_number)))
 
     def get_object_parent(self, object_number):
         version = self.header.get_z_version()

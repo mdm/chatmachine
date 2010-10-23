@@ -3,15 +3,14 @@ class ZString:
         self.chars = []
         self.A2 = " \n0123456789.,!?_#'\"/\\-:()"
         
-    def unpack_word(self, word):
-        self.chars.append((word & 0x7C00) >> 10)
-        self.chars.append((word & 0x3E0) >> 5)
-        self.chars.append(word & 0x1F)
-        if (word & 0x8000):
-            #print self.chars
-            return False
-        else:
-            return True
+    def unpack_words(self, words):
+        self.chars = []
+        for word in words:
+            self.chars.append((word & 0x7C00) >> 10)
+            self.chars.append((word & 0x3E0) >> 5)
+            self.chars.append(word & 0x1F)
+            if (word & 0x8000):
+                break
 
     def pack_words(self, chars = None):
         if not chars:
@@ -27,8 +26,24 @@ class ZString:
             return [word] + self.pack_words(chars[3:])
 
     def compact(self):
-        while (self.chars[-1] == 5): self.chars.pop()
-        #TODO: remove all runs of 4's and 5's
+        new_chars = []
+        shifting = False
+        for char in self.chars:
+            if char in [4, 5]:
+                if shifting:
+                    new_chars[-1] = char
+                else:
+                    new_chars.append(char)
+                shifting = True
+            else:
+                new_chars.append(char)
+                shifting = False
+        if (len(new_chars) == 1) and shifting:
+            self.chars = []
+        else:
+            while (new_chars[-1] in [4, 5]):
+                new_chars.pop()
+            self.chars = new_chars
 
     def encode(self, unencoded):
         self.chars = []

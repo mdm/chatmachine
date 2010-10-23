@@ -8,7 +8,7 @@ class Writer(object):
     def deselect(self):
         self.selected = False
 
-    def write(self, data):
+    def write(self, string):
         print 'ERROR: Stream writer does not implement write()'
 
 
@@ -24,8 +24,8 @@ class ScreenWriter(Writer):
         self.selected = False
         self.screen = screen
 
-    def write(self, data):
-        self.screen.write(data)
+    def write(self, string):
+        self.screen.write(string)
 
 
 class FileWriter(Writer):
@@ -39,16 +39,29 @@ class MemoryWriter(Writer):
         self.selected = False
         self.memory = memory
         self.tables = []
+        self.offsets = []
 
     def select(self, table):
         self.selected = True
         self.tables.append(table)
+        self.offsets.append(table + 2)
 
     def deselect(self):
         self.selected = False
         self.tables.pop()
+        self.offsets.pop()
 
-
+    def write(self, string):
+        #print '@@@', [string]
+        #print 'MEMWRITE'
+        for char in string:
+            if ord(char) < 255:
+                self.memory.write_byte(self.offsets[-1], ord(char))
+                self.offsets[-1] += 1
+            else:
+                print '*** TRYING TO WRITE ILLEGAL CHARACTER TO MEMORY ***'
+        #print self.tables[-1], self.offsets[-1] - (self.tables[-1] + 2)
+        self.memory.write_word(self.tables[-1], self.offsets[-1] - (self.tables[-1] + 2))
 
 
 class KeyboardReader(Reader):
