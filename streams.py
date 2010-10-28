@@ -47,6 +47,11 @@ class MemoryWriter(Writer):
         self.offsets.append(table + 2)
 
     def deselect(self):
+        size = self.memory.read_word(self.tables[-1])
+        string = ''
+        for i in range(size):
+            string += self.memory.read_byte(self.tables[-1] + i + 1)
+        #print 'MEMWRITE:', size, 'bytes\n', string
         self.selected = False
         self.tables.pop()
         self.offsets.pop()
@@ -61,6 +66,7 @@ class MemoryWriter(Writer):
             else:
                 print '*** TRYING TO WRITE ILLEGAL CHARACTER TO MEMORY ***'
         #print self.tables[-1], self.offsets[-1] - (self.tables[-1] + 2)
+        #TODO: handle multiple writes to same table
         self.memory.write_word(self.tables[-1], self.offsets[-1] - (self.tables[-1] + 2))
 
 

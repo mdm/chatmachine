@@ -800,6 +800,8 @@ class Processor:
         elif (opcode == 0x13):
             tail = zoperator.Tail(head, False, False, False)
             logger.info(self.op2str(self.pc, 'output_stream', head, tail))
+            #print self.op2str(self.pc, 'output_stream', head, tail)
+            operands[0] = self.signed_word(operands[0])
             if (operands[0] > 0):
                 if (operands[0] == 1):
                     self.output['screen'].select()
