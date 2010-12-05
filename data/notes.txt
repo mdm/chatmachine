@@ -1,0 +1,5 @@
+- incorrect long form operand decoding
+- in operation 3, type of operand 1 should be 2 (L00)
+
+- array module is way faster than ctypes+struct
+

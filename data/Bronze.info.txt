@@ -1,0 +1,6149 @@
+
+Story file is Bronze.z8
+
+    **** Story file header ****
+
+Z-code version:           8
+Interpreter flags:        None
+Release number:           11
+Size of resident memory:  f830
+Start PC:                 f831
+Dictionary address:       d12c
+Object table address:     0138
+Global variables address: 7bb9
+Size of dynamic memory:   c5c0
+Game flags:               Supports undo, Supports colour
+Serial number:            060503
+Abbreviations address:    0070
+File size:                57bd0
+Checksum:                 9d13
+Terminating keys address: c5bf
+    Keys used: 
+Header extension address: 0130
+Inform Version:           6.30
+Header extension length:  0003
+Unicode table address:    0000
+Inform Version: 630
+
+    **** Story file map ****
+
+ Base    End   Size
+    0     3f     40  Story file header
+   40     41      2  Abbreviation data
+   42     6f     2e
+   70    12f     c0  Abbreviation pointer table
+  130    137      8  Header extension table
+  138    e65    d2e  Object table
+  e66   4726   38c1  Property data
+ 4727   4768     42  Class Prototype Object Numbers
+ 4769   4836     ce  Property Names Table
+ 4837   4896     60  Attribute Names Table
+ 4897   7bb8   3322
+ 7bb9   7d98    1e0  Global variables
+ 7d99   c5bf   4827
+ c5c0   c6d5    116  Grammar pointer table
+ c6d6   d01b    946  Grammar data
+ d01c   d129    10e  Action routine table
+ d12a   d12b      2
+ d12c   f82f   2704  Dictionary
+ f830  57bcf  483a0  Paged memory
+
+    **** Abbreviations ****
+
+[ 0] "   "
+[ 1] "   "
+[ 2] "   "
+[ 3] "   "
+[ 4] "   "
+[ 5] "   "
+[ 6] "   "
+[ 7] "   "
+[ 8] "   "
+[ 9] "   "
+[10] "   "
+[11] "   "
+[12] "   "
+[13] "   "
+[14] "   "
+[15] "   "
+[16] "   "
+[17] "   "
+[18] "   "
+[19] "   "
+[20] "   "
+[21] "   "
+[22] "   "
+[23] "   "
+[24] "   "
+[25] "   "
+[26] "   "
+[27] "   "
+[28] "   "
+[29] "   "
+[30] "   "
+[31] "   "
+[32] "   "
+[33] "   "
+[34] "   "
+[35] "   "
+[36] "   "
+[37] "   "
+[38] "   "
+[39] "   "
+[40] "   "
+[41] "   "
+[42] "   "
+[43] "   "
+[44] "   "
+[45] "   "
+[46] "   "
+[47] "   "
+[48] "   "
+[49] "   "
+[50] "   "
+[51] "   "
+[52] "   "
+[53] "   "
+[54] "   "
+[55] "   "
+[56] "   "
+[57] "   "
+[58] "   "
+[59] "   "
+[60] "   "
+[61] "   "
+[62] "   "
+[63] "   "
+[64] "   "
+[65] "   "
+[66] "   "
+[67] "   "
+[68] "   "
+[69] "   "
+[70] "   "
+[71] "   "
+[72] "   "
+[73] "   "
+[74] "   "
+[75] "   "
+[76] "   "
+[77] "   "
+[78] "   "
+[79] "   "
+[80] "   "
+[81] "   "
+[82] "   "
+[83] "   "
+[84] "   "
+[85] "   "
+[86] "   "
+[87] "   "
+[88] "   "
+[89] "   "
+[90] "   "
+[91] "   "
+[92] "   "
+[93] "   "
+[94] "   "
+[95] "   "
+
+    **** Objects ****
+
+  Object count = 232
+
+  1. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object:   5
+     Property address: 0e66
+         Description: "Class"
+          Properties:
+
+  2. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 0e76
+         Description: "Object"
+          Properties:
+
+  3. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 0e88
+         Description: "Routine"
+          Properties:
+
+  4. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 0e9a
+         Description: "String"
+          Properties:
+
+  5. Attributes: None
+     Parent object:   1  Sibling object:  11  Child object:   0
+     Property address: 0eac
+         Description: "CompassDirection"
+          Properties:
+
+  6. Attributes: 3
+     Parent object:   0  Sibling object:   0  Child object:  39
+     Property address: 0eca
+         Description: "compass"
+          Properties:
+
+  7. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 0ed2
+         Description: "(darkness object)"
+          Properties:
+              [46] 23 48 
+              [35] 23 4b 
+              [30] 00 00 
+
+  8. Attributes: 16
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 0eeb
+         Description: "(Inform Parser)"
+          Properties:
+              [ 3] 4c a7 
+
+  9. Attributes: 16
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 0efe
+         Description: "(Inform Library)"
+          Properties:
+              [ 3] 4c ae 
+
+ 10. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 0f11
+         Description: "(LibraryMessages)"
+          Properties:
+
+ 11. Attributes: None
+     Parent object:   1  Sibling object:  12  Child object:   0
+     Property address: 0f21
+         Description: "K0_kind"
+          Properties:
+              [ 3] 4c bf 
+
+ 12. Attributes: None
+     Parent object:   1  Sibling object:  13  Child object:   0
+     Property address: 0f3b
+         Description: "K1_room"
+          Properties:
+              [ 3] 4c c6 
+
+ 13. Attributes: None
+     Parent object:   1  Sibling object:  14  Child object:   0
+     Property address: 0f7f
+         Description: "K2_thing"
+          Properties:
+              [ 3] 4c cd 
+
+ 14. Attributes: None
+     Parent object:   1  Sibling object:  15  Child object:   0
+     Property address: 0fb4
+         Description: "K3_direction"
+          Properties:
+              [ 3] 4d 00 
+
+ 15. Attributes: None
+     Parent object:   1  Sibling object:  16  Child object:   0
+     Property address: 0fde
+         Description: "K4_door"
+          Properties:
+              [ 3] 4d 16 
+
+ 16. Attributes: None
+     Parent object:   1  Sibling object:  17  Child object:   0
+     Property address: 101b
+         Description: "K5_container"
+          Properties:
+              [ 3] 4d 49 
+
+ 17. Attributes: None
+     Parent object:   1  Sibling object:  18  Child object:   0
+     Property address: 1057
+         Description: "K6_supporter"
+          Properties:
+              [ 3] 4d 7c 
+
+ 18. Attributes: None
+     Parent object:   1  Sibling object:  19  Child object:   0
+     Property address: 1093
+         Description: "K7_backdrop"
+          Properties:
+              [ 3] 4d af 
+
+ 19. Attributes: None
+     Parent object:   1  Sibling object:  20  Child object:   0
+     Property address: 10cf
+         Description: "K8_person"
+          Properties:
+              [ 3] 4d e2 
+
+ 20. Attributes: None
+     Parent object:   1  Sibling object:  21  Child object:   0
+     Property address: 110c
+         Description: "K9_region"
+          Properties:
+              [ 3] 4e 1c 
+
+ 21. Attributes: None
+     Parent object:   1  Sibling object:  22  Child object:   0
+     Property address: 112c
+         Description: "K10_player_s_holdall"
+          Properties:
+              [ 3] 4e 23 
+
+ 22. Attributes: None
+     Parent object:   1  Sibling object:  23  Child object:   0
+     Property address: 1175
+         Description: "K11_device"
+          Properties:
+              [ 3] 4e 56 
+
+ 23. Attributes: None
+     Parent object:   1  Sibling object:  24  Child object:   0
+     Property address: 11b1
+         Description: "K24_animal"
+          Properties:
+              [ 3] 4e 89 
+
+ 24. Attributes: None
+     Parent object:   1  Sibling object:  25  Child object:   0
+     Property address: 11f5
+         Description: "K25_man"
+          Properties:
+              [ 3] 4e c3 
+
+ 25. Attributes: None
+     Parent object:   1  Sibling object:  26  Child object:   0
+     Property address: 1237
+         Description: "K26_woman"
+          Properties:
+              [ 3] 4e fd 
+
+ 26. Attributes: None
+     Parent object:   1  Sibling object:  27  Child object:   0
+     Property address: 127b
+         Description: "K27_player_character"
+          Properties:
+              [ 3] 4f 37 
+
+ 27. Attributes: None
+     Parent object:   1  Sibling object:  28  Child object:   0
+     Property address: 12df
+         Description: "K30_vehicle"
+          Properties:
+              [ 3] 4f 71 
+
+ 28. Attributes: None
+     Parent object:   1  Sibling object:  29  Child object:   0
+     Property address: 1323
+         Description: "K92_passkey"
+          Properties:
+              [ 3] 4f a4 
+
+ 29. Attributes: None
+     Parent object:   1  Sibling object:  30  Child object:   0
+     Property address: 135f
+         Description: "K94_display"
+          Properties:
+              [ 3] 4f d7 
+
+ 30. Attributes: None
+     Parent object:   1  Sibling object:  31  Child object:   0
+     Property address: 139b
+         Description: "K95_reminder"
+          Properties:
+              [ 3] 50 0a 
+
+ 31. Attributes: None
+     Parent object:   1  Sibling object:  32  Child object:   0
+     Property address: 13d9
+         Description: "K96_floor"
+          Properties:
+              [ 3] 50 42 
+
+ 32. Attributes: None
+     Parent object:   1  Sibling object:  33  Child object:   0
+     Property address: 1418
+         Description: "K98_bed"
+          Properties:
+              [ 3] 50 75 
+
+ 33. Attributes: None
+     Parent object:   1  Sibling object:  34  Child object:   0
+     Property address: 145a
+         Description: "K99_view"
+          Properties:
+              [ 3] 50 a8 
+
+ 34. Attributes: None
+     Parent object:   1  Sibling object:  35  Child object:   0
+     Property address: 1499
+         Description: "K100_staircase"
+          Properties:
+              [ 3] 50 e0 
+
+ 35. Attributes: None
+     Parent object:   1  Sibling object:  36  Child object:   0
+     Property address: 14e4
+         Description: "K101_fluid_container"
+          Properties:
+              [ 3] 51 13 
+
+ 36. Attributes: None
+     Parent object:   1  Sibling object:  37  Child object:   0
+     Property address: 1528
+         Description: "K102_ringer"
+          Properties:
+              [ 3] 51 46 
+
+ 37. Attributes: None
+     Parent object:   1  Sibling object:   0  Child object:   0
+     Property address: 1566
+         Description: "K267_grail"
+          Properties:
+              [ 3] 51 7e 
+
+ 38. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 15a2
+         Description: "(Value_Property_Holder)"
+          Properties:
+              [ 3] 51 b1 
+
+ 39. Attributes: 17
+     Parent object:   6  Sibling object:  40  Child object:   0
+     Property address: 15bb
+         Description: ""
+          Properties:
+              [51] 00 0e 
+              [46] 71 b5 
+              [41] 00 00 
+              [37] 6f 77 
+              [25] 00 00 
+              [23] 71 99 
+              [21] 00 07 
+              [ 3] 51 cc 
+              [ 2] 00 0e 00 0b 00 05 
+              [ 1] e6 15 e6 93 f6 1d 
+
+ 40. Attributes: 17
+     Parent object:   6  Sibling object:  41  Child object:   0
+     Property address: 15e7
+         Description: ""
+          Properties:
+              [51] 00 0e 
+              [46] 71 b6 
+              [41] 00 00 
+              [37] 6f 77 
+              [25] 00 00 
+              [23] 71 99 
+              [21] 00 0b 
+              [ 3] 51 f5 
+              [ 2] 00 0e 00 0b 00 05 
+              [ 1] e6 39 e6 9c f6 1d 
+
+ 41. Attributes: 17
+     Parent object:   6  Sibling object:  42  Child object:   0
+     Property address: 1613
+         Description: ""
+          Properties:
+              [51] 00 0e 
+              [46] 71 b7 
+              [41] 00 00 
+              [37] 6f 77 
+              [25] 00 00 
+              [23] 71 99 
+              [21] 00 0d 
+              [ 3] 52 1e 
+              [ 2] 00 0e 00 0b 00 05 
+              [ 1] e6 f6 e6 a5 f6 1d 
+
+ 42. Attributes: 17
+     Parent object:   6  Sibling object:  43  Child object:   0
+     Property address: 163f
+         Description: ""
+          Properties:
+              [51] 00 0e 
+              [46] 71 b8 
+              [41] 00 00 
+              [37] 6f 77 
+              [25] 00 00 
+              [23] 71 99 
+              [21] 00 08 
+              [ 3] 52 47 
+              [ 2] 00 0e 00 0b 00 05 
+              [ 1] ec 72 ef d2 f6 1d 
+
+ 43. Attributes: 17
+     Parent object:   6  Sibling object:  44  Child object:   0
+     Property address: 166b
+         Description: ""
+          Properties:
+              [51] 00 0e 
+              [46] 71 b9 
+              [41] 00 00 
+              [37] 6f 77 
+              [25] 00 00 
+              [23] 71 99 
+              [21] 00 0c 
+              [ 3] 52 70 
+              [ 2] 00 0e 00 0b 00 05 
+              [ 1] ed 38 ef db f6 1d 
+
+ 44. Attributes: 17
+     Parent object:   6  Sibling object:  45  Child object:   0
+     Property address: 1697
+         Description: ""
+          Properties:
+              [51] 00 0e 
+              [46] 71 ba 
+              [41] 00 00 
+              [37] 6f 77 
+              [25] 00 00 
+              [23] 71 99 
+              [21] 00 0e 
+              [ 3] 52 99 
+              [ 2] 00 0e 00 0b 00 05 
+              [ 1] f1 dc ef e4 f6 1d 
+
+ 45. Attributes: 17
+     Parent object:   6  Sibling object:  46  Child object:   0
+     Property address: 16c3
+         Description: ""
+          Properties:
+              [51] 00 0e 
+              [46] 71 bb 
+              [41] 00 00 
+              [37] 6f 77 
+              [25] 00 00 
+              [23] 71 99 
+              [21] 00 09 
+              [ 3] 52 c2 
+              [ 2] 00 0e 00 0b 00 05 
+              [ 1] da e7 db 0b f6 1d 
+
+ 46. Attributes: 17
+     Parent object:   6  Sibling object:  47  Child object:   0
+     Property address: 16ef
+         Description: ""
+          Properties:
+              [51] 00 0e 
+              [46] 71 bc 
+              [41] 00 00 
+              [37] 6f 77 
+              [25] 00 00 
+              [23] 71 99 
+              [21] 00 0a 
+              [ 3] 52 eb 
+              [ 2] 00 0e 00 0b 00 05 
+              [ 1] f5 e7 f6 a4 f6 1d 
+
+ 47. Attributes: 17
+     Parent object:   6  Sibling object:  48  Child object:   0
+     Property address: 171b
+         Description: ""
+          Properties:
+              [51] 00 0e 
+              [46] 71 bd 
+              [41] 00 00 
+              [37] 6f 77 
+              [25] 00 00 
+              [23] 71 99 
+              [21] 00 0f 
+              [ 3] 53 14 
+              [ 2] 00 0e 00 0b 00 05 
+              [ 1] f4 c7 f5 3c 
+
+ 48. Attributes: 17
+     Parent object:   6  Sibling object:  49  Child object:   0
+     Property address: 1745
+         Description: ""
+          Properties:
+              [51] 00 0e 
+              [46] 71 be 
+              [41] 00 00 
+              [37] 6f 77 
+              [25] 00 00 
+              [23] 71 99 
+              [21] 00 10 
+              [ 3] 53 3d 
+              [ 2] 00 0e 00 0b 00 05 
+              [ 1] d8 68 da 2a 
+
+ 49. Attributes: 17
+     Parent object:   6  Sibling object:  50  Child object:   0
+     Property address: 176f
+         Description: ""
+          Properties:
+              [51] 00 0e 
+              [46] 71 bf 
+              [41] 00 00 
+              [37] 6f 77 
+              [25] 00 00 
+              [23] 71 99 
+              [21] 00 11 
+              [ 3] 53 66 
+              [ 2] 00 0e 00 0b 00 05 
+              [ 1] e1 7a e1 e6 
+
+ 50. Attributes: 17
+     Parent object:   6  Sibling object:   0  Child object:   0
+     Property address: 1799
+         Description: ""
+          Properties:
+              [51] 00 0e 
+              [46] 71 c0 
+              [41] 00 00 
+              [37] 6f 77 
+              [25] 00 00 
+              [23] 71 99 
+              [21] 00 12 
+              [ 3] 53 8f 
+              [ 2] 00 0e 00 0b 00 05 
+              [ 1] e7 bc e7 d7 
+
+ 51. Attributes: 0, 3, 16, 23, 35, 37, 40
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 17c3
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1a 00 13 00 0d 
+              [48] 67 68 
+              [46] 71 c1 
+              [45] 00 64 
+              [44] ff ff 
+              [42] ff ff 
+              [41] 00 00 
+              [36] 2d ba 
+              [35] 2d bd 
+              [29] 00 00 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 a6 
+              [ 6] ff ff 
+              [ 5] ff ff 
+              [ 4] ff ff 2d b8 
+              [ 3] 53 b8 
+              [ 2] 00 1a 00 13 00 0d 00 0b 
+              [ 1] f7 fa f8 03 
+
+ 52. Attributes: 17, 19, 30
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 181b
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 12 00 0d 
+              [48] 66 e9 
+              [46] 71 c2 
+              [39] 2d c0 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9d 
+              [ 4] 2d b8 
+              [ 3] 54 10 
+              [ 2] 00 12 00 0d 00 0b 
+              [ 1] de 98 f1 d3 f1 d3 f6 26 f6 1d d5 fb df 79 d2 02 eb c7 e0 51 
+
+ 53. Attributes: 9, 39
+     Parent object:   0  Sibling object:   0  Child object:  54
+     Property address: 186a
+         Description: ""
+          Properties:
+              [55] 00 e0 
+              [51] 00 0c 
+              [46] 71 c4 
+              [35] 58 68 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 37 
+              [ 3] 54 61 
+              [ 2] 00 0c 00 0b 
+              [ 1] da 4e da 4e 
+
+ 54. Attributes: 17
+     Parent object:  53  Sibling object:   0  Child object:   0
+     Property address: 18b3
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] a9 50 
+              [36] 2d ba 
+              [35] 98 a4 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 54 68 
+              [ 2] 00 0d 00 0b 
+              [ 1] d5 e9 dc 07 dc 10 f3 e6 f3 e6 da 4e d4 d2 
+
+ 55. Attributes: 5, 15, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 18f1
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0f 00 0d 
+              [46] 71 c5 
+              [39] 00 38 00 35 
+              [36] 2d ba 
+              [35] 58 30 
+              [30] 58 73 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9a 
+              [21] 2d c1 
+              [19] 2d c3 
+              [ 4] 2d b8 
+              [ 3] 54 b9 
+              [ 2] 00 0f 00 0d 00 0b 
+              [ 1] e2 25 de 7d de 86 da 18 
+
+ 56. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object:  57
+     Property address: 193d
+         Description: ""
+          Properties:
+              [55] 00 e8 
+              [51] 00 0c 
+              [46] 71 c7 
+              [35] 58 77 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 ae 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 68 
+              [ 9] 00 3b 
+              [ 8] 00 37 
+              [ 7] 00 4f 
+              [ 3] 55 0a 
+              [ 2] 00 0c 00 0b 
+              [ 1] db ad df af df b8 
+
+ 57. Attributes: 17
+     Parent object:  56  Sibling object:  58  Child object:   0
+     Property address: 1988
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 71 c9 
+              [36] 2d ba 
+              [35] 58 84 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 55 11 
+              [ 2] 00 0d 00 0b 
+              [ 1] dd 1e dd 1e dd 15 f6 f5 f7 4f 
+
+ 58. Attributes: 17
+     Parent object:  56  Sibling object:   0  Child object:   0
+     Property address: 19c2
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 71 ca 
+              [36] 2d ba 
+              [35] a3 42 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 55 62 
+              [ 2] 00 0d 00 0b 
+              [ 1] f6 38 ee 8e ee 97 e7 62 dc 46 
+
+ 59. Attributes: 9, 39
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 19fc
+         Description: ""
+          Properties:
+              [55] 00 e6 
+              [51] 00 0c 
+              [46] 71 cb 
+              [35] a1 b0 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 3c 
+              [11] 00 43 
+              [10] 00 38 
+              [ 9] 00 40 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 55 b3 
+              [ 2] 00 0c 00 0b 
+              [ 1] ec ba de 47 de 3e 
+
+ 60. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object:  61
+     Property address: 1a47
+         Description: ""
+          Properties:
+              [55] 00 e6 
+              [51] 00 0c 
+              [46] 71 cd 
+              [35] 58 8a 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 3b 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 55 ba 
+              [ 2] 00 0c 00 0b 
+              [ 1] ec ba f3 e6 f3 ef 
+
+ 61. Attributes: 17
+     Parent object:  60  Sibling object:  62  Child object:   0
+     Property address: 1a92
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 71 cf 
+              [36] 2d ba 
+              [35] 90 1d 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 55 c1 
+              [ 2] 00 0d 00 0b 
+              [ 1] e6 30 f7 61 f7 6a 
+
+ 62. Attributes: 17
+     Parent object:  60  Sibling object:  63  Child object:   0
+     Property address: 1ac8
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 71 d1 
+              [36] 2d ba 
+              [35] 8b 96 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 56 12 
+              [ 2] 00 0d 00 0b 
+              [ 1] e7 c5 e7 ce e5 7c e3 2a dd 8a 
+
+ 63. Attributes: 2
+     Parent object:  60  Sibling object:   0  Child object:   0
+     Property address: 1b02
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [48] 67 4a 
+              [46] 71 d2 
+              [36] 2d ba 
+              [35] 89 27 
+              [30] 58 8e 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 56 63 
+              [ 2] 00 0d 00 0b 
+              [ 1] e0 2d e0 36 f7 bb e0 24 e3 f0 
+
+ 64. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object:  65
+     Property address: 1b42
+         Description: ""
+          Properties:
+              [55] 00 e6 
+              [51] 00 0c 
+              [46] 71 d3 
+              [35] 58 92 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 3b 
+              [ 9] 00 48 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 56 b4 
+              [ 2] 00 0c 00 0b 
+              [ 1] de 47 e7 3e e0 87 e7 fb e7 fb 
+
+ 65. Attributes: 17
+     Parent object:  64  Sibling object:  66  Child object:   0
+     Property address: 1b91
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1d 00 0d 
+              [46] 71 d6 
+              [36] 2d ba 
+              [35] a5 19 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 aa 
+              [ 4] 2d b8 
+              [ 3] 56 bb 
+              [ 2] 00 1d 00 0d 00 0b 
+              [ 1] d2 77 e7 3e e2 91 db 41 db 4a d2 77 e9 c6 e9 bd db 2f e7 f2
+e7 fb e9 24 e9 2d d2 53 d2 5c 
+
+ 66. Attributes: 17
+     Parent object:  64  Sibling object:   0  Child object:   0
+     Property address: 1be4
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1d 00 0d 
+              [46] 71 d9 
+              [36] 2d ba 
+              [35] 92 56 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 aa 
+              [ 4] 2d b8 
+              [ 3] 57 0c 
+              [ 2] 00 1d 00 0d 00 0b 
+              [ 1] d2 4a e7 3e e9 fc e4 6e e4 77 e9 c6 e9 bd e7 f2 e7 fb e9 24
+e9 2d d2 53 d2 5c 
+
+ 67. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object:  68
+     Property address: 1c33
+         Description: ""
+          Properties:
+              [55] 00 e6 
+              [51] 00 0c 
+              [46] 71 dc 
+              [35] 58 97 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 3b 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 8a 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 57 5d 
+              [ 2] 00 0c 00 0b 
+              [ 1] f4 2e eb c7 eb d0 
+
+ 68. Attributes: 4, 7, 10, 11, 15, 17, 23
+     Parent object:  67  Sibling object:   0  Child object:  69
+     Property address: 1c7e
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 10 00 0d 
+              [48] 67 7f 
+              [46] 71 de 
+              [36] 2d ba 
+              [35] 58 ab 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9b 
+              [20] 00 dd 
+              [ 4] 2d b8 
+              [ 3] 57 64 
+              [ 2] 00 10 00 0d 00 0b 
+              [ 1] e2 1c d5 6b d5 74 d2 fe e5 34 d4 ed f1 3a e4 d1 f4 37 f4 2e 
+
+ 69. Attributes: None
+     Parent object:  68  Sibling object:  70  Child object:   0
+     Property address: 1ccd
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1e 00 0d 
+              [46] 71 df 
+              [36] 2d ba 
+              [35] 96 c4 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 ab 
+              [ 4] 2d b8 
+              [ 3] 57 b5 
+              [ 2] 00 1e 00 0d 00 0b 
+              [ 1] ec d5 ec de ec cc 
+
+ 70. Attributes: None
+     Parent object:  68  Sibling object:  71  Child object:   0
+     Property address: 1d08
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [48] 67 9c 
+              [46] a9 d4 
+              [36] 2d ba 
+              [35] 96 99 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 58 0b 
+              [ 2] 00 0d 00 0b 
+              [ 1] e2 49 e9 36 e9 3f 
+
+ 71. Attributes: 31
+     Parent object:  68  Sibling object:   0  Child object:   0
+     Property address: 1d41
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 71 e0 
+              [36] 2d ba 
+              [35] 58 b8 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 58 5c 
+              [ 2] 00 0d 00 0b 
+              [ 1] e8 04 e7 3e d7 00 ee 34 ee 3d 
+
+ 72. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object:  73
+     Property address: 1d7b
+         Description: ""
+          Properties:
+              [55] 00 e6 
+              [51] 00 0c 
+              [46] 96 21 
+              [35] 58 be 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 4a 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 40 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 58 ad 
+              [ 2] 00 0c 00 0b 
+              [ 1] e4 e3 eb c7 eb d0 
+
+ 73. Attributes: 17
+     Parent object:  72  Sibling object:   0  Child object:   0
+     Property address: 1dc6
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1f 00 0d 
+              [48] 67 b7 
+              [46] a9 af 
+              [36] 2d ba 
+              [35] 58 c2 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 ad 
+              [ 4] 2d b8 
+              [ 3] 58 b4 
+              [ 2] 00 1f 00 0d 00 0b 
+              [ 1] e2 e2 e2 e2 e4 e3 e5 a0 f3 7a f3 71 dd 5d df 79 
+
+ 74. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object:  75
+     Property address: 1e0e
+         Description: ""
+          Properties:
+              [55] 00 e1 
+              [51] 00 0c 
+              [46] 71 e2 
+              [35] 91 c5 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 48 
+              [14] 00 00 
+              [13] 00 4c 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 59 05 
+              [ 2] 00 0c 00 0b 
+              [ 1] d3 34 d7 b4 d7 bd 
+
+ 75. Attributes: 17
+     Parent object:  74  Sibling object:   0  Child object:   0
+     Property address: 1e59
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 71 e4 
+              [36] 2d ba 
+              [35] 8a 58 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 59 0c 
+              [ 2] 00 0d 00 0b 
+              [ 1] d5 bc d3 3d d3 46 d3 34 
+
+ 76. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object:  77
+     Property address: 1e91
+         Description: ""
+          Properties:
+              [55] 00 e1 
+              [51] 00 0c 
+              [46] 71 e5 
+              [35] 58 ca 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 97 
+              [13] 00 00 
+              [12] 00 4a 
+              [11] 00 a8 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 59 5d 
+              [ 2] 00 0c 00 0b 
+              [ 1] f8 1e f8 27 
+
+ 77. Attributes: 17
+     Parent object:  76  Sibling object:  78  Child object:   0
+     Property address: 1eda
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 71 e6 
+              [36] 2d ba 
+              [35] 9b 2a 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 59 64 
+              [ 2] 00 0d 00 0b 
+              [ 1] e5 4f e5 4f 
+
+ 78. Attributes: None
+     Parent object:  76  Sibling object:   0  Child object:   0
+     Property address: 1f0e
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1e 00 0d 
+              [46] 71 e7 
+              [36] 2d ba 
+              [35] 90 24 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 ab 
+              [ 4] 2d b8 
+              [ 3] 59 b5 
+              [ 2] 00 1e 00 0d 00 0b 
+              [ 1] e9 ab f5 8d f5 96 
+
+ 79. Attributes: 9, 39
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 1f49
+         Description: ""
+          Properties:
+              [55] 00 e8 
+              [51] 00 0c 
+              [46] 71 e8 
+              [35] 58 d1 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 51 
+              [ 8] 00 38 
+              [ 7] 00 55 
+              [ 3] 5a 0b 
+              [ 2] 00 0c 00 0b 
+              [ 1] d6 04 d7 d8 d7 d8 
+
+ 80. Attributes: 17, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 1f94
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 21 00 12 00 0d 
+              [46] a9 e2 
+              [39] 00 4f 
+              [36] 2d ba 
+              [35] 87 ea 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 af 
+              [ 4] 2d b8 
+              [ 3] 5a 12 
+              [ 2] 00 21 00 12 00 0d 00 0b 
+              [ 1] f0 47 f5 9f f5 a8 
+
+ 81. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object:  82
+     Property address: 1fd6
+         Description: ""
+          Properties:
+              [55] 00 e8 
+              [51] 00 0c 
+              [46] 71 ea 
+              [35] 58 da 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 54 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 4f 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 5a 68 
+              [ 2] 00 0c 00 0b 
+              [ 1] df 79 dd 5d e0 1b f0 47 f0 47 
+
+ 82. Attributes: 19
+     Parent object:  81  Sibling object:   0  Child object:   0
+     Property address: 2025
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1e 00 0d 
+              [46] 71 ed 
+              [36] 2d ba 
+              [35] 93 93 
+              [30] 58 de 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 ab 
+              [ 4] 2d b8 
+              [ 3] 5a 6f 
+              [ 2] 00 1e 00 0d 00 0b 
+              [ 1] e7 23 de 6b de 74 
+
+ 83. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 2063
+         Description: ""
+          Properties:
+              [55] 00 e3 
+              [51] 00 0c 
+              [46] 71 ef 
+              [35] 58 e2 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 54 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 b7 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 5a c5 
+              [ 2] 00 0c 00 0b 
+              [ 1] f5 4e e0 1b f0 47 f0 47 
+
+ 84. Attributes: 5, 14, 17, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 20b0
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 22 00 0f 00 0d 
+              [48] 67 2a 
+              [46] 71 f2 
+              [39] 00 53 00 51 
+              [36] 2d ba 
+              [35] 9e 42 
+              [30] 58 3c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 b0 
+              [21] 2d c5 
+              [19] 2d c7 
+              [ 4] 2d b8 
+              [ 3] 5a cc 
+              [ 2] 00 22 00 0f 00 0d 00 0b 
+              [ 1] f0 98 f0 a1 d2 ec f0 50 f0 3e f0 47 f5 4e da 33 
+
+ 85. Attributes: 9, 39
+     Parent object:   0  Sibling object:   0  Child object:  86
+     Property address: 210b
+         Description: ""
+          Properties:
+              [55] 00 b2 
+              [51] 00 0c 
+              [46] 71 f3 
+              [35] 58 eb 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 57 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 5b 
+              [ 9] 00 66 
+              [ 8] 00 4f 
+              [ 7] 00 00 
+              [ 3] 5b 1d 
+              [ 2] 00 0c 00 0b 
+              [ 1] f0 74 ec 21 ec 2a 
+
+ 86. Attributes: 17
+     Parent object:  85  Sibling object:   0  Child object:   0
+     Property address: 2156
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1f 00 0d 
+              [48] 66 d1 
+              [46] 71 f5 
+              [36] 2d ba 
+              [35] 58 f5 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 ad 
+              [ 4] 2d b8 
+              [ 3] 5b 24 
+              [ 2] 00 1f 00 0d 00 0b 
+              [ 1] e4 bf e4 c8 db 65 e4 ad db bf d2 14 f7 bb dd 5d df 79 
+
+ 87. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object:  88
+     Property address: 21a0
+         Description: ""
+          Properties:
+              [55] 00 b2 
+              [51] 00 0c 
+              [46] 71 f6 
+              [35] 58 fb 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 8b 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 55 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 68 
+              [ 7] 00 5b 
+              [ 3] 5b 75 
+              [ 2] 00 0c 00 0b 
+              [ 1] e3 21 e3 9f e3 96 
+
+ 88. Attributes: 17, 30
+     Parent object:  87  Sibling object:  89  Child object:   0
+     Property address: 21eb
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 71 f8 
+              [36] 2d ba 
+              [35] 90 80 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 5b 7c 
+              [ 2] 00 0d 00 0b 
+              [ 1] d4 66 d4 6f ed ec d4 66 d7 6c 
+
+ 89. Attributes: None
+     Parent object:  87  Sibling object:  90  Child object:   0
+     Property address: 2225
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 71 f9 
+              [36] 2d ba 
+              [35] 86 f5 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 5b cd 
+              [ 2] 00 0d 00 0b 
+              [ 1] df 4c d7 63 d4 5d d4 66 d7 6c 
+
+ 90. Attributes: 17
+     Parent object:  87  Sibling object:   0  Child object:   0
+     Property address: 225f
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 71 fb 
+              [36] 2d ba 
+              [35] 9b d7 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 5c 1e 
+              [ 2] 00 0d 00 0b 
+              [ 1] d4 66 e7 3e e9 d8 e9 d8 
+
+ 91. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 2297
+         Description: ""
+          Properties:
+              [55] 00 b3 
+              [51] 00 0c 
+              [46] 71 fd 
+              [35] 58 ff 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 5c 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 6a 
+              [ 9] 00 55 
+              [ 8] 00 57 
+              [ 7] 00 00 
+              [ 3] 5c 6f 
+              [ 2] 00 0c 00 0b 
+              [ 1] e4 5c d5 23 d5 2c 
+
+ 92. Attributes: 5, 14, 17, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 22e2
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 22 00 0f 00 0d 
+              [48] 67 2a 
+              [46] 71 fe 
+              [39] 00 5d 00 5b 
+              [36] 2d ba 
+              [35] 8d 95 
+              [30] 58 3c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 b0 
+              [21] 2d c9 
+              [19] 2d cb 
+              [ 4] 2d b8 
+              [ 3] 5c 76 
+              [ 2] 00 22 00 0f 00 0d 00 0b 
+              [ 1] f7 85 f0 47 f0 47 f0 50 f0 3e f0 47 f5 4e da 33 
+
+ 93. Attributes: 9, 39
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 233d
+         Description: ""
+          Properties:
+              [55] 00 b3 
+              [51] 00 0c 
+              [46] 72 00 
+              [35] 59 06 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 5c 
+              [15] 00 00 
+              [14] 00 5f 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 64 
+              [ 9] 00 af 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 5c c7 
+              [ 2] 00 0c 00 0b 
+              [ 1] f5 45 d5 23 d5 2c 
+
+ 94. Attributes: 17, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 2388
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 21 00 12 00 0d 
+              [46] 72 01 
+              [39] 00 5b 00 5d 
+              [36] 2d ba 
+              [35] 59 0d 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 af 
+              [ 4] 2d b8 
+              [ 3] 5c ce 
+              [ 2] 00 21 00 12 00 0d 00 0b 
+              [ 1] ec 7b ec 84 e0 f3 d8 d4 d5 23 de e9 f3 83 
+
+ 95. Attributes: 5, 10, 11, 15, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 23d5
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0f 00 0d 
+              [46] 72 02 
+              [39] 00 5d 00 60 
+              [36] 2d ba 
+              [35] 58 30 
+              [30] 58 3c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9a 
+              [21] 2d cd 
+              [20] 00 92 
+              [19] 2d cf 
+              [ 4] 2d b8 
+              [ 3] 5d 24 
+              [ 2] 00 0f 00 0d 00 0b 
+              [ 1] e2 40 da 18 da 21 
+
+ 96. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object:  97
+     Property address: 2422
+         Description: ""
+          Properties:
+              [55] 00 b2 
+              [51] 00 0c 
+              [46] 72 03 
+              [35] 59 15 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 5f 
+              [10] 00 00 
+              [ 9] 00 7e 
+              [ 8] 00 62 
+              [ 7] 00 00 
+              [ 3] 5d 75 
+              [ 2] 00 0c 00 0b 
+              [ 1] ef 6f d6 16 d6 1f 
+
+ 97. Attributes: 17
+     Parent object:  96  Sibling object:   0  Child object:   0
+     Property address: 246d
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 06 
+              [36] 2d ba 
+              [35] 9d 79 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 5d 7c 
+              [ 2] 00 0d 00 0b 
+              [ 1] e5 d6 e5 df e2 91 e0 ea e8 af dd 8a d5 e9 de 7d ee a9 d7 12
+da 06 d8 20 e8 ca 
+
+ 98. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object:  99
+     Property address: 24b7
+         Description: ""
+          Properties:
+              [55] 00 b2 
+              [51] 00 0c 
+              [46] 72 07 
+              [35] 59 19 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 6c 
+              [ 8] 00 00 
+              [ 7] 00 60 
+              [ 3] 5d cd 
+              [ 2] 00 0c 00 0b 
+              [ 1] d5 3e dd c9 dd d2 
+
+ 99. Attributes: 17
+     Parent object:  98  Sibling object:   0  Child object:   0
+     Property address: 2502
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 09 
+              [36] 2d ba 
+              [35] 87 23 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 5d d4 
+              [ 2] 00 0d 00 0b 
+              [ 1] dd db dd db d7 48 eb be ef 03 
+
+100. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object: 101
+     Property address: 253c
+         Description: ""
+          Properties:
+              [55] 00 b2 
+              [51] 00 0c 
+              [48] 67 ce 
+              [46] 72 0a 
+              [35] 59 1d 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 5d 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 5e 25 
+              [ 2] 00 0c 00 0b 
+              [ 1] ea ef eb c7 eb d0 
+
+101. Attributes: 17
+     Parent object: 100  Sibling object:   0  Child object:   0
+     Property address: 258a
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 0c 
+              [36] 2d ba 
+              [35] 93 57 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 5e 2c 
+              [ 2] 00 0d 00 0b 
+              [ 1] e8 28 e8 31 e0 90 e0 99 ea ef ea e6 e8 1f e8 28 e6 b7 e8 3a
+ee bb 
+
+102. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object: 103
+     Property address: 25d0
+         Description: ""
+          Properties:
+              [55] 00 b2 
+              [51] 00 0c 
+              [46] 72 0d 
+              [35] 59 21 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 55 
+              [ 9] 00 81 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 5e 7d 
+              [ 2] 00 0c 00 0b 
+              [ 1] e8 55 d6 1f d6 28 
+
+103. Attributes: 7, 17, 19, 20, 23, 30
+     Parent object: 102  Sibling object:   0  Child object:   0
+     Property address: 261b
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 11 00 0d 
+              [46] 72 0f 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9c 
+              [ 4] 2d b8 
+              [ 3] 5e 84 
+              [ 2] 00 11 00 0d 00 0b 
+              [ 1] e7 11 d3 c4 d3 cd d3 bb 
+
+104. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object: 105
+     Property address: 2658
+         Description: ""
+          Properties:
+              [55] 00 e8 
+              [51] 00 0c 
+              [46] 72 10 
+              [35] 59 25 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 aa 
+              [ 9] 00 38 
+              [ 8] 00 00 
+              [ 7] 00 57 
+              [ 3] 5e d5 
+              [ 2] 00 0c 00 0b 
+              [ 1] df 4c d9 6d df af df b8 
+
+105. Attributes: 17, 19, 20, 23
+     Parent object: 104  Sibling object:   0  Child object:   0
+     Property address: 26a5
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 11 00 0d 
+              [46] 72 12 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9c 
+              [ 4] 2d b8 
+              [ 3] 5e dc 
+              [ 2] 00 11 00 0d 00 0b 
+              [ 1] e4 38 f2 3f f2 48 
+
+106. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object: 107
+     Property address: 26e0
+         Description: ""
+          Properties:
+              [55] 00 b2 
+              [51] 00 0c 
+              [46] 72 13 
+              [35] 59 32 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 5b 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 5f 2d 
+              [ 2] 00 0c 00 0b 
+              [ 1] f4 0a eb c7 eb d0 
+
+107. Attributes: None
+     Parent object: 106  Sibling object:   0  Child object:   0
+     Property address: 272b
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 15 
+              [36] 2d ba 
+              [35] a3 f7 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 5f 34 
+              [ 2] 00 0d 00 0b 
+              [ 1] e7 98 ea 9e e8 dc e8 f7 e5 2b f0 35 f3 8c dc 85 
+
+108. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object: 109
+     Property address: 276b
+         Description: ""
+          Properties:
+              [55] 00 b2 
+              [51] 00 0c 
+              [46] 72 17 
+              [35] 59 38 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 62 
+              [ 9] 00 00 
+              [ 8] 00 7c 
+              [ 7] 00 7e 
+              [ 3] 5f 85 
+              [ 2] 00 0c 00 0b 
+              [ 1] d4 27 de 47 de 3e 
+
+109. Attributes: 32
+     Parent object: 108  Sibling object: 110  Child object:   0
+     Property address: 27b6
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 23 00 0d 
+              [46] 72 19 
+              [36] 2d ba 
+              [35] 59 41 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 b1 
+              [ 4] 2d b8 
+              [ 3] 5f 8c 
+              [ 2] 00 23 00 0d 00 0b 
+              [ 1] e1 c2 e1 cb 
+
+110. Attributes: 6
+     Parent object: 108  Sibling object: 111  Child object:   0
+     Property address: 27ef
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 1a 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 5f dd 
+              [ 2] 00 0d 00 0b 
+              [ 1] f6 fe d1 e7 d1 f0 
+
+111. Attributes: 19
+     Parent object: 108  Sibling object: 112  Child object:   0
+     Property address: 2825
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 1b 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 60 2e 
+              [ 2] 00 0d 00 0b 
+              [ 1] f1 9d d4 39 d4 4b 
+
+112. Attributes: 19
+     Parent object: 108  Sibling object: 113  Child object:   0
+     Property address: 285b
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 1c 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 60 7f 
+              [ 2] 00 0d 00 0b 
+              [ 1] e9 ea df 0d df 16 
+
+113. Attributes: None
+     Parent object: 108  Sibling object: 114  Child object:   0
+     Property address: 2891
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 1e 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 60 d0 
+              [ 2] 00 0d 00 0b 
+              [ 1] d5 8f d5 98 f2 36 df ca 
+
+114. Attributes: None
+     Parent object: 108  Sibling object: 115  Child object:   0
+     Property address: 28c9
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 1f 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 61 21 
+              [ 2] 00 0d 00 0b 
+              [ 1] de e9 e3 33 e3 3c 
+
+115. Attributes: None
+     Parent object: 108  Sibling object: 116  Child object:   0
+     Property address: 28ff
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 20 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 61 72 
+              [ 2] 00 0d 00 0b 
+              [ 1] ee a9 d5 11 d5 1a 
+
+116. Attributes: None
+     Parent object: 108  Sibling object: 117  Child object:   0
+     Property address: 2935
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 22 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 61 c3 
+              [ 2] 00 0d 00 0b 
+              [ 1] d7 99 ef 78 ef 81 
+
+117. Attributes: None
+     Parent object: 108  Sibling object: 118  Child object:   0
+     Property address: 296b
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 23 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 62 14 
+              [ 2] 00 0d 00 0b 
+              [ 1] e0 d8 e0 d8 
+
+118. Attributes: 19
+     Parent object: 108  Sibling object: 119  Child object:   0
+     Property address: 299f
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 24 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 62 65 
+              [ 2] 00 0d 00 0b 
+              [ 1] e8 70 e9 00 e9 09 
+
+119. Attributes: None
+     Parent object: 108  Sibling object: 120  Child object:   0
+     Property address: 29d5
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 25 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 62 b6 
+              [ 2] 00 0d 00 0b 
+              [ 1] df 55 d6 e5 f1 ee f1 f7 
+
+120. Attributes: 2
+     Parent object: 108  Sibling object: 121  Child object:   0
+     Property address: 2a0d
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 27 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 63 07 
+              [ 2] 00 0d 00 0b 
+              [ 1] d8 b9 e8 e5 e8 ee 
+
+121. Attributes: 2
+     Parent object: 108  Sibling object: 122  Child object:   0
+     Property address: 2a43
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 29 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 63 58 
+              [ 2] 00 0d 00 0b 
+              [ 1] df 28 eb 9a eb a3 
+
+122. Attributes: 19
+     Parent object: 108  Sibling object: 123  Child object:   0
+     Property address: 2a79
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 2a 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 63 a9 
+              [ 2] 00 0d 00 0b 
+              [ 1] d4 f6 d3 22 d3 2b 
+
+123. Attributes: None
+     Parent object: 108  Sibling object:   0  Child object:   0
+     Property address: 2aaf
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 2b 
+              [36] 2d ba 
+              [35] 9d 45 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 63 fa 
+              [ 2] 00 0d 00 0b 
+              [ 1] e6 4b ec 33 ec 3c 
+
+124. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object: 125
+     Property address: 2ae5
+         Description: ""
+          Properties:
+              [55] 00 b2 
+              [51] 00 0c 
+              [46] 72 2c 
+              [35] 59 49 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 6c 
+              [ 3] 64 4b 
+              [ 2] 00 0c 00 0b 
+              [ 1] d2 2f d2 26 
+
+125. Attributes: 17
+     Parent object: 124  Sibling object:   0  Child object:   0
+     Property address: 2b2e
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 2d 
+              [36] 2d ba 
+              [35] 96 ee 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 64 52 
+              [ 2] 00 0d 00 0b 
+              [ 1] d2 80 e7 3e f6 80 f6 89 df 9d e5 f1 d8 83 d8 8c f2 24 f2 2d
+f6 77 
+
+126. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object: 127
+     Property address: 2b74
+         Description: ""
+          Properties:
+              [55] 00 b2 
+              [51] 00 0c 
+              [46] 72 2f 
+              [35] 8c eb 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 60 
+              [ 9] 00 00 
+              [ 8] 00 6c 
+              [ 7] 00 00 
+              [ 3] 64 a3 
+              [ 2] 00 0c 00 0b 
+              [ 1] e3 a8 e3 9f e3 96 
+
+127. Attributes: 19, 20, 23
+     Parent object: 126  Sibling object:   0  Child object: 128
+     Property address: 2bbf
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 11 00 0d 
+              [46] 72 31 
+              [36] 2d ba 
+              [35] 8b cc 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9c 
+              [ 4] 2d b8 
+              [ 3] 64 aa 
+              [ 2] 00 11 00 0d 00 0b 
+              [ 1] d4 5d eb 76 f0 59 f0 62 d4 78 d5 c5 d5 ce dc df e3 8d ed bf 
+
+128. Attributes: None
+     Parent object: 127  Sibling object:   0  Child object:   0
+     Property address: 2c08
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 33 
+              [36] 2d ba 
+              [35] 87 15 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 64 fb 
+              [ 2] 00 0d 00 0b 
+              [ 1] f1 31 f1 31 
+
+129. Attributes: 9, 16
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 2c3c
+         Description: ""
+          Properties:
+              [55] 00 e7 
+              [51] 00 0c 
+              [46] 72 34 
+              [35] 88 69 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 66 
+              [ 9] 00 82 
+              [ 8] 00 00 
+              [ 7] 00 85 
+              [ 3] 65 4c 
+              [ 2] 00 0c 00 0b 
+              [ 1] d6 d3 f6 02 f6 14 
+
+130. Attributes: 9, 16
+     Parent object:   0  Sibling object:   0  Child object: 131
+     Property address: 2c87
+         Description: ""
+          Properties:
+              [55] 00 e7 
+              [51] 00 0c 
+              [46] 72 36 
+              [35] 92 5f 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 85 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 81 
+              [ 9] 00 00 
+              [ 8] 00 88 
+              [ 7] 00 00 
+              [ 3] 65 53 
+              [ 2] 00 0c 00 0b 
+              [ 1] f6 0b db 89 db 92 
+
+131. Attributes: 7, 17, 19, 20, 23
+     Parent object: 130  Sibling object:   0  Child object: 132
+     Property address: 2cd2
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 11 00 0d 
+              [46] 72 38 
+              [36] 2d ba 
+              [35] 87 67 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9c 
+              [ 4] 2d b8 
+              [ 3] 65 5a 
+              [ 2] 00 11 00 0d 00 0b 
+              [ 1] f0 e9 d3 bb d3 d6 d8 44 eb 37 
+
+132. Attributes: 30
+     Parent object: 131  Sibling object:   0  Child object:   0
+     Property address: 2d11
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1e 00 0d 
+              [46] 72 39 
+              [36] 2d ba 
+              [35] 99 bf 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 ab 
+              [ 4] 2d b8 
+              [ 3] 65 ab 
+              [ 2] 00 1e 00 0d 00 0b 
+              [ 1] d9 a3 db 5c e4 da e4 da e3 e7 d3 19 f3 32 f3 29 d6 e5 dc 34 
+
+133. Attributes: 9, 16, 39
+     Parent object:   0  Sibling object:   0  Child object: 134
+     Property address: 2d5a
+         Description: ""
+          Properties:
+              [55] 00 e7 
+              [51] 00 0c 
+              [46] 72 3c 
+              [35] 59 4d 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 a4 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 82 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 81 
+              [ 7] 00 00 
+              [ 3] 66 01 
+              [ 2] 00 0c 00 0b 
+              [ 1] eb fd de 59 de 62 
+
+134. Attributes: 17
+     Parent object: 133  Sibling object: 135  Child object:   0
+     Property address: 2da5
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] a9 da 
+              [36] 2d ba 
+              [35] 8f 68 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 66 08 
+              [ 2] 00 0d 00 0b 
+              [ 1] ec 06 ec 0f eb fd ef 27 
+
+135. Attributes: 10, 11, 30, 31
+     Parent object: 133  Sibling object:   0  Child object:   0
+     Property address: 2ddd
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 3e 
+              [36] 2d ba 
+              [35] 8c 9a 
+              [30] 59 51 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [20] 00 89 
+              [ 4] 2d b8 
+              [ 3] 66 59 
+              [ 2] 00 0d 00 0b 
+              [ 1] e2 1c f7 58 f7 58 df 82 df 8b d6 82 d6 79 d6 0d e7 e9 ef 54
+e4 2f 
+
+136. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object: 137
+     Property address: 2e29
+         Description: ""
+          Properties:
+              [55] 00 e7 
+              [51] 00 0c 
+              [46] 72 40 
+              [35] 88 33 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 8a 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 82 
+              [ 3] 66 af 
+              [ 2] 00 0c 00 0b 
+              [ 1] ed 2f eb c7 eb d0 
+
+137. Attributes: None
+     Parent object: 136  Sibling object:   0  Child object:   0
+     Property address: 2e74
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1c 00 0d 
+              [48] 67 e5 
+              [46] 72 42 
+              [36] 2d ba 
+              [35] 59 55 
+              [30] 59 5c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 a9 
+              [ 4] 2d b8 
+              [ 3] 66 b6 
+              [ 2] 00 1c 00 0d 00 0b 
+              [ 1] ef 54 e2 64 e2 6d 
+
+138. Attributes: 5, 10, 11, 15, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 2eb5
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0f 00 0d 
+              [46] 72 43 
+              [39] 00 88 00 43 
+              [36] 2d ba 
+              [35] 58 30 
+              [30] 58 3c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9a 
+              [21] 2d d1 
+              [20] 00 89 
+              [19] 2d d3 
+              [ 4] 2d b8 
+              [ 3] 67 07 
+              [ 2] 00 0f 00 0d 00 0b 
+              [ 1] ef 54 da 18 da 21 
+
+139. Attributes: 5, 14, 17, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 2f02
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0f 00 0d 
+              [46] 72 44 
+              [39] 00 57 00 8c 
+              [36] 2d ba 
+              [35] 94 ee 
+              [30] 58 3c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9a 
+              [21] 2d d5 
+              [19] 2d d7 
+              [ 4] 2d b8 
+              [ 3] 67 58 
+              [ 2] 00 0f 00 0d 00 0b 
+              [ 1] e0 b4 e0 bd 
+
+140. Attributes: 39
+     Parent object:   0  Sibling object:   0  Child object: 141
+     Property address: 2f4a
+         Description: ""
+          Properties:
+              [55] 00 e2 
+              [51] 00 0c 
+              [46] 72 45 
+              [35] 88 96 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 8b 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 96 
+              [ 9] 00 90 
+              [ 8] 00 94 
+              [ 7] 00 8e 
+              [ 3] 67 a9 
+              [ 2] 00 0c 00 0b 
+              [ 1] d6 04 d8 29 d8 32 
+
+141. Attributes: 17
+     Parent object: 140  Sibling object:   0  Child object:   0
+     Property address: 2f95
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 47 
+              [36] 2d ba 
+              [35] 8b 9f 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 67 b0 
+              [ 2] 00 0d 00 0b 
+              [ 1] eb 25 eb 2e d4 54 
+
+142. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object: 143
+     Property address: 2fcb
+         Description: ""
+          Properties:
+              [55] 00 e2 
+              [51] 00 0c 
+              [46] 72 48 
+              [35] 9a 02 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 96 
+              [13] 00 00 
+              [12] 00 90 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 8c 
+              [ 7] 00 00 
+              [ 3] 68 01 
+              [ 2] 00 0c 00 0b 
+              [ 1] f5 d5 db 89 db 92 
+
+143. Attributes: 17, 30
+     Parent object: 142  Sibling object:   0  Child object:   0
+     Property address: 3016
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1f 00 0d 
+              [48] 67 fc 
+              [46] 72 4a 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 ad 
+              [ 4] 2d b8 
+              [ 3] 68 08 
+              [ 2] 00 1f 00 0d 00 0b 
+              [ 1] da cc da d5 ec 8d ee 85 da b1 dd 5d df 79 
+
+144. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object: 145
+     Property address: 305c
+         Description: ""
+          Properties:
+              [55] 00 e2 
+              [51] 00 0c 
+              [46] 72 4b 
+              [35] 99 74 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 94 
+              [13] 00 8e 
+              [12] 00 97 
+              [11] 00 9d 
+              [10] 00 8c 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 68 59 
+              [ 2] 00 0c 00 0b 
+              [ 1] dc 6a eb 0a eb 13 
+
+145. Attributes: 4, 15, 19, 30
+     Parent object: 144  Sibling object:   0  Child object: 146
+     Property address: 30a7
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 10 00 0d 
+              [46] 72 4d 
+              [36] 2d ba 
+              [35] 98 b9 
+              [30] 59 65 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9b 
+              [ 4] 2d b8 
+              [ 3] 68 60 
+              [ 2] 00 10 00 0d 00 0b 
+              [ 1] da 60 da 69 da 57 f3 a7 d4 54 f3 9e d4 0c d4 1e eb 1c eb 25
+e0 09 f2 ea 
+
+146. Attributes: None
+     Parent object: 145  Sibling object: 147  Child object:   0
+     Property address: 30f7
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1c 00 0d 
+              [46] 72 4e 
+              [36] 2d ba 
+              [35] 90 79 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 a9 
+              [ 4] 2d b8 
+              [ 3] 68 b1 
+              [ 2] 00 1c 00 0d 00 0b 
+              [ 1] e2 40 e2 64 e2 6d 
+
+147. Attributes: 19
+     Parent object: 145  Sibling object:   0  Child object:   0
+     Property address: 3132
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 4f 
+              [36] 2d ba 
+              [35] 9e 57 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 69 02 
+              [ 2] 00 0d 00 0b 
+              [ 1] db 2f df dc df e5 de 8f f2 7e d5 50 
+
+148. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object: 149
+     Property address: 316e
+         Description: ""
+          Properties:
+              [55] 00 e2 
+              [51] 00 0c 
+              [46] 72 51 
+              [35] 99 20 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 99 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 96 
+              [12] 00 00 
+              [11] 00 90 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 8c 
+              [ 3] 69 53 
+              [ 2] 00 0c 00 0b 
+              [ 1] d8 f8 e8 43 e8 4c 
+
+149. Attributes: 17, 30
+     Parent object: 148  Sibling object:   0  Child object:   0
+     Property address: 31b9
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1f 00 0d 
+              [48] 68 17 
+              [46] 72 53 
+              [36] 2d ba 
+              [35] 59 69 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 ad 
+              [ 4] 2d b8 
+              [ 3] 69 5a 
+              [ 2] 00 1f 00 0d 00 0b 
+              [ 1] f0 f2 f0 fb dd 5d df 79 
+
+150. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 31f9
+         Description: ""
+          Properties:
+              [55] 00 e2 
+              [51] 00 0c 
+              [46] 72 54 
+              [35] 88 19 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 ad 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 94 
+              [11] 00 8e 
+              [10] 00 00 
+              [ 9] 00 8c 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 69 ab 
+              [ 2] 00 0c 00 0b 
+              [ 1] d1 f9 f7 97 f7 a0 
+
+151. Attributes: 16
+     Parent object:   0  Sibling object:   0  Child object: 152
+     Property address: 3244
+         Description: ""
+          Properties:
+              [55] 00 e1 
+              [51] 00 0c 
+              [46] 72 56 
+              [35] 89 0d 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 90 
+              [12] 00 00 
+              [11] 00 4c 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 69 b2 
+              [ 2] 00 0c 00 0b 
+              [ 1] eb b5 d6 16 d6 1f 
+
+152. Attributes: 17
+     Parent object: 151  Sibling object:   0  Child object:   0
+     Property address: 328f
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1f 00 0d 
+              [48] 66 d1 
+              [46] 72 58 
+              [36] 2d ba 
+              [35] 98 c0 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 ad 
+              [ 4] 2d b8 
+              [ 3] 69 b9 
+              [ 2] 00 1f 00 0d 00 0b 
+              [ 1] e3 45 e3 4e da 96 da 9f e7 59 f6 53 dd 5d df 79 
+
+153. Attributes: 5, 15, 17, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 32d7
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0f 00 0d 
+              [48] 68 2e 
+              [46] 72 59 
+              [39] 00 94 00 9a 
+              [36] 2d ba 
+              [35] 89 1c 
+              [30] 58 3c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9a 
+              [21] 2d d9 
+              [19] 2d db 
+              [ 4] 2d b8 
+              [ 3] 6a 0a 
+              [ 2] 00 0f 00 0d 00 0b 
+              [ 1] f4 1c f4 25 f4 13 da 18 
+
+154. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 3326
+         Description: ""
+          Properties:
+              [55] 00 e2 
+              [51] 00 0c 
+              [46] 72 5a 
+              [35] 97 bd 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 99 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 9b 
+              [ 3] 6a 5b 
+              [ 2] 00 0c 00 0b 
+              [ 1] d8 a7 eb c7 eb d0 
+
+155. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object: 156
+     Property address: 3371
+         Description: ""
+          Properties:
+              [55] 00 e2 
+              [51] 00 0c 
+              [46] 72 5b 
+              [35] 59 6f 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 9a 
+              [ 7] 00 00 
+              [ 3] 6a 62 
+              [ 2] 00 0c 00 0b 
+              [ 1] e9 f3 eb c7 eb d0 
+
+156. Attributes: 17
+     Parent object: 155  Sibling object:   0  Child object:   0
+     Property address: 33bc
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 5c 
+              [36] 2d ba 
+              [35] 99 b6 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 6a 69 
+              [ 2] 00 0d 00 0b 
+              [ 1] dd 9c dd a5 e4 02 f4 52 da c3 e1 b9 
+
+157. Attributes: 16
+     Parent object:   0  Sibling object:   0  Child object: 158
+     Property address: 33f8
+         Description: ""
+          Properties:
+              [55] 00 e1 
+              [51] 00 0c 
+              [46] 72 5d 
+              [35] 99 f0 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 90 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 a4 
+              [10] 00 a3 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 6a ba 
+              [ 2] 00 0c 00 0b 
+              [ 1] f3 68 e8 82 e8 8b 
+
+158. Attributes: 19
+     Parent object: 157  Sibling object: 159  Child object:   0
+     Property address: 3443
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 5f 
+              [36] 2d ba 
+              [35] 88 8f 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 6a c1 
+              [ 2] 00 0d 00 0b 
+              [ 1] d7 a2 d7 ab ea 3b 
+
+159. Attributes: 19
+     Parent object: 157  Sibling object:   0  Child object:   0
+     Property address: 3479
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 60 
+              [36] 2d ba 
+              [35] 9c cd 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 6b 12 
+              [ 2] 00 0d 00 0b 
+              [ 1] e1 d4 e1 d4 
+
+160. Attributes: 16
+     Parent object:   0  Sibling object:   0  Child object: 161
+     Property address: 34ad
+         Description: ""
+          Properties:
+              [55] 00 e1 
+              [51] 00 0c 
+              [46] 72 61 
+              [35] 59 73 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 a3 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 6b 68 
+              [ 2] 00 0c 00 0b 
+              [ 1] e4 6e f1 8b f1 82 
+
+161. Attributes: None
+     Parent object: 160  Sibling object: 162  Child object:   0
+     Property address: 34f8
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 63 
+              [36] 2d ba 
+              [35] 96 ae 
+              [30] 59 77 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 6b 6f 
+              [ 2] 00 0d 00 0b 
+              [ 1] e9 48 e7 3e e6 c0 e6 c9 
+
+162. Attributes: 17
+     Parent object: 160  Sibling object:   0  Child object:   0
+     Property address: 3533
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1d 00 0d 
+              [46] 72 65 
+              [36] 2d ba 
+              [35] 59 7b 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 aa 
+              [ 4] 2d b8 
+              [ 3] 6b c0 
+              [ 2] 00 1d 00 0d 00 0b 
+              [ 1] e1 5f e1 68 e4 6e f2 5a 
+
+163. Attributes: 5, 10, 11, 15, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 3570
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0f 00 0d 
+              [46] 72 66 
+              [39] 00 9d 00 a0 
+              [36] 2d ba 
+              [35] 9b 73 
+              [30] 59 7f 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9a 
+              [21] 2d dd 
+              [19] 2d df 
+              [ 4] 2d b8 
+              [ 3] 6c 11 
+              [ 2] 00 0f 00 0d 00 0b 
+              [ 1] ee c4 da 18 da 21 
+
+164. Attributes: 16
+     Parent object:   0  Sibling object:   0  Child object: 165
+     Property address: 35ba
+         Description: ""
+          Properties:
+              [55] 00 e1 
+              [51] 00 0c 
+              [46] 72 68 
+              [35] 8c 38 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 85 
+              [14] 00 9d 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 a6 
+              [ 7] 00 00 
+              [ 3] 6c 62 
+              [ 2] 00 0c 00 0b 
+              [ 1] eb eb eb c7 eb d0 
+
+165. Attributes: 17
+     Parent object: 164  Sibling object:   0  Child object:   0
+     Property address: 3605
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1f 00 0d 
+              [48] 68 49 
+              [46] 72 6a 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 ad 
+              [ 4] 2d b8 
+              [ 3] 6c 69 
+              [ 2] 00 1f 00 0d 00 0b 
+              [ 1] e5 bb e5 c4 dd 5d df 79 
+
+166. Attributes: 16
+     Parent object:   0  Sibling object:   0  Child object: 167
+     Property address: 3645
+         Description: ""
+          Properties:
+              [55] 00 e1 
+              [51] 00 0c 
+              [46] 72 6b 
+              [35] 59 8a 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 a8 
+              [ 8] 00 00 
+              [ 7] 00 a4 
+              [ 3] 6c ba 
+              [ 2] 00 0c 00 0b 
+              [ 1] d3 8e d5 d7 d5 e0 
+
+167. Attributes: 17
+     Parent object: 166  Sibling object:   0  Child object:   0
+     Property address: 3690
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 6d 
+              [36] 2d ba 
+              [35] 8b c5 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 6c c1 
+              [ 2] 00 0d 00 0b 
+              [ 1] ec f0 ec f9 eb 01 f1 70 f7 85 e5 97 d6 a6 e5 34 e9 3f d3 a9 
+
+168. Attributes: 16
+     Parent object:   0  Sibling object:   0  Child object: 169
+     Property address: 36d4
+         Description: ""
+          Properties:
+              [55] 00 e1 
+              [51] 00 0c 
+              [46] 72 6e 
+              [35] 59 8e 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 4c 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 a6 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 6d 12 
+              [ 2] 00 0c 00 0b 
+              [ 1] f6 65 f1 ca f1 c1 
+
+169. Attributes: 17
+     Parent object: 168  Sibling object:   0  Child object:   0
+     Property address: 371f
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 6f 
+              [36] 2d ba 
+              [35] 8d 01 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 6d 19 
+              [ 2] 00 0d 00 0b 
+              [ 1] d2 fe e7 3e f6 65 f6 6e d2 f5 
+
+170. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 3759
+         Description: ""
+          Properties:
+              [55] 00 e8 
+              [51] 00 0c 
+              [46] 72 70 
+              [35] 59 94 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 68 
+              [ 8] 00 00 
+              [ 7] 00 ab 
+              [ 3] 6d 6a 
+              [ 2] 00 0c 00 0b 
+              [ 1] db 9b e2 a3 e2 ac 
+
+171. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object: 172
+     Property address: 37a4
+         Description: ""
+          Properties:
+              [55] 00 e8 
+              [51] 00 0c 
+              [46] 72 72 
+              [35] 59 9a 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 ad 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 aa 
+              [ 7] 00 00 
+              [ 3] 6d 71 
+              [ 2] 00 0c 00 0b 
+              [ 1] ed 89 ea 8c ea 95 
+
+172. Attributes: 17
+     Parent object: 171  Sibling object:   0  Child object:   0
+     Property address: 37ef
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 74 
+              [36] 2d ba 
+              [35] 9f 21 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 6d 78 
+              [ 2] 00 0d 00 0b 
+              [ 1] f1 43 f1 4c 
+
+173. Attributes: 5, 14, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 3823
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 22 00 0f 00 0d 
+              [48] 67 2a 
+              [46] 72 75 
+              [39] 00 ab 00 96 
+              [36] 2d ba 
+              [35] 58 63 
+              [30] 59 9f 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 b0 
+              [21] 2d e1 
+              [19] 2d e3 
+              [ 4] 2d b8 
+              [ 3] 6d c9 
+              [ 2] 00 22 00 0f 00 0d 00 0b 
+              [ 1] d9 01 e2 eb e2 f4 f0 50 f0 3e f0 47 f5 4e da 33 
+
+174. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 387e
+         Description: ""
+          Properties:
+              [55] 00 e8 
+              [51] 00 0c 
+              [46] 72 77 
+              [35] 59 a7 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 38 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 6e 1a 
+              [ 2] 00 0c 00 0b 
+              [ 1] df 82 f3 e6 f3 ef 
+
+175. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object: 176
+     Property address: 38c9
+         Description: ""
+          Properties:
+              [55] 00 b2 
+              [51] 00 0c 
+              [46] 72 79 
+              [35] 59 ad 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 5d 
+              [ 9] 00 b4 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 6e 21 
+              [ 2] 00 0c 00 0b 
+              [ 1] de 47 e7 3e f0 bc e3 b1 e3 ba 
+
+176. Attributes: 16, 17
+     Parent object: 175  Sibling object: 177  Child object:   0
+     Property address: 3918
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1d 00 0d 
+              [48] 68 68 
+              [46] 72 7b 
+              [36] 2d ba 
+              [35] 88 fb 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 aa 
+              [ 4] 2d b8 
+              [ 3] 6e 28 
+              [ 2] 00 1d 00 0d 00 0b 
+              [ 1] f6 9b f4 2e f4 37 e7 f2 f2 3f de ce e1 c2 e0 2d df 55 e7 fb 
+
+177. Attributes: 16, 17
+     Parent object: 175  Sibling object:   0  Child object:   0
+     Property address: 3964
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1d 00 0d 
+              [48] 68 83 
+              [46] 96 ec 
+              [36] 2d ba 
+              [35] 88 f1 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 aa 
+              [ 4] 2d b8 
+              [ 3] 6e 79 
+              [ 2] 00 1d 00 0d 00 0b 
+              [ 1] f1 af f1 b8 e7 f2 e7 fb e3 e7 e6 27 d4 9c dd ff 
+
+178. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object: 179
+     Property address: 39ac
+         Description: ""
+          Properties:
+              [56] 2d e5 
+              [51] 00 14 
+              [46] 72 7d 
+              [25] 00 00 
+              [23] 71 9f 
+              [ 3] 6e ca 
+              [ 2] 00 14 00 0b 
+              [ 1] f0 74 eb d0 eb d9 
+
+179. Attributes: 16
+     Parent object: 178  Sibling object:   0  Child object:   0
+     Property address: 39d0
+         Description: ""
+          Properties:
+              [56] 2d e7 
+              [51] 00 14 
+              [46] 72 7f 
+              [25] 00 00 
+              [23] 71 9f 
+              [ 3] 6e e4 
+              [ 2] 00 14 00 0b 
+              [ 1] e0 f3 e0 f3 
+
+180. Attributes: 5, 10, 15, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 39f2
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0f 00 0d 
+              [46] a9 79 
+              [39] 00 b5 00 af 
+              [36] 2d ba 
+              [35] 90 c3 
+              [30] 58 3c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9a 
+              [21] 2d e9 
+              [20] 00 89 
+              [19] 2d eb 
+              [ 4] 2d b8 
+              [ 3] 6e fe 
+              [ 2] 00 0f 00 0d 00 0b 
+              [ 1] f2 e1 da 18 da 21 e0 12 
+
+181. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object: 182
+     Property address: 3a41
+         Description: ""
+          Properties:
+              [55] 00 e4 
+              [51] 00 0c 
+              [46] 72 80 
+              [35] 94 11 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 b4 
+              [ 9] 00 ca 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 6f 4f 
+              [ 2] 00 0c 00 0b 
+              [ 1] f6 fe de 47 de 3e 
+
+182. Attributes: 19, 21
+     Parent object: 181  Sibling object:   0  Child object:   0
+     Property address: 3a8c
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 16 00 0d 
+              [46] 72 82 
+              [36] 2d ba 
+              [35] 97 ff 
+              [30] 59 b8 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 a2 
+              [ 4] 2d b8 
+              [ 3] 6f 56 
+              [ 2] 00 16 00 0d 00 0b 
+              [ 1] e4 f5 d6 67 d6 67 d6 5e f4 5b dd 03 d3 fa d6 55 e9 90 d4 42
+e9 3f f2 1b 
+
+183. Attributes: 9, 39
+     Parent object:   0  Sibling object:   0  Child object: 184
+     Property address: 3adc
+         Description: ""
+          Properties:
+              [55] 00 e3 
+              [51] 00 0c 
+              [46] 72 84 
+              [35] 88 da 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 ba 
+              [13] 00 00 
+              [12] 00 c1 
+              [11] 00 00 
+              [10] 00 53 
+              [ 9] 00 bd 
+              [ 8] 00 c3 
+              [ 7] 00 ce 
+              [ 3] 6f a7 
+              [ 2] 00 0c 00 0b 
+              [ 1] ea 05 e8 5e e8 67 
+
+184. Attributes: 19, 20, 23
+     Parent object: 183  Sibling object:   0  Child object: 185
+     Property address: 3b27
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 11 00 0d 
+              [46] 72 86 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9c 
+              [ 4] 2d b8 
+              [ 3] 6f ae 
+              [ 2] 00 11 00 0d 00 0b 
+              [ 1] d3 df f2 3f f2 48 
+
+185. Attributes: 19
+     Parent object: 184  Sibling object:   0  Child object:   0
+     Property address: 3b62
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [48] 68 a0 
+              [46] 72 88 
+              [36] 2d ba 
+              [35] 8e 93 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 6f ff 
+              [ 2] 00 0d 00 0b 
+              [ 1] e2 52 ea 68 ea 71 e9 24 
+
+186. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object: 187
+     Property address: 3b9d
+         Description: ""
+          Properties:
+              [55] 00 e3 
+              [51] 00 0c 
+              [46] 72 8a 
+              [35] 8d b1 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 b7 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 70 50 
+              [ 2] 00 0c 00 0b 
+              [ 1] df 55 d3 6a d3 73 
+
+187. Attributes: 7, 16, 17, 19, 20, 23
+     Parent object: 186  Sibling object: 188  Child object:   0
+     Property address: 3be8
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 20 00 11 00 0d 
+              [48] 67 0d 
+              [46] 72 8c 
+              [36] 2d ba 
+              [35] 9e f7 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 ae 
+              [ 4] 2d b8 
+              [ 3] 70 57 
+              [ 2] 00 20 00 11 00 0d 00 0b 
+              [ 1] df 55 d3 61 d3 7c ed e3 ed da e9 51 e9 5a 
+
+188. Attributes: 19
+     Parent object: 186  Sibling object:   0  Child object:   0
+     Property address: 3c32
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1e 00 0d 
+              [46] 72 8d 
+              [36] 2d ba 
+              [35] 88 76 
+              [30] 59 bc 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 ab 
+              [ 4] 2d b8 
+              [ 3] 70 a8 
+              [ 2] 00 1e 00 0d 00 0b 
+              [ 1] ec 45 e9 bd e9 c6 
+
+189. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object: 190
+     Property address: 3c70
+         Description: ""
+          Properties:
+              [55] 00 e3 
+              [51] 00 0c 
+              [46] 72 8f 
+              [35] 59 c3 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 b7 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 70 fe 
+              [ 2] 00 0c 00 0b 
+              [ 1] df 94 d3 6a d3 73 
+
+190. Attributes: 7, 16, 17, 19, 20, 23
+     Parent object: 189  Sibling object: 191  Child object:   0
+     Property address: 3cbb
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 20 00 11 00 0d 
+              [48] 67 0d 
+              [46] 72 91 
+              [36] 2d ba 
+              [35] 9e f7 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 ae 
+              [ 4] 2d b8 
+              [ 3] 71 05 
+              [ 2] 00 20 00 11 00 0d 00 0b 
+              [ 1] df 94 d3 61 d3 7c ed e3 ed da e9 51 e9 5a 
+
+191. Attributes: 7, 20, 23, 45
+     Parent object: 189  Sibling object: 192  Child object:   0
+     Property address: 3d05
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 11 00 0d 
+              [46] 72 92 
+              [36] 2d ba 
+              [35] 8b 10 
+              [30] 59 c7 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9c 
+              [ 4] 2d b8 
+              [ 3] 71 56 
+              [ 2] 00 11 00 0d 00 0b 
+              [ 1] f1 04 f1 0d 
+
+192. Attributes: 17
+     Parent object: 189  Sibling object:   0  Child object:   0
+     Property address: 3d41
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 93 
+              [36] 2d ba 
+              [35] 90 4a 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 71 a7 
+              [ 2] 00 0d 00 0b 
+              [ 1] f2 75 f2 6c d9 1c da de df 1f e4 b6 
+
+193. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object: 194
+     Property address: 3d7d
+         Description: ""
+          Properties:
+              [55] 00 e3 
+              [51] 00 0c 
+              [46] 72 94 
+              [35] 91 e4 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 b7 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 71 f8 
+              [ 2] 00 0c 00 0b 
+              [ 1] db 6e d3 6a d3 73 
+
+194. Attributes: 2
+     Parent object: 193  Sibling object:   0  Child object:   0
+     Property address: 3dc8
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1e 00 0d 
+              [46] 72 96 
+              [36] 2d ba 
+              [35] 87 51 
+              [30] 59 cb 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 ab 
+              [ 4] 2d b8 
+              [ 3] 71 ff 
+              [ 2] 00 1e 00 0d 00 0b 
+              [ 1] ed b6 ed bf 
+
+195. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object: 196
+     Property address: 3e04
+         Description: ""
+          Properties:
+              [55] 00 e3 
+              [51] 00 0c 
+              [48] 68 bb 
+              [46] 72 97 
+              [35] 59 cf 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 c6 
+              [ 7] 00 b7 
+              [ 3] 72 55 
+              [ 2] 00 0c 00 0b 
+              [ 1] d8 3b d3 6a d3 73 
+
+196. Attributes: 17, 30
+     Parent object: 195  Sibling object: 197  Child object:   0
+     Property address: 3e52
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 99 
+              [36] 2d ba 
+              [35] a3 5e 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 72 5c 
+              [ 2] 00 0d 00 0b 
+              [ 1] e5 6a e5 73 de f2 d6 31 e5 58 d6 31 de fb 
+
+197. Attributes: 7, 16, 17, 19, 20, 23
+     Parent object: 195  Sibling object:   0  Child object:   0
+     Property address: 3e90
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 20 00 11 00 0d 
+              [48] 67 0d 
+              [46] 72 9a 
+              [36] 2d ba 
+              [35] 9e f7 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 ae 
+              [ 4] 2d b8 
+              [ 3] 72 ad 
+              [ 2] 00 20 00 11 00 0d 00 0b 
+              [ 1] e3 18 d3 61 d3 7c ed e3 ed da e9 51 e9 5a 
+
+198. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 3eda
+         Description: ""
+          Properties:
+              [55] 00 e3 
+              [51] 00 0c 
+              [46] 72 9b 
+              [35] 59 d3 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 00 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 c3 
+              [ 3] 72 fe 
+              [ 2] 00 0c 00 0b 
+              [ 1] de c5 d2 da d2 d1 
+
+199. Attributes: 17, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 3f25
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 21 00 12 00 0d 
+              [48] 68 d2 
+              [46] 72 9d 
+              [39] 00 c6 
+              [36] 2d ba 
+              [35] 87 2a 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 af 
+              [ 4] 2d b8 
+              [ 3] 73 05 
+              [ 2] 00 21 00 12 00 0d 00 0b 
+              [ 1] dd 8a dd 93 d4 93 f4 49 e3 69 e3 33 f4 40 e8 9d e8 a6 e9 75
+e0 cf 
+
+200. Attributes: 17, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 3f7a
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 21 00 12 00 0d 
+              [46] 72 9e 
+              [39] 00 c6 
+              [36] 2d ba 
+              [35] 8f 21 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 af 
+              [ 4] 2d b8 
+              [ 3] 73 5b 
+              [ 2] 00 21 00 12 00 0d 00 0b 
+              [ 1] ed 41 ed 53 e7 35 f6 5c ee 07 ee 10 
+
+201. Attributes: 17, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 3fc2
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 21 00 12 00 0d 
+              [46] 72 9f 
+              [39] 00 35 00 c6 
+              [36] 2d ba 
+              [35] 99 dd 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 af 
+              [ 4] 2d b8 
+              [ 3] 73 b1 
+              [ 2] 00 21 00 12 00 0d 00 0b 
+              [ 1] e5 7c e5 85 e7 59 f0 11 d5 08 f6 53 
+
+202. Attributes: 9, 39
+     Parent object:   0  Sibling object:   0  Child object: 203
+     Property address: 400d
+         Description: ""
+          Properties:
+              [55] 00 e4 
+              [51] 00 0c 
+              [48] 68 e9 
+              [46] 72 a0 
+              [35] 91 b2 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 b5 
+              [ 9] 00 cf 
+              [ 8] 00 ce 
+              [ 7] 00 00 
+              [ 3] 74 07 
+              [ 2] 00 0c 00 0b 
+              [ 1] d3 97 d3 a0 
+
+203. Attributes: 17
+     Parent object: 202  Sibling object: 204  Child object:   0
+     Property address: 4059
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [48] 69 00 
+              [46] 72 a1 
+              [36] 2d ba 
+              [35] 58 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 74 0e 
+              [ 2] 00 0d 00 0b 
+              [ 1] d3 8e d7 1b d7 1b d3 a9 d6 9d d6 94 f2 5a f2 5a df 3a 
+
+204. Attributes: None
+     Parent object: 202  Sibling object: 205  Child object:   0
+     Property address: 409e
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 24 00 0d 
+              [46] 72 a3 
+              [36] 2d ba 
+              [35] 90 a6 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 b3 
+              [ 4] 2d b8 
+              [ 3] 74 5f 
+              [ 2] 00 24 00 0d 00 0b 
+              [ 1] e4 1d df 28 d9 76 d3 8e d3 a9 
+
+205. Attributes: None
+     Parent object: 202  Sibling object:   0  Child object:   0
+     Property address: 40dd
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 24 00 0d 
+              [46] 72 a5 
+              [36] 2d ba 
+              [35] 8f f3 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 b3 
+              [ 4] 2d b8 
+              [ 3] 74 b5 
+              [ 2] 00 24 00 0d 00 0b 
+              [ 1] ee a9 d3 8e d3 a9 e3 06 
+
+206. Attributes: 5, 10, 15, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 411a
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0f 00 0d 
+              [46] 72 a6 
+              [39] 00 ca 00 b7 
+              [36] 2d ba 
+              [35] 90 c3 
+              [30] 58 3c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9a 
+              [21] 2d ed 
+              [20] 00 89 
+              [19] 2d ef 
+              [ 4] 2d b8 
+              [ 3] 75 0b 
+              [ 2] 00 0f 00 0d 00 0b 
+              [ 1] e0 12 da 18 da 21 f2 e1 
+
+207. Attributes: 9
+     Parent object:   0  Sibling object:   0  Child object: 208
+     Property address: 4169
+         Description: ""
+          Properties:
+              [55] 00 e4 
+              [51] 00 0c 
+              [46] 72 a7 
+              [35] 59 dc 
+              [25] 00 00 
+              [23] 71 97 
+              [18] 00 00 
+              [17] 00 00 
+              [16] 00 00 
+              [15] 00 00 
+              [14] 00 00 
+              [13] 00 00 
+              [12] 00 00 
+              [11] 00 00 
+              [10] 00 ca 
+              [ 9] 00 00 
+              [ 8] 00 00 
+              [ 7] 00 00 
+              [ 3] 75 5c 
+              [ 2] 00 0c 00 0b 
+              [ 1] d1 de d1 de 
+
+208. Attributes: 17, 19, 20, 23
+     Parent object: 207  Sibling object: 210  Child object: 209
+     Property address: 41b2
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 11 00 0d 
+              [46] 72 a8 
+              [36] 2d ba 
+              [35] 98 89 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9c 
+              [ 4] 2d b8 
+              [ 3] 75 63 
+              [ 2] 00 11 00 0d 00 0b 
+              [ 1] e4 38 d7 cf d7 cf f2 3f d7 c6 
+
+209. Attributes: 17
+     Parent object: 208  Sibling object:   0  Child object:   0
+     Property address: 41f1
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 aa 
+              [36] 2d ba 
+              [35] 8c 46 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 75 b4 
+              [ 2] 00 0d 00 0b 
+              [ 1] db b6 db b6 
+
+210. Attributes: 17, 30
+     Parent object: 207  Sibling object: 211  Child object:   0
+     Property address: 4225
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [46] 72 ab 
+              [36] 2d ba 
+              [35] 8b 49 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 76 05 
+              [ 2] 00 0d 00 0b 
+              [ 1] e9 ab ea f8 d4 66 d4 6f d4 5d 
+
+211. Attributes: 17
+     Parent object: 207  Sibling object:   0  Child object:   0
+     Property address: 425f
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 0d 
+              [48] 69 17 
+              [46] 72 ad 
+              [36] 2d ba 
+              [35] 9c ee 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 98 
+              [ 4] 2d b8 
+              [ 3] 76 56 
+              [ 2] 00 0d 00 0b 
+              [ 1] d1 b1 da 7b da 84 da 72 d9 52 d3 3d e3 f9 ef 15 ef 0c 
+
+212. Attributes: 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 42a4
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 12 00 0d 
+              [46] 72 af 
+              [39] 00 ca 00 cf 
+              [36] 2d ba 
+              [35] a1 54 
+              [30] 59 e2 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9d 
+              [ 4] 2d b8 
+              [ 3] 76 a7 
+              [ 2] 00 12 00 0d 00 0b 
+              [ 1] e6 93 f7 61 f7 6a ec 06 eb fd f5 ba f5 c3 dd e4 
+
+213. Attributes: 4, 14, 16
+     Parent object:   0  Sibling object:   0  Child object: 214
+     Property address: 42f2
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 10 00 0d 
+              [46] 72 b0 
+              [36] 2d ba 
+              [35] 58 41 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 9b 
+              [ 4] 2d b8 
+              [ 3] 76 f8 
+              [ 2] 00 10 00 0d 00 0b 
+              [ 1] f1 1f f1 28 
+
+214. Attributes: 9, 45
+     Parent object: 213  Sibling object: 215  Child object:   0
+     Property address: 432b
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 25 00 0d 
+              [46] 72 b1 
+              [36] 2d ba 
+              [35] 94 7b 
+              [30] 59 e6 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 b4 
+              [ 4] 2d b8 
+              [ 3] 77 49 
+              [ 2] 00 25 00 0d 00 0b 
+              [ 1] d5 7d d5 86 e3 c3 e3 d5 e2 fd e1 56 e3 de d5 86 e3 0f 
+
+215. Attributes: None
+     Parent object: 213  Sibling object: 216  Child object:   0
+     Property address: 4375
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 24 00 0d 
+              [46] 72 b2 
+              [36] 2d ba 
+              [35] 87 f1 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 b3 
+              [ 4] 2d b8 
+              [ 3] 77 9a 
+              [ 2] 00 24 00 0d 00 0b 
+              [ 1] f7 8e d4 ff df 31 df 3a 
+
+216. Attributes: 6
+     Parent object: 213  Sibling object: 217  Child object:   0
+     Property address: 43b2
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 25 00 0d 
+              [46] 72 b4 
+              [36] 2d ba 
+              [35] 88 50 
+              [30] 59 ea 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 b4 
+              [ 4] 2d b8 
+              [ 3] 77 f0 
+              [ 2] 00 25 00 0d 00 0b 
+              [ 1] dc 73 dc 7c dd 6f e9 7e d7 51 f7 07 e9 1b f7 46 df 5e ef c9
+d9 b5 d9 ac e3 84 d4 54 
+
+217. Attributes: None
+     Parent object: 213  Sibling object: 218  Child object:   0
+     Property address: 4406
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 24 00 0d 
+              [46] 72 b5 
+              [36] 2d ba 
+              [35] 9d 2b 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 b3 
+              [ 4] 2d b8 
+              [ 3] 78 41 
+              [ 2] 00 24 00 0d 00 0b 
+              [ 1] de e9 d3 8e d3 a9 
+
+218. Attributes: None
+     Parent object: 213  Sibling object: 219  Child object:   0
+     Property address: 4441
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 24 00 0d 
+              [46] 72 b6 
+              [36] 2d ba 
+              [35] 87 fa 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 b3 
+              [ 4] 2d b8 
+              [ 3] 78 97 
+              [ 2] 00 24 00 0d 00 0b 
+              [ 1] e3 57 f2 5a f2 5a 
+
+219. Attributes: None
+     Parent object: 213  Sibling object: 220  Child object:   0
+     Property address: 447c
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 24 00 0d 
+              [46] 72 b8 
+              [36] 2d ba 
+              [35] 93 49 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 b3 
+              [ 4] 2d b8 
+              [ 3] 78 ed 
+              [ 2] 00 24 00 0d 00 0b 
+              [ 1] d7 ea d3 8e d3 a9 d7 f3 
+
+220. Attributes: 0, 27, 35, 36
+     Parent object: 213  Sibling object: 221  Child object:   0
+     Property address: 44b9
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 18 00 13 00 0d 
+              [46] 72 b9 
+              [45] 00 64 
+              [36] 2d ba 
+              [35] 59 ee 
+              [30] 59 f5 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 a4 
+              [ 4] 2d b8 
+              [ 3] 79 43 
+              [ 2] 00 18 00 13 00 0d 00 0b 
+              [ 1] d3 4f d3 58 
+
+221. Attributes: None
+     Parent object: 213  Sibling object: 222  Child object:   0
+     Property address: 44fc
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 1c 00 0d 
+              [46] 72 ba 
+              [36] 2d ba 
+              [35] 99 2c 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 a9 
+              [ 4] 2d b8 
+              [ 3] 79 9b 
+              [ 2] 00 1c 00 0d 00 0b 
+              [ 1] e2 1c e2 64 e2 6d 
+
+222. Attributes: 2
+     Parent object: 213  Sibling object:   0  Child object:   0
+     Property address: 4537
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 25 00 0d 
+              [46] 72 bb 
+              [36] 2d ba 
+              [35] 90 ac 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 b4 
+              [ 4] 2d b8 
+              [ 3] 79 ec 
+              [ 2] 00 25 00 0d 00 0b 
+              [ 1] e4 89 de ce de d7 
+
+223. Attributes: 17, 19, 30
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 4572
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 21 00 12 00 0d 
+              [46] 72 bc 
+              [39] 00 35 00 4f 00 62 00 85 00 c6 
+              [36] 2d ba 
+              [35] 99 fc 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 af 
+              [ 4] 2d b8 
+              [ 3] 7a 3d 
+              [ 2] 00 21 00 12 00 0d 00 0b 
+              [ 1] ea b0 ea b9 d6 f7 d6 ee ef 30 df 70 e8 b8 
+
+224. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 45c5
+         Description: ""
+          Properties:
+              [56] 2d f1 
+              [51] 00 14 
+              [46] 72 bd 
+              [25] 00 00 
+              [23] 71 9f 
+              [ 3] 7a 93 
+              [ 2] 00 14 00 0b 
+              [ 1] df 4c e7 c5 e7 ce e7 d7 
+
+225. Attributes: None
+     Parent object:   0  Sibling object:   0  Child object: 226
+     Property address: 45eb
+         Description: ""
+          Properties:
+              [56] 2d f3 
+              [51] 00 14 
+              [46] 72 bf 
+              [25] 00 00 
+              [23] 71 9f 
+              [ 3] 7a ad 
+              [ 2] 00 14 00 0b 
+              [ 1] d3 07 d3 10 f4 e2 
+
+226. Attributes: None
+     Parent object: 225  Sibling object:   0  Child object:   0
+     Property address: 460f
+         Description: ""
+          Properties:
+              [56] 2d f5 
+              [51] 00 14 
+              [46] 72 c0 
+              [25] 00 00 
+              [23] 71 9f 
+              [ 3] 7a c7 
+              [ 2] 00 14 00 0b 
+              [ 1] df ee d2 02 d2 0b 
+
+227. Attributes: 16
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 4633
+         Description: ""
+          Properties:
+              [56] 2d f7 
+              [51] 00 14 
+              [46] 72 c2 
+              [25] 00 00 
+              [23] 71 9f 
+              [ 3] 7a e1 
+              [ 2] 00 14 00 0b 
+              [ 1] d1 d5 d1 d5 
+
+228. Attributes: 16
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 4655
+         Description: ""
+          Properties:
+              [56] 2d f9 
+              [51] 00 14 
+              [48] 69 2e 
+              [46] 72 c3 
+              [25] 00 00 
+              [23] 71 9f 
+              [ 3] 7a fb 
+              [ 2] 00 14 00 0b 
+              [ 1] f0 d7 f0 ce 
+
+229. Attributes: 17, 19
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 467a
+         Description: ""
+          Properties:
+              [54] 00 00 
+              [53] 00 00 
+              [52] 00 00 
+              [51] 00 21 00 12 00 0d 
+              [46] 72 c4 
+              [39] 2d fb 
+              [36] 2d ba 
+              [35] 90 e2 
+              [25] 00 00 
+              [24] 4b 44 
+              [23] 71 af 
+              [ 4] 2d b8 
+              [ 3] 7b 15 
+              [ 2] 00 21 00 12 00 0d 00 0b 
+              [ 1] f0 86 f0 8f 
+
+230. Attributes: 16
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 46ba
+         Description: ""
+          Properties:
+              [56] 2d fd 
+              [51] 00 14 
+              [46] 72 c5 
+              [25] 00 00 
+              [23] 71 9f 
+              [ 3] 7b 6b 
+              [ 2] 00 14 00 0b 
+              [ 1] e7 62 d5 e9 d5 f2 
+
+231. Attributes: 16
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 46de
+         Description: ""
+          Properties:
+              [56] 2d ff 
+              [51] 00 14 
+              [48] 69 45 
+              [46] 72 c6 
+              [25] 00 00 
+              [23] 71 9f 
+              [ 3] 7b 85 
+              [ 2] 00 14 00 0b 
+              [ 1] db 77 db 80 
+
+232. Attributes: 16
+     Parent object:   0  Sibling object:   0  Child object:   0
+     Property address: 4703
+         Description: ""
+          Properties:
+              [56] 2e 01 
+              [51] 00 14 
+              [46] 72 c7 
+              [25] 00 00 
+              [23] 71 9f 
+              [ 3] 7b 9f 
+              [ 2] 00 14 00 0b 
+              [ 1] e4 a4 d5 e9 d5 f2 
+
+    **** Object tree ****
+
+[  1] "Class"
+ . [  5] "CompassDirection"
+ . [ 11] "K0_kind"
+ . [ 12] "K1_room"
+ . [ 13] "K2_thing"
+ . [ 14] "K3_direction"
+ . [ 15] "K4_door"
+ . [ 16] "K5_container"
+ . [ 17] "K6_supporter"
+ . [ 18] "K7_backdrop"
+ . [ 19] "K8_person"
+ . [ 20] "K9_region"
+ . [ 21] "K10_player_s_holdall"
+ . [ 22] "K11_device"
+ . [ 23] "K24_animal"
+ . [ 24] "K25_man"
+ . [ 25] "K26_woman"
+ . [ 26] "K27_player_character"
+ . [ 27] "K30_vehicle"
+ . [ 28] "K92_passkey"
+ . [ 29] "K94_display"
+ . [ 30] "K95_reminder"
+ . [ 31] "K96_floor"
+ . [ 32] "K98_bed"
+ . [ 33] "K99_view"
+ . [ 34] "K100_staircase"
+ . [ 35] "K101_fluid_container"
+ . [ 36] "K102_ringer"
+ . [ 37] "K267_grail"
+[  2] "Object"
+[  3] "Routine"
+[  4] "String"
+[  6] "compass"
+ . [ 39] ""
+ . [ 40] ""
+ . [ 41] ""
+ . [ 42] ""
+ . [ 43] ""
+ . [ 44] ""
+ . [ 45] ""
+ . [ 46] ""
+ . [ 47] ""
+ . [ 48] ""
+ . [ 49] ""
+ . [ 50] ""
+[  7] "(darkness object)"
+[  8] "(Inform Parser)"
+[  9] "(Inform Library)"
+[ 10] "(LibraryMessages)"
+[ 38] "(Value_Property_Holder)"
+[ 51] ""
+[ 52] ""
+[ 53] ""
+ . [ 54] ""
+[ 55] ""
+[ 56] ""
+ . [ 57] ""
+ . [ 58] ""
+[ 59] ""
+[ 60] ""
+ . [ 61] ""
+ . [ 62] ""
+ . [ 63] ""
+[ 64] ""
+ . [ 65] ""
+ . [ 66] ""
+[ 67] ""
+ . [ 68] ""
+ .  . [ 69] ""
+ .  . [ 70] ""
+ .  . [ 71] ""
+[ 72] ""
+ . [ 73] ""
+[ 74] ""
+ . [ 75] ""
+[ 76] ""
+ . [ 77] ""
+ . [ 78] ""
+[ 79] ""
+[ 80] ""
+[ 81] ""
+ . [ 82] ""
+[ 83] ""
+[ 84] ""
+[ 85] ""
+ . [ 86] ""
+[ 87] ""
+ . [ 88] ""
+ . [ 89] ""
+ . [ 90] ""
+[ 91] ""
+[ 92] ""
+[ 93] ""
+[ 94] ""
+[ 95] ""
+[ 96] ""
+ . [ 97] ""
+[ 98] ""
+ . [ 99] ""
+[100] ""
+ . [101] ""
+[102] ""
+ . [103] ""
+[104] ""
+ . [105] ""
+[106] ""
+ . [107] ""
+[108] ""
+ . [109] ""
+ . [110] ""
+ . [111] ""
+ . [112] ""
+ . [113] ""
+ . [114] ""
+ . [115] ""
+ . [116] ""
+ . [117] ""
+ . [118] ""
+ . [119] ""
+ . [120] ""
+ . [121] ""
+ . [122] ""
+ . [123] ""
+[124] ""
+ . [125] ""
+[126] ""
+ . [127] ""
+ .  . [128] ""
+[129] ""
+[130] ""
+ . [131] ""
+ .  . [132] ""
+[133] ""
+ . [134] ""
+ . [135] ""
+[136] ""
+ . [137] ""
+[138] ""
+[139] ""
+[140] ""
+ . [141] ""
+[142] ""
+ . [143] ""
+[144] ""
+ . [145] ""
+ .  . [146] ""
+ .  . [147] ""
+[148] ""
+ . [149] ""
+[150] ""
+[151] ""
+ . [152] ""
+[153] ""
+[154] ""
+[155] ""
+ . [156] ""
+[157] ""
+ . [158] ""
+ . [159] ""
+[160] ""
+ . [161] ""
+ . [162] ""
+[163] ""
+[164] ""
+ . [165] ""
+[166] ""
+ . [167] ""
+[168] ""
+ . [169] ""
+[170] ""
+[171] ""
+ . [172] ""
+[173] ""
+[174] ""
+[175] ""
+ . [176] ""
+ . [177] ""
+[178] ""
+ . [179] ""
+[180] ""
+[181] ""
+ . [182] ""
+[183] ""
+ . [184] ""
+ .  . [185] ""
+[186] ""
+ . [187] ""
+ . [188] ""
+[189] ""
+ . [190] ""
+ . [191] ""
+ . [192] ""
+[193] ""
+ . [194] ""
+[195] ""
+ . [196] ""
+ . [197] ""
+[198] ""
+[199] ""
+[200] ""
+[201] ""
+[202] ""
+ . [203] ""
+ . [204] ""
+ . [205] ""
+[206] ""
+[207] ""
+ . [208] ""
+ .  . [209] ""
+ . [210] ""
+ . [211] ""
+[212] ""
+[213] ""
+ . [214] ""
+ . [215] ""
+ . [216] ""
+ . [217] ""
+ . [218] ""
+ . [219] ""
+ . [220] ""
+ . [221] ""
+ . [222] ""
+[223] ""
+[224] ""
+[225] ""
+ . [226] ""
+[227] ""
+[228] ""
+[229] ""
+[230] ""
+[231] ""
+[232] ""
+
+    **** Parse tables ****
+
+  Verb entries = 139
+
+255. 2 entries, verb = "dbr"
+    [00 70 01 00 08 0f]       "dbr number"
+    [00 71 01 00 08 42 e7 47 0f] "dbr number off"
+
+254. 3 entries, verb = "rules"
+    [00 72 0f]                "rules"
+    [00 73 42 d1 84 0f]       "rules all"
+    [00 74 42 e7 47 0f]       "rules off"
+
+253. 2 entries, verb = "scenes"
+    [00 75 0f]                "scenes"
+    [00 76 42 e7 47 0f]       "scenes off"
+
+252. 9 entries, verb = "acquire", synonyms = "bring", "carry", "fetch", "grab",
+                                             "hold", "snatch", "steal", "take"
+    [00 59 86 64 17 42 e6 03 42 d4 ae 0f] "acquire [parse $6417] my breath"
+    [00 59 86 64 16 42 d4 ae 0f] "acquire [parse $6416] breath"
+    [00 0c 42 e2 13 0f]       "acquire inventory"
+    [00 0d 01 00 02 0f]       "acquire multi"
+    [00 27 42 e7 47 01 00 00 0f] "acquire off noun"
+    [00 0d 42 da 2a 01 00 00 0f] "acquire down noun"
+    [00 66 01 00 01 86 65 f2 01 00 00 0f] "acquire held [parse $65f2] noun"
+    [00 0f 01 00 05 42 e7 47 01 00 00 0f] "acquire multiinside off noun"
+    [00 0f 01 00 05 42 dd f6 01 00 00 0f] "acquire multiinside from noun"
+
+251. 7 entries, verb = "get"
+    [00 17 62 e7 bc 72 e7 47 52 f5 3c 0f] "get out / off / up"
+    [00 17 42 da 2a 0f]       "get down"
+    [00 0d 01 00 02 0f]       "get multi"
+    [00 15 62 e1 7a 72 e1 f8 72 e7 6b 52 e7 7d 01 00 00 0f] "get in / into / on
+/ onto noun"
+    [00 16 42 e7 47 01 00 00 0f] "get off noun"
+    [00 0f 01 00 05 86 66 75 01 00 00 0f] "get multiinside [parse $6675] noun"
+    [00 0f 01 00 05 42 dd f6 01 00 00 0f] "get multiinside from noun"
+
+250. 3 entries, verb = "pick"
+    [00 0d 01 00 00 0f]       "pick noun"
+    [00 0d 01 00 02 42 f5 3c 0f] "pick multi up"
+    [00 0d 42 f5 3c 01 00 02 0f] "pick up multi"
+
+249. 3 entries, verb = "stand"
+    [00 17 0f]                "stand"
+    [00 17 42 f5 3c 0f]       "stand up"
+    [00 15 42 e7 6b 01 00 00 0f] "stand on noun"
+
+248. 3 entries, verb = "remove"
+    [00 27 01 00 01 0f]       "remove held"
+    [00 0d 01 00 02 0f]       "remove multi"
+    [00 0f 01 00 05 42 dd f6 01 00 00 0f] "remove multiinside from noun"
+
+247. 1 entry, verb = "disrobe", synonyms = "doff", "shed"
+    [00 27 01 00 01 0f]       "disrobe held"
+
+246. 2 entries, verb = "don", synonyms = "wear"
+    [00 28 83 64 8a 0f]       "don noun = [parse $648a]"
+    [00 28 01 00 01 0f]       "don held"
+
+245. 7 entries, verb = "place", synonyms = "put", "shove", "stick", "stuff"
+    [00 28 42 e7 6b 01 00 01 0f] "place on held"
+    [00 0e 01 00 03 42 da 2a 0f] "place multiheld down"
+    [00 0e 42 da 2a 01 00 03 0f] "place down multiheld"
+    [00 6f 42 e7 bc 01 00 00 0f] "place out noun"
+    [00 66 01 00 01 86 65 f2 01 00 00 0f] "place held [parse $65f2] noun"
+    [00 10 01 00 04 62 e7 6b 52 e7 7d 01 00 00 0f] "place multiexcept on / onto
+noun"
+    [00 11 01 00 04 62 e1 7a 72 e1 e6 52 e1 f8 01 00 00 0f] "place multiexcept
+in / inside / into noun"
+
+244. 1 entry, verb = "insert"
+    [00 11 01 00 04 62 e1 7a 52 e1 f8 01 00 00 0f] "insert multiexcept in /
+into noun"
+
+243. 5 entries, verb = "discard", synonyms = "drop", "fling", "hurl", "throw",
+                                             "toss"
+    [00 0e 01 00 03 0f]       "discard multiheld"
+    [00 0e 42 d2 bf 01 00 00 0f] "discard away noun"
+    [00 4e 01 00 01 62 d2 89 72 d1 7b 72 e7 6b 52 e7 7d 01 00 00 0f] "discard
+held at / against / on / onto noun"
+    [00 10 01 00 04 62 e7 6b 52 e7 7d 01 00 00 0f] "discard multiexcept on /
+onto noun"
+    [00 11 01 00 04 62 e1 7a 72 e1 f8 52 da 2a 01 00 00 0f] "discard
+multiexcept in / into / down noun"
+
+242. 4 entries, verb = "deliver", synonyms = "feed", "give", "hand", "offer",
+                                             "pay"
+    [04 13 01 00 06 83 64 92 0f] "deliver creature noun = [parse $6492]"
+REVERSE
+    [04 13 01 00 06 01 00 01 0f] "deliver creature held" REVERSE
+    [00 13 83 64 8e 42 f3 95 01 00 06 0f] "deliver noun = [parse $648e] to
+creature"
+    [00 13 01 00 01 42 f3 95 01 00 06 0f] "deliver held to creature"
+
+241. 3 entries, verb = "display", synonyms = "present", "show"
+    [00 0c 62 e2 13 72 e2 0a 72 e1 44 52 e2 01 0f] "display inventory / invent
+/ i / inv"
+    [04 14 01 00 06 01 00 01 0f] "display creature held" REVERSE
+    [00 14 01 00 01 42 f3 95 01 00 06 0f] "display held to creature"
+
+240. 19 entries, verb = "creep", synonyms = "depart", "go", "leave", "proceed",
+                                            "run", "rush", "sneak", "stride",
+                                            "stroll", "strut", "walk", "wander"
+    [00 19 0f]                "creep"
+    [00 7c 42 d2 c8 0f]       "creep back"
+    [00 19 86 66 2f 0f]       "creep [parse $662f]"
+    [00 19 83 64 96 0f]       "creep noun = [parse $6496]"
+    [00 15 01 00 00 0f]       "creep noun"
+    [00 6b 85 64 c6 0f]       "creep scope = [parse $64c6]"
+    [00 19 86 66 2f 86 66 40 0f] "creep [parse $662f] [parse $6640]"
+    [00 54 42 da 2a 83 64 99 0f] "creep down noun = [parse $6499]"
+    [00 54 42 f5 3c 83 64 9c 0f] "creep up noun = [parse $649c]"
+    [00 65 62 e7 6b 72 f3 44 72 d1 57 52 d2 41 83 64 9f 0f] "creep on / through
+/ across / around noun = [parse $649f]"
+    [00 15 62 e1 f8 72 e1 7a 72 e1 e6 52 f3 44 01 00 00 0f] "creep into / in /
+inside / through noun"
+    [00 65 62 f3 95 72 d2 41 72 e6 42 52 d5 62 01 00 00 0f] "creep to / around
+/ near / by noun"
+    [00 6c 42 f3 95 85 64 a2 0f] "creep to scope = [parse $64a2]"
+    [00 7b 42 f3 95 85 64 b4 0f] "creep to scope = [parse $64b4]"
+    [00 7b 86 66 2f 85 64 bd 0f] "creep [parse $662f] scope = [parse $64bd]"
+    [00 6b 42 e7 d7 85 64 cf 0f] "creep outside scope = [parse $64cf]"
+    [00 68 42 f3 95 85 64 d8 0f] "creep to scope = [parse $64d8]"
+    [00 69 42 f3 95 85 64 e3 0f] "creep to scope = [parse $64e3]"
+    [00 6c 42 d2 c8 42 f3 95 85 64 ab 0f] "creep back to scope = [parse $64ab]"
+
+239. 1 entry, verb = "i", synonyms = "inv", "inventory"
+    [00 0c 0f]                "i"
+
+238. 14 entries, verb = "l", synonyms = "look", "see", "view"
+    [00 1d 0f]                "l"
+    [00 1d 86 66 2f 0f]       "l [parse $662f]"
+    [00 5f 83 64 ed 0f]       "l noun = [parse $64ed]"
+    [00 1e 01 00 00 0f]       "l noun"
+    [00 19 86 66 2f 86 66 40 0f] "l [parse $662f] [parse $6640]"
+    [00 1e 42 d2 89 01 00 00 0f] "l at noun"
+    [00 20 62 e1 e6 72 e1 7a 72 e1 f8 52 f3 44 01 00 00 0f] "l inside / in /
+into / through noun"
+    [00 1f 42 f4 d9 01 00 00 0f] "l under noun"
+    [00 1f 42 d3 85 01 00 00 0f] "l behind noun"
+    [00 20 42 e7 bc 01 00 00 0f] "l out noun"
+    [00 6a 42 f3 d4 85 64 f0 0f] "l toward scope = [parse $64f0]"
+    [00 68 42 dd 81 85 64 fb 0f] "l for scope = [parse $64fb]"
+    [00 69 42 dd 81 85 65 06 0f] "l for scope = [parse $6506]"
+    [04 57 42 f5 3c 01 00 09 42 e1 7a 01 00 00 0f] "l up topic in noun" REVERSE
+
+237. 1 entry, verb = "consult"
+    [00 57 01 00 00 62 e7 6b 52 d1 3c 01 00 09 0f] "consult noun on / about
+topic"
+
+236. 3 entries, verb = "open", synonyms = "uncover", "unwrap"
+    [00 25 83 65 10 0f]       "open noun = [parse $6510]"
+    [00 25 01 00 00 0f]       "open noun"
+    [00 21 01 00 00 42 f7 7c 01 00 01 0f] "open noun with held"
+
+235. 5 entries, verb = "close", synonyms = "cover", "shut"
+    [00 26 83 65 14 0f]       "close noun = [parse $6514]"
+    [00 26 01 00 00 0f]       "close noun"
+    [00 26 42 f5 3c 01 00 00 0f] "close up noun"
+    [00 24 42 e7 47 01 00 00 0f] "close off noun"
+    [04 10 01 00 00 42 f7 7c 01 00 00 0f] "close noun with noun" REVERSE
+
+234. 3 entries, verb = "board", synonyms = "cross", "enter"
+    [00 15 83 65 18 0f]       "board noun = [parse $6518]"
+    [00 15 83 65 1c 0f]       "board noun = [parse $651c]"
+    [00 15 01 00 00 0f]       "board noun"
+
+233. 2 entries, verb = "sit"
+    [00 15 62 e7 6b 72 e1 7a 52 e1 e6 01 00 00 0f] "sit on / in / inside noun"
+    [00 15 42 e7 6b 42 f3 b0 42 e7 3e 01 00 00 0f] "sit on top of noun"
+
+232. 1 entry, verb = "exit", synonyms = "out"
+    [00 17 0f]                "exit"
+
+231. 1 entry, verb = "check", synonyms = "describe", "examine", "inspect",
+                                         "observe", "watch", "x"
+    [00 1e 01 00 00 0f]       "check noun"
+
+230. 4 entries, verb = "read"
+    [00 64 01 00 00 0f]       "read noun"
+    [00 57 01 00 00 62 d1 3c 52 e7 6b 01 00 09 0f] "read noun about / on topic"
+    [04 57 42 d1 3c 01 00 09 42 e1 7a 01 00 00 0f] "read about topic in noun"
+REVERSE
+    [04 57 01 00 09 42 e1 7a 01 00 00 0f] "read topic in noun" REVERSE
+
+229. 1 entry, verb = "y", synonyms = "yes"
+    [00 2a 0f]                "y"
+
+228. 1 entry, verb = "no"
+    [00 2b 0f]                "no"
+
+227. 1 entry, verb = "sorry"
+    [00 3d 0f]                "sorry"
+
+226. 1 entry, verb = "damn", synonyms = "fuck", "shit"
+    [00 3e 0f]                "damn"
+
+225. 1 entry, verb = "bother", synonyms = "curses", "darn", "drat"
+    [00 3f 0f]                "bother"
+
+224. 5 entries, verb = "ransack", synonyms = "search"
+    [00 20 0f]                "ransack"
+    [00 19 86 66 40 0f]       "ransack [parse $6640]"
+    [00 20 01 00 00 0f]       "ransack noun"
+    [00 7b 85 65 1f 0f]       "ransack scope = [parse $651f]"
+    [00 84 85 65 28 0f]       "ransack scope = [parse $6528]"
+
+223. 2 entries, verb = "wave"
+    [00 47 0f]                "wave"
+    [00 48 01 00 00 0f]       "wave noun"
+
+222. 4 entries, verb = "set"
+    [00 0e 01 00 03 42 da 2a 0f] "set multiheld down"
+    [00 0e 42 da 2a 01 00 02 0f] "set down multi"
+    [00 10 01 00 03 86 66 81 01 00 00 0f] "set multiheld [parse $6681] noun"
+    [00 46 01 00 00 42 f3 95 01 00 09 0f] "set noun to topic"
+
+221. 1 entry, verb = "drag", synonyms = "pull"
+    [00 49 01 00 00 0f]       "drag noun"
+
+220. 3 entries, verb = "clear", synonyms = "move", "press", "push", "shift"
+    [00 4a 01 00 00 0f]       "clear noun"
+    [00 4c 01 00 00 83 65 32 0f] "clear noun noun = [parse $6532]"
+    [00 4c 01 00 00 42 f3 95 83 65 35 0f] "clear noun to noun = [parse $6535]"
+
+219. 5 entries, verb = "rotate", synonyms = "screw", "turn", "twist", "unscrew"
+    [00 4b 01 00 00 0f]       "rotate noun"
+    [00 23 01 00 00 42 e7 6b 0f] "rotate noun on"
+    [00 23 42 e7 6b 01 00 00 0f] "rotate on noun"
+    [00 24 01 00 00 42 e7 47 0f] "rotate noun off"
+    [00 24 42 e7 47 01 00 00 0f] "rotate off noun"
+
+218. 4 entries, verb = "switch"
+    [00 23 01 00 00 0f]       "switch noun"
+    [00 23 01 00 00 42 e7 6b 0f] "switch noun on"
+    [00 24 01 00 00 42 e7 47 0f] "switch noun off"
+    [00 24 42 e7 47 01 00 00 0f] "switch off noun"
+
+217. 2 entries, verb = "lock"
+    [00 5d 01 00 00 0f]       "lock noun"
+    [00 22 01 00 00 42 f7 7c 01 00 01 0f] "lock noun with held"
+
+216. 2 entries, verb = "unlock"
+    [00 5e 01 00 00 0f]       "unlock noun"
+    [00 21 01 00 00 42 f7 7c 01 00 01 0f] "unlock noun with held"
+
+215. 2 entries, verb = "attack", synonyms = "break", "crack", "destroy",
+                                            "fight", "hit", "injure", "kill",
+                                            "murder", "play", "punch", "ring",
+                                            "shake", "smack", "smash",
+                                            "strike", "thump", "torture",
+                                            "wreck"
+    [00 40 83 65 38 0f]       "attack noun = [parse $6538]"
+    [00 40 01 00 00 0f]       "attack noun"
+
+214. 4 entries, verb = "wait", synonyms = "z"
+    [00 55 0f]                "wait"
+    [00 55 86 66 2f 0f]       "wait [parse $662f]"
+    [00 55 86 66 57 0f]       "wait [parse $6657]"
+    [00 82 42 e1 7a 85 65 3b 0f] "wait in scope = [parse $653b]"
+
+213. 2 entries, verb = "answer", synonyms = "hiss", "holler", "roar", "say",
+                                            "scream", "shout", "speak",
+                                            "whisper", "yell", "yodel"
+    [04 50 01 00 09 42 f3 95 01 00 06 0f] "answer topic to creature" REVERSE
+    [04 50 01 00 09 62 f3 95 72 d2 89 52 dd 81 85 65 44 0f] "answer topic to /
+at / for scope = [parse $6544]" REVERSE
+
+212. 1 entry, verb = "tell"
+    [00 4f 01 00 06 42 d1 3c 01 00 09 0f] "tell creature about topic"
+
+211. 2 entries, verb = "ask"
+    [00 58 01 00 06 42 dd 81 01 00 00 0f] "ask creature for noun"
+    [00 51 01 00 06 42 d1 3c 01 00 09 0f] "ask creature about topic"
+
+210. 2 entries, verb = "eat"
+    [00 29 83 65 4d 0f]       "eat noun = [parse $654d]"
+    [00 29 01 00 01 0f]       "eat held"
+
+209. 1 entry, verb = "nap", synonyms = "sleep"
+    [00 56 0f]                "nap"
+
+208. 1 entry, verb = "hum", synonyms = "sing", "whistle"
+    [00 53 0f]                "hum"
+
+207. 2 entries, verb = "ascend", synonyms = "climb", "descend", "scale"
+    [00 54 01 00 00 0f]       "ascend noun"
+    [00 54 62 f5 3c 52 e7 e0 01 00 00 0f] "ascend up / over noun"
+
+206. 1 entry, verb = "buy", synonyms = "purchase"
+    [00 52 01 00 00 0f]       "buy noun"
+
+205. 1 entry, verb = "squash", synonyms = "squeeze"
+    [00 4d 01 00 00 0f]       "squash noun"
+
+204. 2 entries, verb = "dive", synonyms = "swim"
+    [00 41 0f]                "dive"
+    [00 67 62 e1 7a 52 d1 57 01 00 00 0f] "dive in / across noun"
+
+203. 2 entries, verb = "swing"
+    [00 42 01 00 00 0f]       "swing noun"
+    [00 42 42 e7 6b 01 00 00 0f] "swing on noun"
+
+202. 3 entries, verb = "blow"
+    [00 43 01 00 01 0f]       "blow held"
+    [00 6f 42 e7 bc 01 00 00 0f] "blow out noun"
+    [00 43 62 e7 6b 72 e1 7a 52 f3 44 01 00 00 0f] "blow on / in / through
+noun"
+
+201. 2 entries, verb = "pray"
+    [00 2d 0f]                "pray"
+    [00 83 62 dd 81 52 f3 95 01 00 09 0f] "pray for / to topic"
+
+200. 5 entries, verb = "awake", synonyms = "awaken", "resuscita", "revive",
+                                           "wake"
+    [00 2e 0f]                "awake"
+    [00 2e 42 f5 3c 0f]       "awake up"
+    [00 2f 01 00 06 0f]       "awake creature"
+    [00 2f 01 00 06 42 f5 3c 0f] "awake creature up"
+    [00 2f 42 f5 3c 01 00 06 0f] "awake up creature"
+
+199. 1 entry, verb = "embrace", synonyms = "hug", "kiss"
+    [00 30 01 00 06 0f]       "embrace creature"
+
+198. 1 entry, verb = "think"
+    [00 31 0f]                "think"
+
+197. 2 entries, verb = "breathe", synonyms = "smell", "sniff"
+    [00 32 0f]                "breathe"
+    [00 32 01 00 00 0f]       "breathe noun"
+
+196. 2 entries, verb = "listen"
+    [00 33 0f]                "listen"
+    [00 33 42 f3 95 01 00 00 0f] "listen to noun"
+
+195. 1 entry, verb = "hear"
+    [00 33 01 00 00 0f]       "hear noun"
+
+194. 1 entry, verb = "taste"
+    [00 34 01 00 00 0f]       "taste noun"
+
+193. 1 entry, verb = "feel", synonyms = "touch"
+    [00 35 01 00 00 0f]       "feel noun"
+
+192. 1 entry, verb = "clean", synonyms = "cleanse", "dust", "polish", "rub",
+                                         "scrub", "shine", "sweep", "wash",
+                                         "wipe"
+    [00 44 01 00 00 0f]       "clean noun"
+
+191. 1 entry, verb = "attach", synonyms = "fasten", "fix", "tie"
+    [00 3a 01 00 00 42 f3 95 01 00 00 0f] "attach noun to noun"
+
+190. 1 entry, verb = "burn", synonyms = "ignite", "incinerat", "kindle",
+                                        "light", "melt"
+    [00 2c 01 00 00 0f]       "burn noun"
+
+189. 1 entry, verb = "drink", synonyms = "sip", "swallow"
+    [00 3b 01 00 00 0f]       "drink noun"
+
+188. 1 entry, verb = "fill"
+    [00 3c 01 00 00 0f]       "fill noun"
+
+187. 1 entry, verb = "carve", synonyms = "chop", "cut", "prune", "slice"
+    [00 37 01 00 00 0f]       "carve noun"
+
+186. 3 entries, verb = "hop", synonyms = "jump", "skip"
+    [00 38 0f]                "hop"
+    [00 39 42 e7 e0 01 00 00 0f] "hop over noun"
+    [00 15 62 e7 6b 52 e7 7d 01 00 00 0f] "hop on / onto noun"
+
+185. 1 entry, verb = "dig", synonyms = "excavate"
+    [00 36 01 00 00 0f]       "dig noun"
+
+184. 1 entry, verb = "score"
+    [00 0a 0f]                "score"
+
+183. 1 entry, verb = "full"
+    [00 0b 42 ec e7 0f]       "full score"
+
+182. 1 entry, verb = "fullscore"
+    [00 0b 0f]                "fullscore"
+
+181. 1 entry, verb = "quit"
+    [00 01 0f]                "quit"
+
+180. 1 entry, verb = "q"
+    [00 01 0f]                "q"
+
+179. 1 entry, verb = "save"
+    [00 04 0f]                "save"
+
+178. 1 entry, verb = "restart"
+    [00 02 0f]                "restart"
+
+177. 1 entry, verb = "restore"
+    [00 03 0f]                "restore"
+
+176. 1 entry, verb = "verify"
+    [00 05 0f]                "verify"
+
+175. 1 entry, verb = "version"
+    [00 77 0f]                "version"
+
+174. 3 entries, verb = "script"
+    [00 06 0f]                "script"
+    [00 06 42 e7 6b 0f]       "script on"
+    [00 07 42 e7 47 0f]       "script off"
+
+173. 3 entries, verb = "transcrip"
+    [00 06 0f]                "transcrip"
+    [00 06 42 e7 6b 0f]       "transcrip on"
+    [00 07 42 e7 47 0f]       "transcrip off"
+
+172. 1 entry, verb = "superbrie"
+    [00 1c 0f]                "superbrie"
+
+171. 1 entry, verb = "short"
+    [00 1c 0f]                "short"
+
+170. 1 entry, verb = "verbose"
+    [00 1b 0f]                "verbose"
+
+169. 1 entry, verb = "long"
+    [00 1b 0f]                "long"
+
+168. 1 entry, verb = "brief"
+    [00 1a 0f]                "brief"
+
+167. 1 entry, verb = "normal"
+    [00 1a 0f]                "normal"
+
+166. 1 entry, verb = "nouns"
+    [00 00 0f]                "nouns"
+
+165. 1 entry, verb = "pronouns"
+    [00 00 0f]                "pronouns"
+
+164. 3 entries, verb = "notify"
+    [00 08 0f]                "notify"
+    [00 08 42 e7 6b 0f]       "notify on"
+    [00 09 42 e7 47 0f]       "notify off"
+
+163. 1 entry, verb = "unlockall"
+    [00 78 0f]                "unlockall"
+
+162. 2 entries, verb = "bang", synonyms = "knock", "rap", "tap"
+    [00 40 01 00 00 0f]       "bang noun"
+    [00 40 42 e7 6b 01 00 00 0f] "bang on noun"
+
+161. 1 entry, verb = "adjust"
+    [00 62 01 00 00 0f]       "adjust noun"
+
+160. 1 entry, verb = "embroider", synonyms = "sew", "stitch"
+    [00 59 86 64 26 01 00 09 0f] "embroider [parse $6426] topic"
+
+159. 2 entries, verb = "wrap"
+    [04 10 01 00 00 62 e1 7a 52 f7 7c 01 00 00 0f] "wrap noun in / with noun"
+REVERSE
+    [00 10 01 00 00 42 d2 41 01 00 00 0f] "wrap noun around noun"
+
+158. 1 entry, verb = "muffle", synonyms = "shroud", "silence"
+    [04 10 01 00 00 62 e1 7a 52 f7 7c 01 00 00 0f] "muffle noun in / with noun"
+REVERSE
+
+157. 1 entry, verb = "scry"
+    [00 79 42 e1 7a 01 00 00 0f] "scry in noun"
+
+156. 1 entry, verb = "untie"
+    [00 0d 01 00 00 0f]       "untie noun"
+
+155. 1 entry, verb = "loosen"
+    [00 0d 01 00 00 0f]       "loosen noun"
+
+154. 1 entry, verb = "free"
+    [00 0d 01 00 00 0f]       "free noun"
+
+153. 1 entry, verb = "solve"
+    [00 63 01 00 00 0f]       "solve noun"
+
+152. 1 entry, verb = "complete"
+    [00 63 01 00 00 0f]       "complete noun"
+
+151. 2 entries, verb = "finish"
+    [00 63 01 00 00 0f]       "finish noun"
+    [00 40 01 00 06 0f]       "finish creature"
+
+150. 1 entry, verb = "dance"
+    [00 59 86 64 3d 01 00 09 0f] "dance [parse $643d] topic"
+
+149. 1 entry, verb = "squint"
+    [00 59 86 64 3e 0f]       "squint [parse $643e]"
+
+148. 1 entry, verb = "greet"
+    [00 59 86 64 41 01 00 09 0f] "greet [parse $6441] topic"
+
+147. 11 entries, verb = "use"
+    [00 40 83 65 51 0f]       "use noun = [parse $6551]"
+    [00 29 83 65 54 0f]       "use noun = [parse $6554]"
+    [00 28 83 65 58 0f]       "use noun = [parse $6558]"
+    [00 25 83 65 5c 0f]       "use noun = [parse $655c]"
+    [00 26 83 65 61 0f]       "use noun = [parse $6561]"
+    [00 23 83 65 70 0f]       "use noun = [parse $6570]"
+    [00 15 83 65 77 0f]       "use noun = [parse $6577]"
+    [00 25 83 65 74 0f]       "use noun = [parse $6574]"
+    [00 7a 01 00 00 0f]       "use noun"
+    [04 21 01 00 01 42 e7 6b 83 65 66 0f] "use held on noun = [parse $6566]"
+REVERSE
+    [04 22 01 00 01 42 e7 6b 83 65 6b 0f] "use held on noun = [parse $656b]"
+REVERSE
+
+146. 2 entries, verb = "return"
+    [00 7c 0f]                "return"
+    [00 6c 42 f3 95 85 65 7b 0f] "return to scope = [parse $657b]"
+
+145. 1 entry, verb = "revisit"
+    [00 6c 85 65 84 0f]       "revisit scope = [parse $6584]"
+
+144. 1 entry, verb = "back"
+    [00 7c 0f]                "back"
+
+143. 1 entry, verb = "retreat"
+    [00 7c 0f]                "retreat"
+
+142. 1 entry, verb = "exits"
+    [00 7d 0f]                "exits"
+
+141. 1 entry, verb = "dirs"
+    [00 7d 0f]                "dirs"
+
+140. 1 entry, verb = "direction"
+    [00 7d 0f]                "direction"
+
+139. 1 entry, verb = "dir"
+    [00 7d 0f]                "dir"
+
+138. 4 entries, verb = "find", synonyms = "seek"
+    [00 7d 42 db fe 0f]       "find exits"
+    [00 7d 42 db f5 0f]       "find exit"
+    [00 68 85 65 8d 0f]       "find scope = [parse $658d]"
+    [00 69 85 65 98 0f]       "find scope = [parse $6598]"
+
+137. 6 entries, verb = "hint"
+    [00 6d 0f]                "hint"
+    [00 85 0f]                "hint"
+    [00 61 42 d1 3c 85 65 a2 0f] "hint about scope = [parse $65a2]"
+    [00 61 42 d1 3c 85 65 ac 0f] "hint about scope = [parse $65ac]"
+    [00 60 42 d1 3c 85 65 b7 0f] "hint about scope = [parse $65b7]"
+    [00 6e 42 d1 3c 01 00 09 0f] "hint about topic"
+
+136. 3 entries, verb = "remember"
+    [00 61 85 65 c1 0f]       "remember scope = [parse $65c1]"
+    [00 61 85 65 cb 0f]       "remember scope = [parse $65cb]"
+    [00 60 85 65 d6 0f]       "remember scope = [parse $65d6]"
+
+135. 1 entry, verb = "rooms"
+    [00 7e 0f]                "rooms"
+
+134. 1 entry, verb = "places"
+    [00 7e 0f]                "places"
+
+133. 1 entry, verb = "objects"
+    [00 7f 0f]                "objects"
+
+132. 1 entry, verb = "things"
+    [00 7f 0f]                "things"
+
+131. 4 entries, verb = "novice"
+    [00 80 42 e7 47 0f]       "novice off"
+    [00 81 42 e7 6b 0f]       "novice on"
+    [00 80 42 e5 8e 42 e7 47 0f] "novice mode off"
+    [00 81 42 e5 8e 42 e7 6b 0f] "novice mode on"
+
+130. 2 entries, verb = "bite"
+    [00 29 83 65 e0 0f]       "bite noun = [parse $65e0]"
+    [00 40 01 00 00 0f]       "bite noun"
+
+129. 2 entries, verb = "kick"
+    [00 40 01 00 00 0f]       "kick noun"
+    [00 40 62 e1 7a 72 da 2a 52 f3 44 01 00 00 0f] "kick in / down / through
+noun"
+
+128. 2 entries, verb = "activate", synonyms = "start"
+    [00 02 62 e7 e0 52 d1 72 0f] "activate over / again"
+    [00 23 01 00 00 0f]       "activate noun"
+
+127. 1 entry, verb = "deactivat", synonyms = "stop"
+    [00 24 01 00 00 0f]       "deactivat noun"
+
+126. 1 entry, verb = "reach"
+    [00 0d 62 dd 81 72 f3 dd 52 f3 95 01 00 00 0f] "reach for / towards / to
+noun"
+
+125. 1 entry, verb = "extinguis", synonyms = "snuff"
+    [00 6f 01 00 00 0f]       "extinguis noun"
+
+124. 1 entry, verb = "end"
+    [00 01 0f]                "end"
+
+123. 1 entry, verb = "help"
+    [00 85 0f]                "help"
+
+122. 1 entry, verb = "hints"
+    [00 85 0f]                "hints"
+
+121. 1 entry, verb = "about"
+    [00 85 0f]                "about"
+
+120. 1 entry, verb = "info"
+    [00 85 0f]                "info"
+
+119. 1 entry, verb = "menu"
+    [00 85 0f]                "menu"
+
+118. 1 entry, verb = "credits"
+    [00 85 0f]                "credits"
+
+117. 2 entries, verb = "test"
+    [00 86 0f]                "test"
+    [00 86 01 00 07 0f]       "test special"
+
+    **** Verb action routines ****
+
+  Action table entries = 135
+
+action# action-routine "verb..."
+
+  0. 2f258  "nouns"
+            "pronouns"
+  1. 2f1a8  "quit"
+            "q"
+            "end"
+  2. 2f1d8  "restart"
+            "activate over / again"
+  3. 2f1c8  "restore"
+  4. 2f1b8  "save"
+  5. 2f1e8  "verify"
+  6. 2f208  "script"
+            "script on"
+            "transcrip"
+            "transcrip on"
+  7. 2f218  "script off"
+            "transcrip off"
+  8. 2f268  "notify"
+            "notify on"
+  9. 2f278  "notify off"
+ 10. 2f188  "score"
+ 11. 2f198  "full score"
+            "fullscore"
+ 12. 2ed18  "acquire inventory"
+            "display inventory / invent / i / inv"
+            "i"
+ 13. 2ed28  "acquire multi"
+            "acquire down noun"
+            "get multi"
+            "pick noun"
+            "pick multi up"
+            "pick up multi"
+            "remove multi"
+            "untie noun"
+            "loosen noun"
+            "free noun"
+            "reach for / towards / to noun"
+ 14. 2ed48  "place multiheld down"
+            "place down multiheld"
+            "discard multiheld"
+            "discard away noun"
+            "set multiheld down"
+            "set down multi"
+ 15. 2ed38  "acquire multiinside off noun"
+            "acquire multiinside from noun"
+            "get multiinside [parse $6675] noun"
+            "get multiinside from noun"
+            "remove multiinside from noun"
+ 16. 2ed58  "place multiexcept on / onto noun"
+            "discard multiexcept on / onto noun"
+            "close noun with noun" REVERSE
+            "set multiheld [parse $6681] noun"
+            "wrap noun in / with noun" REVERSE
+            "wrap noun around noun"
+            "muffle noun in / with noun" REVERSE
+ 17. 2ed68  "place multiexcept in / inside / into noun"
+            "insert multiexcept in / into noun"
+            "discard multiexcept in / into / down noun"
+ 18. 163f8  
+ 19. 2eea8  "deliver creature noun = [parse $6492]" REVERSE
+            "deliver creature held" REVERSE
+            "deliver noun = [parse $648e] to creature"
+            "deliver held to creature"
+ 20. 2eeb8  "display creature held" REVERSE
+            "display held to creature"
+ 21. 2ed98  "get in / into / on / onto noun"
+            "stand on noun"
+            "creep noun"
+            "creep into / in / inside / through noun"
+            "board noun = [parse $6518]"
+            "board noun = [parse $651c]"
+            "board noun"
+            "sit on / in / inside noun"
+            "sit on top of noun"
+            "hop on / onto noun"
+            "use noun = [parse $6577]"
+ 22. 2edb8  "get off noun"
+ 23. 2eda8  "get out / off / up"
+            "get down"
+            "stand"
+            "stand up"
+            "exit"
+ 24. 164f8  
+ 25. 2ed88  "creep"
+            "creep [parse $662f]"
+            "creep noun = [parse $6496]"
+            "creep [parse $662f] [parse $6640]"
+            "l [parse $662f] [parse $6640]"
+            "ransack [parse $6640]"
+ 26. 2f248  "brief"
+            "normal"
+ 27. 2f238  "verbose"
+            "long"
+ 28. 2f228  "superbrie"
+            "short"
+ 29. 2edc8  "l"
+            "l [parse $662f]"
+ 30. 2edd8  "l noun"
+            "l at noun"
+            "check noun"
+ 31. 2ede8  "l under noun"
+            "l behind noun"
+ 32. 2edf8  "l inside / in / into / through noun"
+            "l out noun"
+            "ransack"
+            "ransack noun"
+ 33. 2ee28  "open noun with held"
+            "unlock noun with held"
+            "use held on noun = [parse $6566]" REVERSE
+ 34. 2ee18  "lock noun with held"
+            "use held on noun = [parse $656b]" REVERSE
+ 35. 2ee38  "rotate noun on"
+            "rotate on noun"
+            "switch noun"
+            "switch noun on"
+            "use noun = [parse $6570]"
+            "activate noun"
+ 36. 2ee48  "close off noun"
+            "rotate noun off"
+            "rotate off noun"
+            "switch noun off"
+            "switch off noun"
+            "deactivat noun"
+ 37. 2ee58  "open noun = [parse $6510]"
+            "open noun"
+            "use noun = [parse $655c]"
+            "use noun = [parse $6574]"
+ 38. 2ee68  "close noun = [parse $6514]"
+            "close noun"
+            "close up noun"
+            "use noun = [parse $6561]"
+ 39. 2ee88  "acquire off noun"
+            "remove held"
+            "disrobe held"
+ 40. 2ee78  "don noun = [parse $648a]"
+            "don held"
+            "place on held"
+            "use noun = [parse $6558]"
+ 41. 2ee98  "eat noun = [parse $654d]"
+            "eat held"
+            "use noun = [parse $6554]"
+            "bite noun = [parse $65e0]"
+ 42. 2efb8  "y"
+ 43. 2efc8  "no"
+ 44. 2efd8  "burn noun"
+ 45. 2efe8  "pray"
+ 46. 2eff8  "awake"
+            "awake up"
+ 47. 2eec8  "awake creature"
+            "awake creature up"
+            "awake up creature"
+ 48. 2eef8  "embrace creature"
+ 49. 2f008  "think"
+ 50. 2f018  "breathe"
+            "breathe noun"
+ 51. 2f028  "listen"
+            "listen to noun"
+            "hear noun"
+ 52. 2f038  "taste noun"
+ 53. 2ef48  "feel noun"
+ 54. 2f048  "dig noun"
+ 55. 2f058  "carve noun"
+ 56. 2f068  "hop"
+ 57. 2f078  "hop over noun"
+ 58. 2f088  "attach noun to noun"
+ 59. 2f098  "drink noun"
+ 60. 2f0a8  "fill noun"
+ 61. 2f0b8  "sorry"
+ 62. 2f0c8  "damn"
+ 63. 2f0d8  "bother"
+ 64. 2eee8  "attack noun = [parse $6538]"
+            "attack noun"
+            "bang noun"
+            "bang on noun"
+            "finish creature"
+            "use noun = [parse $6551]"
+            "bite noun"
+            "kick noun"
+            "kick in / down / through noun"
+ 65. 2f0e8  "dive"
+ 66. 2f0f8  "swing noun"
+            "swing on noun"
+ 67. 2f108  "blow held"
+            "blow on / in / through noun"
+ 68. 2f118  "clean noun"
+ 69. 16870  
+ 70. 2f128  "set noun to topic"
+ 71. 2f138  "wave"
+ 72. 2ef58  "wave noun"
+ 73. 2ef68  "drag noun"
+ 74. 2ef78  "clear noun"
+ 75. 2ef88  "rotate noun"
+ 76. 2ef98  "clear noun noun = [parse $6532]"
+            "clear noun to noun = [parse $6535]"
+ 77. 2efa8  "squash noun"
+ 78. 2eed8  "discard held at / against / on / onto noun"
+ 79. 2ef18  "tell creature about topic"
+ 80. 2ef08  "answer topic to creature" REVERSE
+            "answer topic to / at / for scope = [parse $6544]" REVERSE
+ 81. 2ef28  "ask creature about topic"
+ 82. 2f148  "buy noun"
+ 83. 2f158  "hum"
+ 84. 2f168  "creep down noun = [parse $6499]"
+            "creep up noun = [parse $649c]"
+            "ascend noun"
+            "ascend up / over noun"
+ 85. 2ed78  "wait"
+            "wait [parse $662f]"
+            "wait [parse $6657]"
+ 86. 2f178  "nap"
+ 87. 2ee08  "l up topic in noun" REVERSE
+            "consult noun on / about topic"
+            "read noun about / on topic"
+            "read about topic in noun" REVERSE
+            "read topic in noun" REVERSE
+ 88. 2ef38  "ask creature for noun"
+ 89. 2c108  "acquire [parse $6417] my breath"
+            "acquire [parse $6416] breath"
+            "embroider [parse $6426] topic"
+            "dance [parse $643d] topic"
+            "squint [parse $643e]"
+            "greet [parse $6441] topic"
+ 90. 164d8  
+ 91. 164e8  
+ 92. 163b8  
+ 93. 2f298  "lock noun"
+ 94. 2f288  "unlock noun"
+ 95. 2f328  "l noun = [parse $64ed]"
+ 96. 2f3f8  "hint about scope = [parse $65b7]"
+            "remember scope = [parse $65d6]"
+ 97. 2f3e8  "hint about scope = [parse $65a2]"
+            "hint about scope = [parse $65ac]"
+            "remember scope = [parse $65c1]"
+            "remember scope = [parse $65cb]"
+ 98. 2f2b8  "adjust noun"
+ 99. 2f2e8  "solve noun"
+            "complete noun"
+            "finish noun"
+100. 2f308  "read noun"
+101. 2f348  "creep on / through / across / around noun = [parse $649f]"
+            "creep to / around / near / by noun"
+102. 2f2d8  "acquire held [parse $65f2] noun"
+            "place held [parse $65f2] noun"
+103. 2f2f8  "dive in / across noun"
+104. 2f3a8  "creep to scope = [parse $64d8]"
+            "l for scope = [parse $64fb]"
+            "find scope = [parse $658d]"
+105. 2f3b8  "creep to scope = [parse $64e3]"
+            "l for scope = [parse $6506]"
+            "find scope = [parse $6598]"
+106. 2f338  "l toward scope = [parse $64f0]"
+107. 2f388  "creep scope = [parse $64c6]"
+            "creep outside scope = [parse $64cf]"
+108. 2f358  "creep to scope = [parse $64a2]"
+            "creep back to scope = [parse $64ab]"
+            "return to scope = [parse $657b]"
+            "revisit scope = [parse $6584]"
+109. 2f3c8  "hint"
+110. 2f3d8  "hint about topic"
+111. 2f468  "place out noun"
+            "blow out noun"
+            "extinguis noun"
+112. 23438  "dbr number"
+113. 23468  "dbr number off"
+114. 234b8  "rules"
+115. 234c8  "rules all"
+116. 234d8  "rules off"
+117. 234e8  "scenes"
+118. 234f8  "scenes off"
+119. 2f1f8  "version"
+120. 2f2a8  "unlockall"
+121. 2f2c8  "scry in noun"
+122. 2f318  "use noun"
+123. 2f368  "creep to scope = [parse $64b4]"
+            "creep [parse $662f] scope = [parse $64bd]"
+            "ransack scope = [parse $651f]"
+124. 2f378  "creep back"
+            "return"
+            "back"
+            "retreat"
+125. 2f398  "exits"
+            "dirs"
+            "direction"
+            "dir"
+            "find exits"
+            "find exit"
+126. 2f408  "rooms"
+            "places"
+127. 2f418  "objects"
+            "things"
+128. 2f428  "novice off"
+            "novice mode off"
+129. 2f438  "novice on"
+            "novice mode on"
+130. 2f448  "wait in scope = [parse $653b]"
+131. 2f458  "pray for / to topic"
+132. 2f478  "ransack scope = [parse $6528]"
+133. 2f488  "hint"
+            "help"
+            "hints"
+            "about"
+            "info"
+            "menu"
+            "credits"
+134. 36c88  "test"
+            "test special"
+
+    **** Prepositions ****
+
+  Table entries = 0
+
+
+    **** Dictionary ****
+
+  Word separators = ".,""
+  Word count = 1109, word size = 9
+
+[   1] a         [   2] about     [   3] above     [   4] acquire   
+[   5] across    [   6] activate  [   7] adjust    [   8] again     
+[   9] against   [  10] all       [  11] almost    [  12] am        
+[  13] amusing   [  14] an        [  15] anatomica [  16] and       
+[  17] another   [  18] answer    [  19] apartment [  20] apothecar 
+[  21] apple     [  22] apples    [  23] apprentic [  24] area      
+[  25] areas     [  26] argos     [  27] arm       [  28] armories  
+[  29] armory    [  30] arms      [  31] around    [  32] arrival   
+[  33] art       [  34] artwork   [  35] ascend    [  36] ask       
+[  37] assassina [  38] assortmen [  39] at        [  40] athanasiu 
+[  41] attach    [  42] attack    [  43] awake     [  44] awaken    
+[  45] away      [  46] back      [  47] balconies [  48] balcony   
+[  49] bang      [  50] banister  [  51] bar       [  52] bars      
+[  53] basement  [  54] basements [  55] basket    [  56] beam      
+[  57] beams     [  58] bear      [  59] bears     [  60] bearses   
+[  61] beast     [  62] beasts    [  63] bed       [  64] bedroom   
+[  65] bedrooms  [  66] beds      [  67] behind    [  68] bell      
+[  69] bellroom  [  70] bellrooms [  71] bells     [  72] below     
+[  73] bench     [  74] benches   [  75] bencheses [  76] benchs    
+[  77] bentwood  [  78] beside    [  79] binding   [  80] bishop    
+[  81] bishops   [  82] bit       [  83] bite      [  84] bits      
+[  85] black     [  86] blow      [  87] boar      [  88] board     
+[  89] boars     [  90] bones     [  91] book      [  92] books     
+[  93] bookses   [  94] bookstand [  95] both      [  96] bother    
+[  97] branches  [  98] bread     [  99] break     [ 100] breath    
+[ 101] breathe   [ 102] breathing [ 103] breeze    [ 104] bridge    
+[ 105] brief     [ 106] bring     [ 107] broad     [ 108] broken    
+[ 109] bronze    [ 110] brown     [ 111] buckle    [ 112] buckles   
+[ 113] bulb      [ 114] bulbs     [ 115] burn      [ 116] burnt     
+[ 117] but       [ 118] buttons   [ 119] buy       [ 120] by        
+[ 121] cage      [ 122] cages     [ 123] candle    [ 124] candles   
+[ 125] cane      [ 126] canes     [ 127] cantheriu [ 128] carry     
+[ 129] carve     [ 130] carved    [ 131] carving   [ 132] carvings  
+[ 133] castings  [ 134] castingse [ 135] castle    [ 136] castles   
+[ 137] ceiling   [ 138] central   [ 139] chain     [ 140] chamber   
+[ 141] chambers  [ 142] chamberse [ 143] chandelie [ 144] check     
+[ 145] chef      [ 146] chefs     [ 147] chess     [ 148] chessboar 
+[ 149] chessplay [ 150] childhood [ 151] chime     [ 152] chimes    
+[ 153] chop      [ 154] clapper   [ 155] clappers  [ 156] clay      
+[ 157] clean     [ 158] cleanse   [ 159] clear     [ 160] climb     
+[ 161] cloister  [ 162] close     [ 163] cloth     [ 164] cloud     
+[ 165] clouds    [ 166] cloven    [ 167] cobbler   [ 168] coins     
+[ 169] collectio [ 170] comma     [ 171] comma,    [ 172] compact   
+[ 173] complete  [ 174] conical   [ 175] considera [ 176] consult   
+[ 177] contract  [ 178] contracts [ 179] control   [ 180] cook      
+[ 181] cooks     [ 182] cophetua  [ 183] copper    [ 184] cord      
+[ 185] cords     [ 186] corridor  [ 187] corridors [ 188] counter   
+[ 189] counterto [ 190] courtyard [ 191] cover     [ 192] cow       
+[ 193] cowbell   [ 194] crack     [ 195] credits   [ 196] creep     
+[ 197] cross     [ 198] crowd     [ 199] crypt     [ 200] crypts    
+[ 201] crystal   [ 202] curious   [ 203] curse     [ 204] curses    
+[ 205] cut       [ 206] d         [ 207] dad       [ 208] daddy     
+[ 209] dagger    [ 210] daggers   [ 211] damn      [ 212] dance     
+[ 213] dank      [ 214] dark      [ 215] dark-col  [ 216] darkness  
+[ 217] darn      [ 218] dayglass  [ 219] dbr       [ 220] deactivat 
+[ 221] dead      [ 222] debtor's  [ 223] decaying  [ 224] definite  
+[ 225] deliver   [ 226] demon     [ 227] depart    [ 228] descend   
+[ 229] describe  [ 230] destroy   [ 231] devil     [ 232] diagram   
+[ 233] dig       [ 234] digestive [ 235] dining    [ 236] dinner    
+[ 237] dir       [ 238] direction [ 239] dirs      [ 240] discard   
+[ 241] discarded [ 242] dish      [ 243] dishes    [ 244] disjuncti 
+[ 245] display   [ 246] disrobe   [ 247] dive      [ 248] djinn     
+[ 249] djinni    [ 250] doctor    [ 251] doff      [ 252] domain    
+[ 253] don       [ 254] door      [ 255] doors     [ 256] down      
+[ 257] downstair [ 258] drag      [ 259] drat      [ 260] drawbridg 
+[ 261] drawer    [ 262] drawers   [ 263] drawerses [ 264] drawing   
+[ 265] drawings  [ 266] drawingse [ 267] drink     [ 268] drip      
+[ 269] dripping  [ 270] drop      [ 271] dry       [ 272] duke      
+[ 273] dull      [ 274] dust      [ 275] dusts     [ 276] dwarf     
+[ 277] e         [ 278] each      [ 279] ear       [ 280] ears      
+[ 281] east      [ 282] eat       [ 283] eight     [ 284] eighteen  
+[ 285] elephant  [ 286] eleven    [ 287] elzibad   [ 288] elzibads  
+[ 289] embrace   [ 290] embroider [ 291] emirate   [ 292] empty     
+[ 293] enclosed  [ 294] encloseds [ 295] end       [ 296] ends      
+[ 297] enormous  [ 298] enter     [ 299] entrance  [ 300] equipment 
+[ 301] essex     [ 302] every     [ 303] everythin [ 304] examine   
+[ 305] excavate  [ 306] except    [ 307] exit      [ 308] exits     
+[ 309] exterior  [ 310] exteriors [ 311] extinguis [ 312] eye       
+[ 313] eyes      [ 314] fabric    [ 315] face      [ 316] familiar  
+[ 317] family    [ 318] fasten    [ 319] father    [ 320] father's  
+[ 321] feast     [ 322] feasts    [ 323] feather   [ 324] feed      
+[ 325] feel      [ 326] feet      [ 327] fetch     [ 328] fifteen   
+[ 329] fight     [ 330] fighter   [ 331] fighters  [ 332] fighting  
+[ 333] figure    [ 334] fill      [ 335] find      [ 336] finger    
+[ 337] fingers   [ 338] finish    [ 339] fire      [ 340] fireplace 
+[ 341] fist      [ 342] fists     [ 343] five      [ 344] fix       
+[ 345] flagstone [ 346] fling     [ 347] floor     [ 348] floorboar 
+[ 349] food      [ 350] foot      [ 351] for       [ 352] forest    
+[ 353] forests   [ 354] fountain  [ 355] fountains [ 356] four      
+[ 357] fourteen  [ 358] fragmenta [ 359] frame     [ 360] frames    
+[ 361] framework [ 362] framing   [ 363] free      [ 364] from      
+[ 365] fruit     [ 366] fuck      [ 367] full      [ 368] fullscore 
+[ 369] fully     [ 370] functioni [ 371] g         [ 372] galleries 
+[ 373] gallery   [ 374] gamesman  [ 375] garden    [ 376] gardens   
+[ 377] gargoyle  [ 378] gargoyles [ 379] gate      [ 380] gates     
+[ 381] gems      [ 382] generic   [ 383] genie     [ 384] get       
+[ 385] ghost     [ 386] ghosts    [ 387] gilded    [ 388] girdle    
+[ 389] girdles   [ 390] give      [ 391] glass     [ 392] gleaming  
+[ 393] glitterin [ 394] go        [ 395] goat      [ 396] goats     
+[ 397] god       [ 398] gold      [ 399] gong      [ 400] gongs     
+[ 401] grab      [ 402] great     [ 403] green     [ 404] greens    
+[ 405] greet     [ 406] grey      [ 407] ground    [ 408] guard     
+[ 409] guards    [ 410] guest     [ 411] gun       [ 412] half      
+[ 413] hall      [ 414] halls     [ 415] hand      [ 416] handle    
+[ 417] hands     [ 418] harness   [ 419] harnesses [ 420] haunted   
+[ 421] head      [ 422] hear      [ 423] hearts    [ 424] heavy     
+[ 425] helical   [ 426] helm      [ 427] helmet    [ 428] helmets   
+[ 429] help      [ 430] her       [ 431] here      [ 432] him       
+[ 433] hint      [ 434] hints     [ 435] his       [ 436] hiss      
+[ 437] historica [ 438] histories [ 439] history   [ 440] hit       
+[ 441] hold      [ 442] hole      [ 443] holes     [ 444] holler    
+[ 445] home      [ 446] homunculu [ 447] hop       [ 448] horns     
+[ 449] hourglass [ 450] house     [ 451] how       [ 452] how's     
+[ 453] hug       [ 454] hum       [ 455] hurl      [ 456] husband   
+[ 457] hyperconn [ 458] i         [ 459] ignite    [ 460] illuminat 
+[ 461] image     [ 462] images    [ 463] impotence [ 464] in        
+[ 465] inaudible [ 466] incinerat [ 467] indefinit [ 468] info      
+[ 469] ingratitu [ 470] injure    [ 471] ink       [ 472] inkpot    
+[ 473] inkpots   [ 474] inscripti [ 475] insert    [ 476] inside    
+[ 477] inspect   [ 478] into      [ 479] inv       [ 480] invent    
+[ 481] inventory [ 482] iron      [ 483] iron-bar  [ 484] it        
+[ 485] its       [ 486] ivory     [ 487] jagged    [ 488] jigsaw    
+[ 489] jump      [ 490] key       [ 491] keys      [ 492] kick      
+[ 493] kill      [ 494] kindle    [ 495] king      [ 496] kiss      
+[ 497] kitchen   [ 498] kitchens  [ 499] knight    [ 500] knights   
+[ 501] knock     [ 502] known     [ 503] l         [ 504] labyrinth 
+[ 505] ladder    [ 506] ladders   [ 507] lamp      [ 508] lamplight 
+[ 509] lamps     [ 510] large     [ 511] law       [ 512] lawn      
+[ 513] leaf      [ 514] leafs     [ 515] leak      [ 516] leaks     
+[ 517] leather   [ 518] leave     [ 519] leaves    [ 520] leg       
+[ 521] legs      [ 522] leviathan [ 523] librarian [ 524] libraries 
+[ 525] library   [ 526] lie       [ 527] life      [ 528] lifes     
+[ 529] light     [ 530] lighted   [ 531] lighting  [ 532] lights    
+[ 533] linen     [ 534] lines     [ 535] lions     [ 536] liquid    
+[ 537] listen    [ 538] lit       [ 539] little    [ 540] location  
+[ 541] lock      [ 542] long      [ 543] look      [ 544] loosen    
+[ 545] loud      [ 546] lower     [ 547] lucifer   [ 548] lucrezia  
+[ 549] lucrezias [ 550] m         [ 551] magic     [ 552] maiden    
+[ 553] maidens   [ 554] main      [ 555] malta     [ 556] man       
+[ 557] map       [ 558] maps      [ 559] marks     [ 560] materials 
+[ 561] maze      [ 562] me        [ 563] mechanica [ 564] medici-c  
+[ 565] melodious [ 566] melt      [ 567] men       [ 568] menu      
+[ 569] mephistop [ 570] metal     [ 571] midday    [ 572] midnight  
+[ 573] miniature [ 574] mirror    [ 575] mirror-s  [ 576] mirrors   
+[ 577] mirrorses [ 578] moat      [ 579] moats     [ 580] mode      
+[ 581] molds     [ 582] mosaic    [ 583] mouth     [ 584] move      
+[ 585] mud       [ 586] muds      [ 587] muffle    [ 588] mural     
+[ 589] murals    [ 590] murder    [ 591] musket    [ 592] muted     
+[ 593] my        [ 594] myself    [ 595] n         [ 596] nap       
+[ 597] napkins   [ 598] narrow    [ 599] ne        [ 600] near      
+[ 601] neat      [ 602] next      [ 603] nine      [ 604] nineteen  
+[ 605] no        [ 606] noisy     [ 607] noon      [ 608] normal    
+[ 609] north     [ 610] northeast [ 611] northwest [ 612] nose      
+[ 613] note      [ 614] notes     [ 615] noteses   [ 616] notify    
+[ 617] nouns     [ 618] novice    [ 619] null      [ 620] nw        
+[ 621] o         [ 622] o'clock   [ 623] oak       [ 624] objects   
+[ 625] obscene   [ 626] observe   [ 627] ocean     [ 628] of        
+[ 629] off       [ 630] offer     [ 631] oily      [ 632] old       
+[ 633] on        [ 634] one       [ 635] onto      [ 636] oops      
+[ 637] open      [ 638] ordinary  [ 639] ostler    [ 640] ostlers   
+[ 641] other     [ 642] out       [ 643] outdoors  [ 644] outdoorse 
+[ 645] outside   [ 646] over      [ 647] padlock   [ 648] painting  
+[ 649] paintings [ 650] pair      [ 651] palace    [ 652] papa      
+[ 653] paper     [ 654] papers    [ 655] paperses  [ 656] paperwork 
+[ 657] paradise  [ 658] paradises [ 659] parliamen [ 660] parlor    
+[ 661] parlors   [ 662] parrot    [ 663] partially [ 664] passage   
+[ 665] passages  [ 666] past      [ 667] pasture   [ 668] pasturela 
+[ 669] path      [ 670] pattering [ 671] pay       [ 672] peasants  
+[ 673] peg       [ 674] pen       [ 675] pendant   [ 676] pendants  
+[ 677] pens      [ 678] perch     [ 679] perchs    [ 680] pick      
+[ 681] pickled   [ 682] picture   [ 683] pictures  [ 684] piece     
+[ 685] pieces    [ 686] pile      [ 687] pillow    [ 688] pillows   
+[ 689] place     [ 690] places    [ 691] plain     [ 692] platter   
+[ 693] play      [ 694] player    [ 695] please    [ 696] pm        
+[ 697] poison    [ 698] polish    [ 699] portrait  [ 700] portraits 
+[ 701] pray      [ 702] precedent [ 703] present   [ 704] preserved 
+[ 705] press     [ 706] princess  [ 707] private   [ 708] proceed   
+[ 709] pronouns  [ 710] prostitut [ 711] prune     [ 712] pull      
+[ 713] pullcord  [ 714] punch     [ 715] purchase  [ 716] push      
+[ 717] put       [ 718] puzzle    [ 719] puzzles   [ 720] q         
+[ 721] quarter   [ 722] quarters  [ 723] quarterse [ 724] quill     
+[ 725] quit      [ 726] rain      [ 727] rains     [ 728] ransack   
+[ 729] rap       [ 730] reach     [ 731] read      [ 732] record    
+[ 733] records   [ 734] reference [ 735] refuse    [ 736] regret    
+[ 737] regrets   [ 738] relic     [ 739] relics    [ 740] relicses  
+[ 741] relief    [ 742] remember  [ 743] remove    [ 744] restart   
+[ 745] restore   [ 746] resuscita [ 747] retreat   [ 748] return    
+[ 749] revealed  [ 750] revisit   [ 751] revive    [ 752] ring      
+[ 753] rings     [ 754] roar      [ 755] rocky     [ 756] roof      
+[ 757] room      [ 758] rooms     [ 759] roomses   [ 760] root      
+[ 761] rooted    [ 762] roots     [ 763] rose      [ 764] roses     
+[ 765] roseses   [ 766] rotate    [ 767] rotunda   [ 768] rotundas  
+[ 769] rows      [ 770] rowses    [ 771] royal     [ 772] rub       
+[ 773] rules     [ 774] run       [ 775] rush      [ 776] s         
+[ 777] sand      [ 778] sands     [ 779] sandy     [ 780] satan     
+[ 781] save      [ 782] say       [ 783] scale     [ 784] scarlet   
+[ 785] scenes    [ 786] scepter   [ 787] sceptre   [ 788] sceptres  
+[ 789] score     [ 790] scrap     [ 791] scraps    [ 792] scream    
+[ 793] screw     [ 794] script    [ 795] scrub     [ 796] scry      
+[ 797] scrying   [ 798] se        [ 799] sea       [ 800] search    
+[ 801] seas      [ 802] see       [ 803] seek      [ 804] self      
+[ 805] semi-col  [ 806] sequentia [ 807] servant   [ 808] set       
+[ 809] seven     [ 810] seventeen [ 811] sew       [ 812] shackle   
+[ 813] shackles  [ 814] shake     [ 815] shed      [ 816] sheet     
+[ 817] sheets    [ 818] shelves   [ 819] shift     [ 820] shine     
+[ 821] ship      [ 822] ships     [ 823] shit      [ 824] shoe      
+[ 825] shoemaker [ 826] shoes     [ 827] shoeses   [ 828] short     
+[ 829] shout     [ 830] shove     [ 831] show      [ 832] shroud    
+[ 833] shut      [ 834] siblings  [ 835] sifting   [ 836] sign      
+[ 837] signs     [ 838] silence   [ 839] silver    [ 840] sing      
+[ 841] single    [ 842] sinister  [ 843] sip       [ 844] sister    
+[ 845] sisters   [ 846] sit       [ 847] six       [ 848] sixteen   
+[ 849] skeleton  [ 850] sketch    [ 851] sketches  [ 852] skip      
+[ 853] skull     [ 854] sky       [ 855] sleep     [ 856] slice     
+[ 857] smack     [ 858] small     [ 859] smash     [ 860] smell     
+[ 861] smoke-da  [ 862] snake     [ 863] snakes    [ 864] snatch    
+[ 865] sneak     [ 866] sniff     [ 867] snuff     [ 868] solve     
+[ 869] some      [ 870] sorry     [ 871] soup      [ 872] south     
+[ 873] southeast [ 874] southwest [ 875] space     [ 876] speak     
+[ 877] spirit    [ 878] spirits   [ 879] splashing [ 880] squash    
+[ 881] squeeze   [ 882] squint    [ 883] stain     [ 884] stair     
+[ 885] staircase [ 886] stairs    [ 887] stand     [ 888] stands    
+[ 889] start     [ 890] state     [ 891] steal     [ 892] stench    
+[ 893] stenchs   [ 894] steps     [ 895] stepses   [ 896] steward   
+[ 897] stick     [ 898] still     [ 899] stink     [ 900] stinkies  
+[ 901] stinky    [ 902] stitch    [ 903] stone     [ 904] stones    
+[ 905] stoneses  [ 906] stool     [ 907] stools    [ 908] stop      
+[ 909] storage   [ 910] storages  [ 911] storybook [ 912] strap-li  
+[ 913] straw     [ 914] straws    [ 915] stride    [ 916] strike    
+[ 917] stroll    [ 918] structure [ 919] strut     [ 920] studies   
+[ 921] study     [ 922] stuff     [ 923] stuffed   [ 924] superbrie 
+[ 925] supper    [ 926] suppers   [ 927] supplies  [ 928] supply    
+[ 929] surroundi [ 930] sw        [ 931] swallow   [ 932] swatch    
+[ 933] swatchs   [ 934] sweep     [ 935] swim      [ 936] swing     
+[ 937] switch    [ 938] sword     [ 939] swords    [ 940] swordstic 
+[ 941] table     [ 942] tables    [ 943] take      [ 944] tambourin 
+[ 945] tap       [ 946] tapestrie [ 947] tapestry  [ 948] tassels   
+[ 949] taste     [ 950] tell      [ 951] ten       [ 952] test      
+[ 953] that      [ 954] the       [ 955] their     [ 956] them      
+[ 957] then      [ 958] these     [ 959] thick     [ 960] thing     
+[ 961] things    [ 962] think     [ 963] thirteen  [ 964] thirty    
+[ 965] this      [ 966] those     [ 967] thread    [ 968] threads   
+[ 969] three     [ 970] through   [ 971] throw     [ 972] thump     
+[ 973] tie       [ 974] tight     [ 975] tiled     [ 976] tiles     
+[ 977] timer     [ 978] tip       [ 979] to        [ 980] token     
+[ 981] tokens    [ 982] top       [ 983] torture   [ 984] toss      
+[ 985] touch     [ 986] toward    [ 987] towards   [ 988] tower     
+[ 989] towers    [ 990] tract     [ 991] transcrip [ 992] translati 
+[ 993] trap      [ 994] trapdoor  [ 995] trapdoors [ 996] treasure  
+[ 997] treasures [ 998] tree      [ 999] trees     [1000] trickling 
+[1001] turban    [1002] turn      [1003] twelve    [1004] twenty    
+[1005] twenty-e  [1006] twenty-f  [1007] twenty-n  [1008] twenty-o  
+[1009] twenty-s  [1010] twenty-t  [1011] twist     [1012] two       
+[1013] u         [1014] uncover   [1015] under     [1016] undergrou 
+[1017] undo      [1018] unknown   [1019] unlit     [1020] unlock    
+[1021] unlockall [1022] unscrew   [1023] unset     [1024] untie     
+[1025] unwrap    [1026] up        [1027] upper     [1028] upstairs  
+[1029] use       [1030] using     [1031] verbose   [1032] verify    
+[1033] version   [1034] very      [1035] vial      [1036] vials     
+[1037] view      [1038] views     [1039] village   [1040] vine      
+[1041] vines     [1042] virgin    [1043] virgin's  [1044] virgins   
+[1045] w         [1046] wait      [1047] wake      [1048] walk      
+[1049] walk's    [1050] walks     [1051] wall      [1052] walls     
+[1053] wander    [1054] warning   [1055] wash      [1056] watch     
+[1057] water     [1058] wave      [1059] wax       [1060] waxes     
+[1061] weapon    [1062] weapons   [1063] weaponses [1064] wear      
+[1065] wedding   [1066] west      [1067] what      [1068] what's    
+[1069] when      [1070] when's    [1071] where     [1072] where's   
+[1073] whisper   [1074] whistle   [1075] whistling [1076] white     
+[1077] whitefish [1078] who       [1079] who's     [1080] whore     
+[1081] whores    [1082] why       [1083] why's     [1084] wilted    
+[1085] wind      [1086] windchime [1087] window    [1088] windows   
+[1089] wipe      [1090] with      [1091] wooden    [1092] worked    
+[1093] workshop  [1094] workshops [1095] wrap      [1096] wreck     
+[1097] writing   [1098] x         [1099] y         [1100] yell      
+[1101] yes       [1102] yggdram   [1103] yodel     [1104] yourself  
+[1105] yourselfs [1106] yvette    [1107] z         [1108] zoo       
+[1109] zoos      

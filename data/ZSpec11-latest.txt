@@ -1,0 +1,823 @@
+
+                      Z-Machine Standard 1.1 Document
+                      -------------------------------
+
+                   Authors: Kevin Bracey & Jason C. Penney
+                       Minor revisions: David Kinder
+
+
+                                INTRODUCTION
+                                ============
+
+This revision of the Z-Machine Standards Document has been written with
+the following aims:
+
+   1) To clarify problem areas in Standard 1.0, and correct errors
+   2) To allow more probing of interpreter capabilities
+   3) To clarify the use of Blorb with Standard 1.0
+   4) To add some simple extensions to the Version 5 and Version 6
+      screen models to increase flexibility
+
+As ever, interpreters *FULLY* implementing this Standard (apart from any
+optional parts whose absence are signalled through header bits) for a given
+Version shall indicate this by setting the Standard revision bytes in the
+header to $01 $01. (An interpreter might meet the Standard for all Versions
+other than V6, in which case it would not fill in the revision bytes when
+playing a V6 game).
+
+There have been instances in the past of interpreters that do not fully meet
+Standard 1.0 claiming Standard 1.0 compliance in the header. This sort of
+behaviour is dangerous, and likely to cause games that would otherwise work
+to break.
+
+Conversely, games that absolutely require Standard 1.1 features should not
+refuse outright to run on a non-Standard 1.1 interpreter - it may be
+implementing the new features you require, being deficient only in other
+areas. Instead, a warning should be issued to the user before proceeding.
+Of course, whereever possible games should have alternative behaviour
+automatically invoked for older interpreters.
+
+As with the rest of the Standard, all references to Version 5 in this
+document apply equally to Versions 7 and 8.
+
+The word SHOULD in this document denotes a strong recommendation -
+implementors may take other action if they have a good reason.
+
+Other specific phrasing, such as MUST, SHALL, WILL, DOES or ARE, indicates an
+absolute requirement of the Standard. Any deviation indicates non-compliance.
+
+
+                          UPDATES/CLARIFICATIONS
+                          ======================
+
+Memory layout
+-------------
+Version 6 and 7 story files are both limited to 512K , not 320K. The 320K
+limitation was an artificial one imposed by the Inform compiler - this has
+now been addressed by a compiler patch.
+
+
+Padding
+-------
+The standard currently states that story file padding beyond the length
+specified in the header must be all zero bytes. Many Infocom story files in
+fact contain non-zero data in the padding, so interpreters must be sure to
+exclude the padding from checksum calculations.
+
+
+Character set
+-------------
+In the past, not just in the Z-machine world, there has been general
+confusion over the rendering of ASCII/ZSCII/Latin-1/Unicode characters $27
+and $60. For the Z-machine, the traditional interpretations of
+right-single-quote/apostrophe and left-single-quote are preferred over the
+modern neutral-single-quote and grave accent - see Table 2A of the Inform
+Designer's Manual. $22 is a neutral double-quote.
+
+An alternative rendering is to interpret both $27 and $60 as neutral quotes,
+but interpreting $60 as a grave accent is to be avoided.
+
+No doubt aware of this confusion, Infocom never used character $60, and used
+$27 almost exclusively as an apostrophe - hardly any single quotes appear in
+Infocom games. Modern authors would do well to follow their lead.
+
+The few Infocom games that do use single quotes use $27 for both opening and
+closing - but even on many of their interpreters this looked a little odd, so
+suggesting that $27 be a right quote introduces no extra compatibility
+problems.
+
+Encoded text
+------------
+In Version 3 and later, many of Infocom's interpreters (and some subsequent
+interpreters, such as ITF's) treat two consecutive Z-characters 4 or 5 as
+shift locks, contrary to the Standard. As a result, story files should not
+use multiple consecutive 4 or 5 codes except for padding at the end of
+strings and dictionary words. In any case, these shift locks are not used in
+dictionary words, or any of Infocom's story files.
+
+Two extra rules apply to encoding text for dictionary words in Versions 1 and
+2 only (see 3.7). If the truncation to 6 Z-characters leaves a multi-
+Z-character construction incomplete, the end-bit of the last word is not set.
+Also, shift-lock Z-characters 4 and 5 are used instead of the single-shift
+Z-characters 2 and 3 when the next two characters come from the same
+alphabet. These two rules affect the dictionary of Zork I, which contains
+"nasty-" (looking), "storm-" (tossed) and "pdp10". Arguably, the first rule
+could be a bug, but the 3 extant V1 and V2 files are consistent. The games
+are still winnable without access to those dictionary words.
+
+
+Unicode
+-------
+The Z-machine is not expected to handle complex Unicode formatting like
+combining characters, bidirectional formatting and unusual line-wrapping
+rules - it remains firmly based in the world of left-to-right text with space
+breaks between words - every character is viewed as separate spacing glyph.
+
+All output is in presentation order, from left to right. To handle languages
+like Arabic or Hebrew, text would have to be output "visually", with manual
+line breaks (possibly via an in-game formatting engine).
+
+Far eastern languages are generally straightforward, except they usually use
+no spaces, and line wraps can occur almost anywhere. The easiest to way to
+handle this would be for the game to turn off buffering. A more sophisticated
+game might include its own formatting engine. Also, fixed-space output is
+liable to be problematical with most Far Eastern fonts, which use a mixture
+of "full width" and "half width" forms - all half-width characters would have
+to be forced to full width.
+
+The Z-machine does not provide access to non-BMP characters (ie characters
+outside the range U+0000 to U+FFFF).
+
+Unicode characters U+0000 to U+001F and U+007F to U+009F are control codes,
+and must not be used.
+
+
+Header capabilities bits
+------------------------
+The (Version 6) sound and graphics bits in Flags 1 indicate general
+availability of sound and graphics - ie whether the associated opcodes are
+available and functional.
+
+The bits in Flags 2 and 3 should ideally be set reflecting current
+availability, rather than general support. In other words, if no Blorb (or
+other) resources for this story file have been found, or if the Blorb file
+contains no graphics or no sound, the corresponding bits should be cleared.
+
+Also, it is recommended that interpreters that would prompt for an auxiliary
+Blorb file should do so immediately on start up if any of the "game wants to
+use sound/music/graphics" bits are set; this allows the bits to be cleared if
+no file is forthcoming, before the game starts execution. The game can then
+take appropriate action.
+
+Bit 4 of Flags 1 indicates the availability of the fixed-pitch style, not
+Font 4.
+
+
+The fixed-pitch header bit
+--------------------------
+Use of the fixed-pitch bit in the header is deprecated in Version 5 and
+later - it is an irregularity in the Z-machine that complicates the
+implementation of buffering and text style handling in the interpreter, and
+may even slow down all memory stores.
+
+Font 4 (or Fixed Pitch style) should be used instead. Infocom did not use the
+fixed-pitch bit after Version 4, and it is not implemented in at least some
+of their later interpreters.
+
+However, the fixed-pitch bit is modified by the "font" statement in
+Inform 6, so is used by many current Inform generated files. Therefore
+interpreter authors must support it in Version 5. Support in Version 6 is not
+required.
+
+
+Operand evaluation
+------------------
+Opcode operands are always evaluated from first to last - this order is
+important when the stack pointer appears as an argument. Thus
+"@sub sp sp" subtracts the second-from-top stack item from the topmost
+stack item.
+
+
+Indirect variable references
+----------------------------
+In the seven opcodes that take indirect variable references (inc, dec,
+inc_chk, dec_chk, load, store, pull), an indirect reference to the stack
+pointer does not push or pull the top item of the stack - it is read
+or written in place.
+
+
+@je
+---
+je can take between 2 and 4 operands. je with just 1 operand is not
+permitted.
+
+
+@art_shift and @log_shift
+-------------------------
+The "places" operand must be in the range -15 to +15, otherwise behaviour
+is undefined. (This is because most interpreters will be implementing the
+opcodes using C's << and >> operators, and this is the range of ISO C
+standard-defined behaviour for shifts of a 16-bit type).
+
+
+@jump
+-----
+The destination of the jump opcode is
+
+   Address after instruction + Offset - 2
+
+This is analogous to the calculation for branch offsets.
+
+
+@read
+-----
+Read must return 13 when terminated by the user pressing "enter". See
+section 3.
+
+
+@scan_table
+-----------
+The dictionary of opcodes currently states that bit 8 of form indicates
+words - this should be bit 7.
+
+
+@tokenise
+---------
+The dictionary and flag operands of tokenise are optional.
+
+
+Output streams
+--------------
+Section 7.1.2 is incorrect - output streams 3 and 4 are present only in
+Version 5 and later.
+
+
+Version 6 windows
+-----------------
+Interpreter authors are advised that all 8 windows in Version 6 must be
+treated identically. The only ways in which they are distinguished are:
+
+   * Different default positions + sizes
+   * Different default attributes
+   * @split_window manipulates windows 0 and 1 specifically
+   * Window 1 is the default mouse window
+
+Differences in interpreter behaviour must only arise from differences in
+window attributes and properties.
+
+
+@set_text_style
+---------------
+It was previously unclear in the Standard whether instructions like 
+
+   @set_text_style 5;   ! Reverse+Italic
+
+were legal. None of Infocom's game files make use of such forms, and many
+interpreters will not handle them correctly. Such instructions should be
+avoided; instead you can use multiple @set_text_style opcodes specifying each
+style in turn, with the most important last, thus:
+
+   @set_text_style 4;   ! Italic
+   @set_text_style 1;   ! Reverse - overrides if combination not available
+
+However, Standard 1.1 does now require such combinations in a single opcode
+to be supported, as they are in some of Infocom's later interpreters - see
+below. But unless a game absolutely requires Standard 1.1 anyway (eg for true
+colour support), it is probably best to request only one style per opcode for
+backwards compatibility.
+
+
+@set_font
+---------
+Font 2 (the picture font) is undefined. No Standard interpreter will
+implement it, and set_font 2 will always return 0. Any new fonts will have
+numbers higher than 4. Fonts 5-1023 are reserved for future Standards to
+specify. Local use may be made of higher font numbers.
+
+
+@get_prop_len
+-------------
+@get_prop_len 0 must return 0. This is required by some Infocom games and
+files generated by old versions of Inform.
+
+
+@set_cursor
+-----------
+S8.7.2.3 states that it is illegal to move the cursor outside the current
+size of the upper window. S8.8.3.5 gives the equivalent rule for Version 6.
+
+Many modern games have been lax in obeying this rule; in particular some
+of the standard Inform menu libraries have violated it. Infocom's Sherlock
+also miscalculated the size of the upper window to use for box quotes.
+
+It is recommended that if the cursor is moved below the split position in
+V4/V5, interpreters should execute an implicit "split_window" to contain the
+requested cursor position, if possible. Diagnostics should be produced, but
+should be suppressable.
+
+In V6, it is legal to position the cursor up against the right or bottom of a
+window - eg at (1,1) in a zero-sized window or at (641,401) in 640x400
+window. Indeed, this is the default state of windows 1 to 7, and the cursor
+may be left at the right-hand side of a window when wrapping is off.
+
+Attempting to print text (including new-lines) when the cursor is fewer than
+font_height units from the bottom of the window results in undefined
+behaviour - this precludes any printing in windows less than font_height
+units high.
+
+
+@split_window
+-------------
+In Version 6, the Standard states that the cursor remains in the same
+absolute position. This is an extension to the Z-machine, as this rule is not
+followed by Infocom's own interpreters, which keep the same window-relative
+position. The Standard behaviour more closely mimics Version 5's
+split_window.
+
+The opcode dictionary incorrectly states that "the width and x-coordinates of
+windows 0 and 1 are not altered." The correct behaviour is detailed in
+S8.8.4.1.
+
+
+@output_stream
+--------------
+Interpreter authors are reminded that "nested" uses of @output_stream 3
+have been required since Standard 1.0; see S7.1.2.1.1.
+
+
+@read_mouse
+-----------
+@read_mouse is realtime.  When called it must read the current mouse
+location, whether or not the mouse is inside the current mouse window. Most
+modern interpreters get this wrong, but Infocom's interpreters behave this
+way. Interpreters are allowed to show positions and button states outside the
+Z-machine screen if the pointer is outside the interpreter's own user
+interface (using negative values if needed). 
+
+Programs must be prepared to cope with this. For example in a painting
+program you might want to ignore all buttons down outside the screen. When
+dragging something you might want to keep trying to follow the pointer, even
+outside the screen, until the buttons are released. 
+
+Interpreters may constrain the pointer to the screen as long as buttons are
+held down - this might aid dragging operations - although this is not
+required.
+
+Previous revisions of the Standard stated that mouse buttons were numbered in
+the following fashion: "low bits on the right of the mouse, rising as one
+looks left".  This is a rather non-portable implementation and should be
+abandoned in modern interpreters in favour of the "primary" button being the
+lowest bit, the "secondary" (if present) being the next lowest bit, and so
+on, up to a potential 16 buttons. The ordering of buttons should be that
+which is most natural for the host system. Here are some suggested
+assignments:
+
+                             Button assignments
+             Platform   Bit 0 (low)   Bit 1     Bit 2
+             ----------------------------------------
+             RISC OS    Select        Adjust    Menu
+             MacOS      Primary/only  Secondary Tertiary   ...
+             Windows    Left          Right     Middle
+             X          Left          Right     Middle
+
+There is no way for a story file to ascertain how many buttons are available
+to the user, so it is recommended that vital functions are not accessible
+only via secondary mouse buttons. Some of a platform's buttons may be
+reserved for the interpreter's use and not visible to the story file, in
+which case the remaining buttons must be packed down to the lowest bits.
+
+
+Mouse clicks
+------------
+In Version 5, mouse clicks are always represented with an input ZSCII code of
+254.
+
+In Version 6, a single click, or the first click of a double-click, is passed
+in as 254. The second click of a double-click is passed in as 253.
+
+
+Mouse co-ordinates
+------------------
+Mouse co-ordinates, whether returned by the @read_mouse opcode or written
+into the header during input, are always relative to the top of the display
+at (1,1), regardless of the position of the current mouse window.
+
+
+@picture_data
+-------------
+@picture_data 0 branches if any pictures are available.
+
+
+@sound_effect
+-------------
+To clarify:
+
+    @sound_effect number 3/4
+
+will stop (and optionally unload) sound "number" if it is currently playing
+(or loaded). Otherwise it is ignored.
+
+    @sound_effect 0 3/4
+
+will stop (and unload) all sounds - music and effects.
+
+The "repeats" parameter in Version 5 indicates the total number of times to
+play the sound, not the number of times to repeat it after the first play.
+Setting repeats to zero in V5 is illegal - it is suggested that interpreters
+treat this as a request to play the sound once, and maybe issue a warning.
+
+Callback routines are only called when the sound has played the requested
+number of times. If manually stopped or interrupted by another sound, the
+routine is not called.
+
+The Blorb specification effectively revised Standard 1.0, as follows:
+
+"Sound" is split into two classes - "music" (eg Blorb SONG and MOD) and
+"effects" (eg Infocom .SND or Blorb AIFF).
+
+The "sound requested" header bit is left set if the interpreter supports
+either effects or music. It is only cleared if the interpreter can provide
+neither effects nor music.
+
+Music and effects are treated as two separate channels. Playing a new effect
+interrupts the current effect, but not the music, and vice versa. Whether
+loading a new sound (with @sound_effect n 1) stops the current one is
+implementation defined.
+
+Volume guidelines
+-----------------
+[ This would better live in the Blorb specification, but is partly
+  Z-machine specific. ]
+
+When using Blorb resources, the default interpreter behaviour (unless over-
+ridden by the player) should be for samples played at maximum volume (64), in
+one channel of a SONG or MOD played at volume 8, to be of equal volume to
+samples played at maximum volume (8) as an effect. This will be the natural
+behaviour if effects use one physical channel and MODs/SONGs use four
+physical channels.
+
+Ideally, a sound played at volume <n> in a SONG played at volume <m> should
+sound the same as when played as an effect at volume <n*m/64>. This mandates
+that the volume scale for effects be equivalent to the scale defined for
+samples in the MOD specification.
+
+If multi-channel effects are used, the overall volume should be independent
+of the number of channels used in the sound. Thus a stereo AIFF containing
+the same samples for left and right should sound as loud as a mono AIFF
+containing the same data. This will need adjustment of volume if stereo AIFFs
+use two physical channels and mono AIFFs use one. No adjustment would be
+required if an interpreter reduced all AIFFs to mono.
+
+
+Colour numbers
+--------------
+The presence of the "under the cursor" colour option, and in Standard 1.1
+the set_true_colour opcode (see below), raises the possibility of
+non-standard colour numbers appearing in window property 11. In addition, an
+interpreter may offer non-standard default colours, which need to appear in
+the story file header. We now give more detailed implementation guidelines.
+
+If a true colour, or an "under the cursor" colour, has been requested by the
+game, then the foreground or background colour shown in window property 11 is
+implementation defined, except that:
+
+      1) If the colour selected was one of the standard set (2-15), then
+         that colour is indicated in property 11.
+      2) If the colour selected was not one of the standard set, the colour
+         shown in property 11 will be >= 16.
+
+It is legal for interpreters to always show the same value in property 11 if
+a true or sampled colour is in use. As a result, story files cannot assume
+that setting a value that was read from property 11 will give the same
+colour, if @set_true_colour or @set_colour -1 has been used in that window.
+
+The same rules apply if an interpreter offers non-standard default colours
+(which need to be shown in the header) although in this case it would be
+ill-advised to show the same colour numbers for foreground and background -
+unless they can be distinguished, non-standard default colours should
+probably not be offered.
+
+If the interpreter offers a limited palette, then there is no problem, as it
+can be arranged for there to be fewer than 240 distinct non-standard colours.
+In an interpreter with a higher colour-depth, a good implementation would be
+to use colours 16-255 to represent the last 240 distinct non-standard colours
+used, re-using numbers after 240 colours have been used. This will minimize
+potential problems caused by non-standard colours, particularly when set as
+defaults. 
+
+Regardless of the limitations on colour numbers, in Version 6 each window
+must remember accurately the colour pair selected, so it is preserved across
+window switches.
+
+
+Status line redraw
+------------------
+The bit in the header described as "requesting status line redraw" would
+better be described as "requesting screen redraw". This may be set by
+modern interpreters after, for example, resizing the "screen"; games should
+ideally redraw the screen if they see this bit set. This will usually mean
+the game clears the screen contents and rearranges borders, etc, so the bit
+should not be set except when necessary.
+
+Behaviour after loading
+-----------------------
+Given the existence of Quetzal, a portable saved file format, it is quite
+possible that after loading, the game may be running on a different
+interpreter to that on which the game started. As a result, it is strongly
+advisable to recheck any interpreter capabilities (eg Standard version,
+unicode support, etc) after loading.
+
+
+
+                                ADDITIONS
+                                =========
+
+Blorb
+-----
+Blorb is the standard resource format for the Z-machine. Games should be
+distributed as
+
+    a) a single story file;
+    b) a story file with accompanying Blorb file;
+ or c) a stand-alone executable Blorb file.
+ 
+To minimise user confusion, Standard 1.1 interpreters should be able to run
+Z-code executables contained in either a plain story file, or embedded in a
+stand-alone Blorb 1.1 file. If the interpreter supports sound or graphics, it
+should be able to obtain those resources from either a stand-alone or
+separate Blorb 1.1 file (although the Standard does not preclude other
+formats).
+
+Embedded interpreters, or interpreters running on small platforms, may accept
+either Z-code or resources in some custom format, but these should come with
+some form of conversion utility. In the minimum case of a text-only
+interpreter, this might take the form of a Blorb to story file converter.
+
+
+Quetzal
+-------
+Quetzal is the standard saved game format for the Z-machine. Standard 1.1
+interpreters are recommended to be able to load Quetzal 1.4 files, and
+to save games in Quetzal 1.4 format by default.
+
+
+Header Extension
+----------------
+If the interpreter claims Standard 1.1 compliance then it supports the
+following extra words in the header extension table. If the header extension
+table is present, and the extra words are present, then a Standard 1.1
+interpreter will examine and update them.
+
+If the interpreter is not Standard 1.1, then the extra words will be ignored.
+Guidelines on behaviour in this case are supplied in the descriptions below.
+
+Note that the header extension table itself is a Version 5 feature, so the
+extra information here is not available in earlier Versions, despite the
+fact that some fields could be applicable.
+
+The new flags are placed in a new word, rather than in Flags 2, to minimize
+potential compatibility problems. To prevent future compatibility problems,
+all reserved bits in the Flags 3 word MUST be cleared by the interpreter.
+
+Word  V  Dyn Int Rst  Contents
+---- --- --- --- ---  --------------------------------
+ 4    5               Flags 3:
+      6       *   *   0: If set, game wants to use transparency
+                      (For all bits, Int clears again if it cannot provide
+                       the requested effect).
+ 5    5       *   *   True default foreground colour
+ 6    5       *   *   True default background colour
+
+
+0: If set, game wants to use transparency
+
+        In Version 6 colour 15 is defined as transparent.  If an
+        interpreter cannot provide transparency then it must clear
+        this bit.
+
+        Transparency is a new feature in Standard 1.1. Older interpreters
+        will not support this.
+
+All other bits in the flags word must be cleared by the interpreter.
+
+
+@save and @restore
+------------------
+EXT:0 0 5/* save table bytes name prompt -> (result)
+EXT:1 1 5/* restore table bytes name prompt -> (result)
+
+As of Standard 1.1 an additional optional parameter, prompt, is allowed on
+Version 5 extended save/restore.  This allows a game author to tell the
+interpreter whether it should ask for confirmation of the provided file name
+(prompt=1), or just silently save/restore using the provided filename
+(prompt=0).
+
+If the parameter is not provided, whether to prompt or not is a matter for
+the interpreter - this might be globally user-configurable. Infocom's
+interpreters do prompt for filenames, many modern ones do not.
+
+
+@buffer_screen
+--------------
+New opcode in Standard 1.1, for Version 6
+
+EXT:29 1D 6/* buffer_screen mode -> (result)
+
+Interpreters may use a backing store to store the Z-machine screen state,
+rather than plotting directly to the screen. This would normally be the case
+in a windowed operating system environment. If a backing store is in use,
+display changes executed by the Z-machine may not be immediately made visible
+to the user. Standard 1.1 adds the new opcode @buffer_screen to Version 6 to
+control screen updates. An interpreter is free to ignore the opcode if it
+doesn't fit its display model (in which case it must act as if buffer_screen
+is always set to 0).
+  
+When buffer_screen is set to 0 (the default), all display changes are
+expected to become visible to the user either immediately, or within a short
+period of time, at the interpreter's discretion. At a minimum, all updates
+become visible before waiting for input. Any intermediate display states
+between input requests may not be seen; for example when printing a large
+amount of new text into a scrolling window, all the intermediate scroll
+positions may or may not be shown.
+  
+When buffer_screen is set to 1, the interpreter need not change the visible
+display at all. Any display changes can be done purely in the backing store.
+A program may set buffer_screen to 1 before carrying out a complex layered
+graphical composition, to indicate that the intermediate states are not worth
+showing. When buffer_mode is set back to 0, the display is not necessarily
+updated immediately - if this is required, buffer_mode -1 must be issued as
+well. It would be extremely ill-advised to prompt for input with
+@buffer_screen set to 1.
+  
+With buffer_screen in either state, an update of the visible display can be
+forced immediately by issuing @buffer_screen -1, without altering the current
+buffering state. Note that @buffer_screen -1 does NOT flush the text buffer.
+  
+@buffer_screen returns the old buffer_screen state.
+
+
+@set_text_style
+---------------
+As of Standard 1.1, it is legal to request style combinations in a
+single @set_text_style opcode by adding the values (which are powers of two)
+together. If the parameter is non-zero, then all the styles given are
+activated. If the parameter is zero, then all styles are deactivated.
+
+If the interpreter is unable to provide the requested style combination, it
+shall give precedence first to the styles requested in the most recent call
+to @set_text_style, and within that to the highest bit, making the priority
+Fixed, Italic, Bold, Reverse.
+
+Although a story file can determine which individual styles are available by
+inspecting the header, there is no indication of which styles can be
+combined. To improve this situation, at least for Version 6, Standard 1.1
+requires window property 10 to show the actual style combination currently in
+use; with this a story file can probe for the availability of particular
+combinations. Pre-existing interpreters may or may not already do this
+correctly.
+
+
+@set_font
+---------
+EXT:4 4 6/- set_font font window -> (result)
+
+In Version 6, set_font has an optional window parameter, as for set_colour.
+This was part of the original Infocom design, but omitted by earlier
+Standards. It is reinstated here, as it is useful to be able to measure
+a font that is about to be used in another window, so that window can be
+sized before attempting to place the cursor in it.  A window number of -3
+signifies "the currently selected window"
+
+
+@set_colour
+-----------
+In Version 6 only, colour 15 is defined as transparent.  This is only valid
+as a background colour; an attempt to select it for the foreground should
+produce a diagnostic. Interpreters not supporting transparency shall ignore
+any attempt to select colour 15.
+
+If the current background colour is transparent, then printed text is
+superimposed on the current window contents, without filling the background
+behind the text. @erase_window, @erase_line and @erase_picture become null
+operations.
+
+The intent is to make it possible to superimpose text on non-uniform images.
+Up until now, only uniform images could be satisfactorily written on
+by sampling the background colour - that in itself would be problematical if
+the interpreter used dithering.
+
+Scrolling with the background set to transparent is not permitted, so
+transparent should only be requested in a non-scrolling window. It is not
+valid to use Reverse Video style with the background set to transparent.
+
+Instructions that prompt for user input, such as @read and @save, should be
+avoided when the background is set to transparent, as it will not generally
+be possible for text entry to take place satisfactorily in the absence of
+a defined background colour.
+
+Printing text multiple times on top itself with the background set to
+transparent should be avoided, as the interpreter may use anti-aliasing,
+resulting in the text getting progressively heavier.
+
+Standard 1.1 interpreters must provide the following basic colour set,
+regardless of machine type, in both Version 5 and Version 6:
+
+ -1 = sample      (true -3) [V6 only]
+  0 = current     (true -2)
+  1 = default     (true -1)
+  2 = black       (true $0000, $$0000000000000000)
+  3 = red         (true $001D, $$0000000000011101)
+  4 = green       (true $0340, $$0000001101000000)
+  5 = yellow      (true $03BD, $$0000001110111101)
+  6 = blue        (true $59A0, $$0101100110100000)
+  7 = magenta     (true $7C1F, $$0111110000011111)
+  8 = cyan        (true $77A0, $$0111011110100000)
+  9 = white       (true $7FFF, $$0111111111111111)
+ 10 = light grey  (true $5AD6, $$0101101011010110)
+ 11 = medium grey (true $4631, $$0100011000110001)
+ 12 = dark grey   (true $2D6B, $$0010110101101011)
+ 13  reserved
+ 14  reserved
+ 15 = transparent (true -4) [V6 only]
+
+
+This is the original Amiga Version 6 colour set. The colours have been gamma
+adjusted from the original 8-bit values used on the Amiga, on the assumption
+that the Amiga's system gamma is 1/1.8, using the following formula:
+
+  Z component = 31 * [(Amiga component / 15) ^ (1.8/2.2)]
+
+The equivalences between the colour numbers and true colours are recommended.
+The interpreter may allow the user to change the mapping, but the given
+values should be the default. If necessary, the game can check what true
+colour is being used for a given colour number using window properties 17 and
+18.
+
+Interpreters may provide different colours (eg making colour 10 dark grey),
+but if and only if they can detect they are running an original Infocom story
+file.
+
+Standard 1.1 interpreters should support multiple text colours on-screen
+simultaneously, and not implement the Amiga-style behaviour described in
+Standard 1.0 (changing all text already on screen to the current colour). If
+the multiple-colour model is in use, the interpreter number header byte should
+not be set to "Amiga" (4), except by explicit user action, as this has
+historically been examined to determine the colour model in use.
+
+When running story files in which the Flags 3 word is present, the multiple-
+colour model must be used.
+
+
+@set_true_colour
+----------------
+New opcode in Standard 1.1, for Version 5 or later, if Flags 1 bit 0 is set.
+
+EXT:13 D 5/* @set_true_colour foreground background
+         6/* @set_true_colour foreground background window
+
+fg and bg are 15-bit colour values - bit 15 = 0
+                                     bits 14-10 blue
+                                     bits 9-5 green
+                                     bits 4-0 red
+
+Magic values in the opcode are: (-1) = default setting
+                                (-2) = current setting
+                                (-3) = colour under cursor (V6 only)
+                                (-4) = transparent (V6 only)
+
+The interpreter selects the closest approximations available to
+the requested colours. In V6, the interpreter may store the approximations
+in window properties 16 and 17, so the program can tell how close it got
+(although it is acceptable for the interpreter to just store the requested
+value).
+
+In the minimal implementation, interpreters just need to match to the closest
+of the standard colours and internally call @set_colour (although that would
+have to ensure window properties 16 and 17 were updated). In a full
+implementation this would be turned around and @set_colour would internally
+call @set_true_colour.
+
+The default true colours are stored in the header extension table.
+
+The optional window parameter is only allowed in V6, and operates the same as
+in @set_colour.
+
+True colour specifications are in the sRGB colour space, $0000 being black
+and $7FFF being white. Colours should be gamma adjusted if necessary. See the
+PNG specification for a good introduction to colour spaces and gamma
+correction.
+
+
+@get_wind_prop
+--------------
+With the addition of true colours, two new Version 6 window properties are
+defined.
+
+The two new window properties are:
+
+   16: true foreground colour
+   17: true background colour
+
+These are not writable with @put_wind_prop.
+
+The true foreground and background colours show the actual colour being
+used for the foreground and background, whether it was set using @set_colour
+or @set_true_colour. Transparent is indicated as -4. If the colour was
+sampled from a picture then the value shown may be a 15-bit rounding of a
+more precise colour, leading to a slight inaccuracy if the colour is read
+and then written back.
+
+New opcode summary:
+-------------------
+St Br Opcode Hex V   Inform name and syntax
+*     EXT:0  0   5/* save table bytes name prompt -> (result)
+*     EXT:1  1   5/* restore table bytes name prompt -> (result)
+*     EXT:4  4   6/- set_font font window -> (result)
+      EXT:13 D   5/* set_true_colour foreground background
+                 6/* set_true_colour foreground background window
+*     EXT:29 1D  6/* buffer_screen mode -> (result)
+
+set_true_colour is not a good candidate for taking a 2OP encoding like
+set_colour, as it will have a low usage frequency, and it will rarely take
+small constants.
+

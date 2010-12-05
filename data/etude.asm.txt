@@ -1,0 +1,1431 @@
+Resident data ends at 5f4, program starts at 5f4, file ends at 407c
+
+Starting analysis pass at address 5f3
+
+End of analysis pass, low address = 5f4, high address = 3524
+
+[Start of code at 5f4]
+
+Main routine 5f4, 0 locals
+
+  5f5:  CALL_VS         3120 -> Gef
+  5fa:  QUIT            
+
+Routine 5fc, 2 locals
+
+  5fd:  LOADB           #32,#00 -> L00
+  601:  LOADB           #32,#01 -> L01
+  605:  JZ              L00 [FALSE] 64d
+  609:  JZ              L01 [FALSE] 64d
+  60d:  PRINT           "Your interpreter does not claim to follow any
+particular version of the Z-Spec.
+
+"
+  64a:  JUMP            686
+  64d:  PRINT           "Your interpreter claims to follow revision "
+  66c:  PRINT_NUM       L00
+  66f:  PRINT           "."
+  672:  PRINT_NUM       L01
+  675:  PRINT           " of the Z-Spec.
+
+"
+  686:  LOADB           #00,#01 -> L00
+  68a:  AND             L00,#01 -> -(SP)
+  68e:  JZ              (SP)+ [TRUE] 6bc
+  692:  PRINT           "Interpreter claims that colored text IS available.
+"
+  6b9:  JUMP            6e7
+  6bc:  PRINT           "Interpreter claims that colored text IS NOT available.
+"
+  6e7:  AND             L00,#04 -> -(SP)
+  6eb:  JZ              (SP)+ [TRUE] 721
+  6ef:  PRINT           "Interpreter claims that emphasized (bold) text IS
+available.
+"
+  71e:  JUMP            754
+  721:  PRINT           "Interpreter claims that emphasized (bold) text IS NOT
+available.
+"
+  754:  AND             L00,#08 -> -(SP)
+  758:  JZ              (SP)+ [TRUE] 792
+  75c:  PRINT           "Interpreter claims that italic (or underlined) text IS
+available.
+"
+  78f:  JUMP            7c9
+  792:  PRINT           "Interpreter claims that italic (or underlined) text IS
+NOT available.
+"
+  7c9:  AND             L00,#10 -> -(SP)
+  7cd:  JZ              (SP)+ [TRUE] 7ff
+  7d1:  PRINT           "Interpreter claims that fixed-width text IS available.
+"
+  7fc:  JUMP            82e
+  7ff:  PRINT           "Interpreter claims that fixed-width text IS NOT
+available.
+"
+  82e:  AND             L00,#20 -> -(SP)
+  832:  JZ              (SP)+ [TRUE] 862
+  836:  PRINT           "Interpreter claims that sound effects ARE available.
+"
+  85f:  JUMP            88f
+  862:  PRINT           "Interpreter claims that sound effects ARE NOT
+available.
+"
+  88f:  AND             L00,#80 -> -(SP)
+  893:  JZ              (SP)+ [TRUE] 8c1
+  897:  PRINT           "Interpreter claims that timed input IS available.
+"
+  8be:  JUMP            8ec
+  8c1:  PRINT           "Interpreter claims that timed input IS NOT available.
+"
+  8ec:  NEW_LINE        
+  8ed:  LOADB           #10,#01 -> L00
+  8f1:  AND             L00,#10 -> -(SP)
+  8f5:  JZ              (SP)+ [TRUE] 921
+  8f9:  PRINT           "Interpreter claims that "undo" IS available.
+"
+  91e:  JUMP            94a
+  921:  PRINT           "Interpreter claims that "undo" IS NOT available.
+"
+  94a:  RTRUE           
+
+Routine 94c, 4 locals
+
+  94d:  LOADB           #00,#01 -> L00
+  951:  AND             L00,#01 -> -(SP)
+  955:  JZ              (SP)+ [TRUE] 986
+  959:  PRINT           "Interpreter claims that colored text IS available.
+"
+  980:  STORE           L03,#01
+  983:  JUMP            9b4
+  986:  PRINT           "Interpreter claims that colored text IS NOT available.
+"
+  9b1:  STORE           L03,#00
+  9b4:  JZ              L03 [TRUE] 9d6
+  9b8:  PRINT           "
+In the square below, you should see"
+  9d3:  JUMP            9f9
+  9d6:  PRINT           "
+If it was, in the square below, you would see"
+  9f9:  PRINT           " vertical stripes of background color (matching the
+column headers) and horizontal rows of foreground color (that is, all # marks
+in a row the same color.)
+"
+  a68:  LOADW           #00,#08 -> Gef
+  a6c:  OR              #02,Gef -> Gef
+  a70:  STOREW          #00,#08,Gef
+  a75:  NEW_LINE        
+  a76:  PRINT           "Bk Rd Gr Yl Bl Mg Cy Wh
+"
+  a8d:  STORE           L01,#02
+  a90:  JL              L01,#0a [FALSE] abf
+  a95:  STORE           L02,#02
+  a98:  JL              L02,#0a [FALSE] aa9
+  a9c:  SET_COLOUR      L01,L02
+  a9f:  PRINT           "## "
+  aa4:  INC             L02
+  aa6:  JUMP            a98
+  aa9:  SET_COLOUR      #01,#01
+  aac:  PRINT           ": "
+  aaf:  LOADW           #04c0,L01 -> -(SP)
+  ab5:  PRINT_PADDR     (SP)+
+  ab7:  PRINT           "
+"
+  aba:  INC             L01
+  abc:  JUMP            a90
+  abf:  LOADW           #00,#08 -> Gef
+  ac3:  AND             #fffd,Gef -> Gef
+  ac9:  STOREW          #00,#08,Gef
+  ace:  RTRUE           
+
+Routine ad0, 1 local
+
+  ad1:  LOADB           #00,#01 -> L00
+  ad5:  AND             L00,#04 -> -(SP)
+  ad9:  JZ              (SP)+ [TRUE] b0f
+  add:  PRINT           "Interpreter claims that emphasized (bold) text IS
+available.
+"
+  b0c:  JUMP            b42
+  b0f:  PRINT           "Interpreter claims that emphasized (bold) text IS NOT
+available.
+"
+  b42:  AND             L00,#08 -> -(SP)
+  b46:  JZ              (SP)+ [TRUE] b80
+  b4a:  PRINT           "Interpreter claims that italic (or underlined) text IS
+available.
+"
+  b7d:  JUMP            bb7
+  b80:  PRINT           "Interpreter claims that italic (or underlined) text IS
+NOT available.
+"
+  bb7:  AND             L00,#10 -> -(SP)
+  bbb:  JZ              (SP)+ [TRUE] bed
+  bbf:  PRINT           "Interpreter claims that fixed-width text IS available.
+"
+  bea:  JUMP            c1c
+  bed:  PRINT           "Interpreter claims that fixed-width text IS NOT
+available.
+"
+  c1c:  NEW_LINE        
+  c1d:  SET_TEXT_STYLE  BOLDFACE
+  c20:  PRINT           "Test of emphasized (bold) text."
+  c39:  SET_TEXT_STYLE  ROMAN
+  c3c:  PRINT           "
+...normal font...
+"
+  c4f:  SET_TEXT_STYLE  EMPHASIS
+  c52:  PRINT           "Test of italic (or underlined) text."
+  c6f:  SET_TEXT_STYLE  ROMAN
+  c72:  PRINT           "
+...normal font...
+"
+  c85:  SET_TEXT_STYLE  REVERSE
+  c88:  PRINT           "Test of reverse-video text."
+  c9d:  SET_TEXT_STYLE  ROMAN
+  ca0:  PRINT           "
+...normal font...
+"
+  cb3:  LOADW           #00,#08 -> Gef
+  cb7:  OR              #02,Gef -> Gef
+  cbb:  STOREW          #00,#08,Gef
+  cc0:  PRINT           "Test of fixed-width text (using "font off", which sets
+a header bit)."
+  cf5:  LOADW           #00,#08 -> Gef
+  cf9:  AND             #fffd,Gef -> Gef
+  cff:  STOREW          #00,#08,Gef
+  d04:  PRINT           "
+...normal font...
+"
+  d17:  SET_TEXT_STYLE  FIXED_FONT
+  d1a:  PRINT           "Test of fixed-width text (using "@set_text_style 8")."
+  d47:  SET_TEXT_STYLE  ROMAN
+  d4a:  NEW_LINE        
+  d4b:  PRINT           "
+Now we will try combining styles. The Z-Spec does not require interpreters to
+display combined styles, so the lines below may not have all the styles they
+say they do.
+
+"
+  dc6:  SET_TEXT_STYLE  BOLDFACE
+  dc9:  SET_TEXT_STYLE  EMPHASIS
+  dcc:  PRINT           "Test of bold, italic text."
+  de1:  SET_TEXT_STYLE  ROMAN
+  de4:  NEW_LINE        
+  de5:  SET_TEXT_STYLE  BOLDFACE
+  de8:  SET_TEXT_STYLE  REVERSE
+  deb:  PRINT           "Test of bold, reverse text."
+  e00:  SET_TEXT_STYLE  ROMAN
+  e03:  NEW_LINE        
+  e04:  SET_TEXT_STYLE  EMPHASIS
+  e07:  SET_TEXT_STYLE  REVERSE
+  e0a:  PRINT           "Test of italic, reverse text."
+  e21:  SET_TEXT_STYLE  ROMAN
+  e24:  NEW_LINE        
+  e25:  SET_TEXT_STYLE  BOLDFACE
+  e28:  SET_TEXT_STYLE  EMPHASIS
+  e2b:  SET_TEXT_STYLE  REVERSE
+  e2e:  PRINT           "Test of bold, italic, reverse text."
+  e49:  SET_TEXT_STYLE  ROMAN
+  e4c:  NEW_LINE        
+  e4d:  PRINT           "
+The following are all printed with "font off" (that is, the header bit remains
+set, even though "style roman" statements occur.)
+"
+  eae:  LOADW           #00,#08 -> Gef
+  eb2:  OR              #02,Gef -> Gef
+  eb6:  STOREW          #00,#08,Gef
+  ebb:  SET_TEXT_STYLE  BOLDFACE
+  ebe:  PRINT           "Test of fixed, bold text."
+  ed3:  SET_TEXT_STYLE  ROMAN
+  ed6:  NEW_LINE        
+  ed7:  SET_TEXT_STYLE  EMPHASIS
+  eda:  PRINT           "Test of fixed, italic text."
+  eef:  SET_TEXT_STYLE  ROMAN
+  ef2:  NEW_LINE        
+  ef3:  SET_TEXT_STYLE  REVERSE
+  ef6:  PRINT           "Test of fixed, reverse text."
+  f0d:  SET_TEXT_STYLE  ROMAN
+  f10:  NEW_LINE        
+  f11:  SET_TEXT_STYLE  BOLDFACE
+  f14:  SET_TEXT_STYLE  EMPHASIS
+  f17:  PRINT           "Test of fixed, bold, italic text."
+  f32:  SET_TEXT_STYLE  ROMAN
+  f35:  NEW_LINE        
+  f36:  SET_TEXT_STYLE  BOLDFACE
+  f39:  SET_TEXT_STYLE  REVERSE
+  f3c:  PRINT           "Test of fixed, bold, reverse text."
+  f57:  SET_TEXT_STYLE  ROMAN
+  f5a:  NEW_LINE        
+  f5b:  SET_TEXT_STYLE  EMPHASIS
+  f5e:  SET_TEXT_STYLE  REVERSE
+  f61:  PRINT           "Test of fixed, italic, reverse text."
+  f7e:  SET_TEXT_STYLE  ROMAN
+  f81:  NEW_LINE        
+  f82:  SET_TEXT_STYLE  BOLDFACE
+  f85:  SET_TEXT_STYLE  EMPHASIS
+  f88:  SET_TEXT_STYLE  REVERSE
+  f8b:  PRINT           "Test of fixed, bold, italic, reverse text."
+  fac:  SET_TEXT_STYLE  ROMAN
+  faf:  NEW_LINE        
+  fb0:  LOADW           #00,#08 -> Gef
+  fb4:  AND             #fffd,Gef -> Gef
+  fba:  STOREW          #00,#08,Gef
+  fbf:  PRINT           "
+End of styles test.
+"
+  fd2:  RTRUE           
+
+Routine fd4, 3 locals
+
+  fd5:  PRINT_PADDR     L00
+  fd7:  PRINT           " = "
+  fdc:  PRINT_NUM       L01
+  fdf:  JE              L01,L02 [FALSE] fed
+  fe3:  PRINT           " (ok)
+"
+  fea:  JUMP            100b
+  fed:  PRINT           " (ERROR, should be "
+ 1000:  PRINT_NUM       L02
+ 1003:  PRINT           "!)
+"
+ 1008:  STORE           G00,#01
+ 100b:  RTRUE           
+
+Routine 100c, 3 locals
+
+ 100d:  PRINT           "This tests signed multiplication, division, and modulo
+operations. All these operations are supposed to be signed. (The Z-Spec 0.2
+erroneously says they are unsigned; this is corrected in 0.99.)
+
+"
+ 10a2:  PRINT           "I am assuming the convention that division always
+rounds towards zero (not towards negative infinity), and (A % B) always has the
+same sign as A. These conventions seem to be common among existing C/C++
+compilers. The Infocom interpreters also follow these conventions. (But they
+are not guaranteed by the C and C++ standards. Those only require that (A/B)*B
++ (A%B) == A, for all A and all nonzero B.)
+
+"
+ 11e1:  STORE           G00,#00
+ 11e4:  STORE           L00,#0d
+ 11e7:  STORE           L01,#05
+ 11ea:  MUL             L00,L01 -> L02
+ 11ee:  CALL_VN         fd4 (S013,L02,#41)
+ 11f6:  STORE           L00,#0d
+ 11f9:  STORE           L01,#fffb
+ 11fe:  MUL             L00,L01 -> L02
+ 1202:  CALL_VN         fd4 (S014,L02,#ffbf)
+ 120b:  STORE           L00,#fff3
+ 1210:  STORE           L01,#05
+ 1213:  MUL             L00,L01 -> L02
+ 1217:  CALL_VN         fd4 (S015,L02,#ffbf)
+ 1220:  STORE           L00,#fff3
+ 1225:  STORE           L01,#fffb
+ 122a:  MUL             L00,L01 -> L02
+ 122e:  CALL_VN         fd4 (S016,L02,#41)
+ 1236:  STORE           L00,#0d
+ 1239:  STORE           L01,#05
+ 123c:  DIV             L00,L01 -> L02
+ 1240:  CALL_VN         fd4 (S017,L02,#02)
+ 1248:  STORE           L00,#0d
+ 124b:  STORE           L01,#fffb
+ 1250:  DIV             L00,L01 -> L02
+ 1254:  CALL_VN         fd4 (S018,L02,#fffe)
+ 125d:  STORE           L00,#fff3
+ 1262:  STORE           L01,#05
+ 1265:  DIV             L00,L01 -> L02
+ 1269:  CALL_VN         fd4 (S019,L02,#fffe)
+ 1272:  STORE           L00,#fff3
+ 1277:  STORE           L01,#fffb
+ 127c:  DIV             L00,L01 -> L02
+ 1280:  CALL_VN         fd4 (S020,L02,#02)
+ 1288:  STORE           L00,#0d
+ 128b:  STORE           L01,#05
+ 128e:  MOD             L00,L01 -> L02
+ 1292:  CALL_VN         fd4 (S021,L02,#03)
+ 129a:  STORE           L00,#0d
+ 129d:  STORE           L01,#fffb
+ 12a2:  MOD             L00,L01 -> L02
+ 12a6:  CALL_VN         fd4 (S022,L02,#03)
+ 12ae:  STORE           L00,#fff3
+ 12b3:  STORE           L01,#05
+ 12b6:  MOD             L00,L01 -> L02
+ 12ba:  CALL_VN         fd4 (S023,L02,#fffd)
+ 12c3:  STORE           L00,#fff3
+ 12c8:  STORE           L01,#fffb
+ 12cd:  MOD             L00,L01 -> L02
+ 12d1:  CALL_VN         fd4 (S024,L02,#fffd)
+ 12da:  JZ              G00 [FALSE] 12e6
+ 12dd:  PRINT           "
+"
+ 12e0:  PRINT_PADDR     S001
+ 12e3:  JUMP            12ec
+ 12e6:  PRINT           "
+"
+ 12e9:  PRINT_PADDR     S002
+ 12ec:  RTRUE           
+
+Routine 12f0, 2 locals
+
+ 12f1:  PRINT           "This displays all the accented characters (encoding
+values 155 to 223). You will have to inspect your interpreter's display to make
+sure they appear correctly.
+
+"
+ 1368:  PRINT           "For the record, an umlaut is two dots; an acute accent
+is the one that slants up to the right; a grave accent is the one that slants
+down to the right; a circumflex is a pointy hat; a tilde is a squiggly hat; a
+ring is a ring; a cedilla is the little hook that hangs down below the C. Thorn
+looks like a capital D whose vertical bar extends both up and down, and Eth
+looks like a D with a little cross-stroke.
+
+"
+ 1491:  PRINT           "NOTE: Inform 6.11 contradicts the Z-Spec 0.99
+document, on the subject of the European angle-quotes (the ones that look like
+'>>' and '<<'). The Z-Spec says that the character '>>' is code 162, and '<<'
+is 163. However, Inform 6.11 (following the Z-Spec 0.2) compiles '@>>' as 163,
+and '@<<' as 162. The concensus is that the Z-Spec 0.2 and Inform 6.11 are
+wrong, and Z-Spec 0.99 and later are correct.
+
+"
+ 15fa:  STORE           L01,#00
+ 15fd:  JZ              #01 [TRUE] 175d
+ 1601:  JL              L01,#00 [TRUE] 1678
+ 1606:  AND             L01,#04 -> -(SP)
+ 160a:  JZ              (SP)+ [TRUE] 161a
+ 160d:  LOADW           #00,#08 -> Gef
+ 1611:  OR              #02,Gef -> Gef
+ 1615:  STOREW          #00,#08,Gef
+ 161a:  AND             L01,#02 -> -(SP)
+ 161e:  JZ              (SP)+ [TRUE] 1624
+ 1621:  SET_TEXT_STYLE  EMPHASIS
+ 1624:  AND             L01,#01 -> -(SP)
+ 1628:  JZ              (SP)+ [TRUE] 162e
+ 162b:  SET_TEXT_STYLE  BOLDFACE
+ 162e:  STORE           L00,#01
+ 1631:  LOADW           #04d4,#00 -> -(SP)
+ 1637:  JG              L00,(SP)+ [TRUE] 1656
+ 163b:  LOADW           #04d4,L00 -> -(SP)
+ 1641:  PRINT_PADDR     (SP)+
+ 1643:  MOD             L00,#04 -> -(SP)
+ 1647:  JZ              (SP)+ [FALSE] 164e
+ 164a:  NEW_LINE        
+ 164b:  JUMP            1651
+ 164e:  PRINT           "   "
+ 1651:  INC             L00
+ 1653:  JUMP            1631
+ 1656:  AND             L01,#04 -> -(SP)
+ 165a:  JZ              (SP)+ [TRUE] 166c
+ 165d:  LOADW           #00,#08 -> Gef
+ 1661:  AND             #fffd,Gef -> Gef
+ 1667:  STOREW          #00,#08,Gef
+ 166c:  AND             L01,#03 -> -(SP)
+ 1670:  JZ              (SP)+ [TRUE] 1676
+ 1673:  SET_TEXT_STYLE  ROMAN
+ 1676:  NEW_LINE        
+ 1677:  NEW_LINE        
+ 1678:  PRINT           "Type a digit (0..7) to repeat this list in a different
+text style, or "." to end this test.
+"
+ 16bf:  PRINT           "Options: 0: normal; 1: bold; 2: italic; 3: bold
+italic; 4: fixed-width; 5: fixed bold; 6: fixed italic; 7: fixed bold italic.
+"
+ 1730:  PRINT           "
+Accents> "
+ 173b:  READ_CHAR       #01 -> L00
+ 173f:  NEW_LINE        
+ 1740:  JE              L00,#2e [FALSE] 1745
+ 1744:  RTRUE           
+ 1745:  NEW_LINE        
+ 1746:  JL              L00,#30 [TRUE] 1755
+ 174a:  JG              L00,#37 [TRUE] 1755
+ 174e:  SUB             L00,#30 -> L01
+ 1752:  JUMP            175a
+ 1755:  STORE           L01,#ffff
+ 175a:  JUMP            15fd
+ 175d:  RTRUE           
+
+Routine 1760, 3 locals
+
+ 1761:  STORE           L02,#00
+ 1764:  JE              L00,#08 [FALSE] 1796
+ 1769:  PRINT           "control character 'ctrl-H' (z-machine 'delete')"
+ 1790:  STORE           L02,#02
+ 1793:  JUMP            19b3
+ 1796:  JE              L00,#0d [FALSE] 17c8
+ 179b:  PRINT           "control character 'ctrl-M' (z-machine 'newline')"
+ 17c2:  STORE           L02,#02
+ 17c5:  JUMP            19b3
+ 17c8:  JE              L00,#1b [FALSE] 17fc
+ 17cd:  PRINT           "control character 'ctrl-[' (z-machine 'escape')"
+ 17f6:  STORE           L02,#02
+ 17f9:  JUMP            19b3
+ 17fc:  JL              L00,#20 [FALSE] 1826
+ 1801:  PRINT           "control character 'ctrl-"
+ 1814:  ADD             L00,#40 -> -(SP)
+ 1818:  PRINT_CHAR      (SP)+
+ 181b:  PRINT           "'"
+ 181e:  STORE           L02,#ffff
+ 1823:  JUMP            19b3
+ 1826:  JE              L00,#7f [FALSE] 1847
+ 182a:  PRINT           "control character 'delete'"
+ 183f:  STORE           L02,#ffff
+ 1844:  JUMP            19b3
+ 1847:  JE              L00,#80 [FALSE] 1862
+ 184b:  PRINT           "undefined character"
+ 185a:  STORE           L02,#ffff
+ 185f:  JUMP            19b3
+ 1862:  JL              L00,#80 [FALSE] 1880
+ 1866:  PRINT           "ASCII character '"
+ 1877:  PRINT_CHAR      L00
+ 187a:  PRINT           "'"
+ 187d:  JUMP            19b3
+ 1880:  JL              L00,#9b [FALSE] 1926
+ 1885:  STORE           L02,#02
+ 1888:  STORE           Gef,L00
+ 188b:  JE              Gef,#81 [FALSE] 1899
+ 188f:  PRINT           "cursor up"
+ 1896:  JUMP            1923
+ 1899:  JE              Gef,#82 [FALSE] 18a9
+ 189d:  PRINT           "cursor down"
+ 18a6:  JUMP            1923
+ 18a9:  JE              Gef,#83 [FALSE] 18b9
+ 18ad:  PRINT           "cursor left"
+ 18b6:  JUMP            1923
+ 18b9:  JE              Gef,#84 [FALSE] 18c9
+ 18bd:  PRINT           "cursor right"
+ 18c6:  JUMP            1923
+ 18c9:  JE              Gef,#85,#86,#87 [TRUE] 18e5
+ 18d0:  JE              Gef,#88,#89,#8a [TRUE] 18e5
+ 18d7:  JE              Gef,#8b,#8c,#8d [TRUE] 18e5
+ 18de:  JE              Gef,#8e,#8f,#90 [FALSE] 18fa
+ 18e5:  PRINT           "function key "
+ 18f0:  SUB             L00,#84 -> -(SP)
+ 18f4:  PRINT_NUM       (SP)+
+ 18f7:  JUMP            1923
+ 18fa:  JE              Gef,#91,#92,#93 [TRUE] 1913
+ 1901:  JE              Gef,#94,#95,#96 [TRUE] 1913
+ 1908:  JE              Gef,#97,#98,#99 [TRUE] 1913
+ 190f:  JE              Gef,#9a [FALSE] 1923
+ 1913:  PRINT           "keypad key "
+ 191c:  SUB             L00,#91 -> -(SP)
+ 1920:  PRINT_NUM       (SP)+
+ 1923:  JUMP            19b3
+ 1926:  JL              L00,#e0 [FALSE] 193d
+ 192a:  SUB             L00,#9b -> -(SP)
+ 192e:  ADD             (SP)+,#01 -> -(SP)
+ 1932:  LOADW           #04d4,(SP)+ -> -(SP)
+ 1938:  PRINT_PADDR     (SP)+
+ 193a:  JUMP            19b3
+ 193d:  JL              L00,#fc [FALSE] 1958
+ 1941:  PRINT           "undefined character"
+ 1950:  STORE           L02,#ffff
+ 1955:  JUMP            19b3
+ 1958:  JL              L00,#ff [FALSE] 199f
+ 195d:  STORE           L02,#02
+ 1960:  STORE           Gef,L00
+ 1963:  JE              Gef,#fc [FALSE] 1973
+ 1967:  PRINT           "menu click"
+ 1970:  JUMP            199c
+ 1973:  JE              Gef,#fd [FALSE] 1989
+ 1977:  PRINT           "mouse double-click"
+ 1986:  JUMP            199c
+ 1989:  JE              Gef,#fe [FALSE] 199c
+ 198d:  PRINT           "mouse single-click"
+ 199c:  JUMP            19b3
+ 199f:  STORE           L02,#ffff
+ 19a4:  PRINT           "undefined character"
+ 19b3:  JE              L01,#01 [FALSE] 19fc
+ 19b8:  STORE           Gef,L02
+ 19bb:  JE              Gef,#ffff [FALSE] 19d5
+ 19c1:  PRINT           " (should NOT occur)"
+ 19d2:  JUMP            19f9
+ 19d5:  JE              Gef,#02 [FALSE] 19f9
+ 19da:  PRINT           " (should NOT occur in full-line input)"
+ 19f9:  JUMP            1a1a
+ 19fc:  JE              L01,#02 [FALSE] 1a1a
+ 1a00:  STORE           Gef,L02
+ 1a03:  JE              Gef,#ffff [FALSE] 1a1a
+ 1a09:  PRINT           " (should NOT occur)"
+ 1a1a:  RTRUE           
+
+Routine 1a1c, 4 locals
+
+ 1a1d:  PRINT           "This tests input of accented (actually, all)
+characters. Enter a line of text; it will be broken down, and you will see a
+list of what characters your interpreter thought you typed. Remember that the
+interpreter is supposed to reduce everything to lower-case.
+
+"
+ 1ad8:  PRINT           "Hit Enter by itself to return to the main menu.
+"
+ 1afd:  JZ              #01 [TRUE] 1b69
+ 1b01:  PRINT           "
+AccentedInput> "
+ 1b12:  SUB             #0050,#03 -> -(SP)
+ 1b18:  STOREB          #059a,#00,(SP)+
+ 1b1e:  STOREB          #059a,#01,#00
+ 1b24:  STORE           L00,#059a
+ 1b29:  STORE           L01,#00
+ 1b2c:  READ            L00 -> L01
+ 1b30:  NEW_LINE        
+ 1b31:  LOADB           #059a,#01 -> L03
+ 1b37:  JZ              L03 [FALSE] 1b3b
+ 1b3a:  RTRUE           
+ 1b3b:  STORE           L01,#00
+ 1b3e:  JL              L01,L03 [FALSE] 1b66
+ 1b43:  ADD             #02,L01 -> -(SP)
+ 1b47:  LOADB           #059a,(SP)+ -> L02
+ 1b4d:  PRINT           "code="
+ 1b54:  PRINT_NUM       L02
+ 1b57:  PRINT           ": "
+ 1b5a:  CALL_VN         1760 (L02,#01)
+ 1b60:  NEW_LINE        
+ 1b61:  INC             L01
+ 1b63:  JUMP            1b3e
+ 1b66:  JUMP            1afd
+ 1b69:  RTRUE           
+
+Routine 1b6c, 1 local
+
+ 1b6d:  PRINT           "This tests input of accented (actually, all)
+characters. Type characters; you will see what characters your interpreter
+thought you typed. Hit "." to return to the main menu.
+
+"
+ 1bf0:  JZ              #01 [TRUE] 1c36
+ 1bf4:  PRINT           "AccentedInput> "
+ 1c03:  CALL_1S         330c -> L00
+ 1c07:  JE              L00,#2e [FALSE] 1c1d
+ 1c0b:  PRINT           "
+
+Test finished.
+"
+ 1c1c:  RTRUE           
+ 1c1d:  PRINT           "
+code="
+ 1c26:  PRINT_NUM       L00
+ 1c29:  PRINT           ": "
+ 1c2c:  CALL_VN         1760 (L00,#02)
+ 1c32:  NEW_LINE        
+ 1c33:  JUMP            1bf0
+ 1c36:  RTRUE           
+
+Routine 1c38, 2 locals
+
+ 1c39:  LOADB           #00,#01 -> L01
+ 1c3d:  AND             L01,#80 -> -(SP)
+ 1c41:  JZ              (SP)+ [TRUE] 1c88
+ 1c45:  STORE           L00,#01
+ 1c48:  PRINT           "Your interpreter claims (by its header bit) that it
+DOES support timed input.
+
+"
+ 1c85:  JUMP            1ccc
+ 1c88:  STORE           L00,#00
+ 1c8b:  PRINT           "Your interpreter claims (by its header bit) that it
+DOES NOT support timed input.
+
+"
+ 1ccc:  PRINT           "When you begin this test, asterisks should appear at
+the rate of one per second. If they appear at the rate of one every ten
+seconds, your interpreter is using the incorrect timing rate caused by an old
+bug in ZIP. If an entire line of ten asterisks appears all at once every ten
+seconds, your interpreter is not properly flushing its buffer.
+
+"
+ 1dbd:  JZ              #01 [TRUE] 2017
+ 1dc1:  PRINT           "Hit "." to return to the main menu, or any other key
+to begin the test. Hit any key to stop the test while it is running.
+
+"
+ 1e1c:  PRINT           "TimedKey> "
+ 1e27:  CALL_1S         330c -> L01
+ 1e2b:  JE              L01,#2e [FALSE] 1e30
+ 1e2f:  RTRUE           
+ 1e30:  NEW_LINE        
+ 1e31:  STORE           G02,#00
+ 1e34:  STORE           G01,#ffa3
+ 1e39:  READ_CHAR       #01,#0a,2018 -> L01
+ 1e40:  NEW_LINE        
+ 1e41:  JE              G01,#ffa3 [FALSE] 1f57
+ 1e48:  PRINT           "The timing interrupt function was not called at all.
+Either your interpreter does not support timed input, or you terminated the
+test before one second elapsed. (Or your interpreter has the "slow" bug and you
+terminated the test before ten seconds elapsed.)
+
+"
+ 1eff:  JZ              L00 [FALSE] 1f2e
+ 1f03:  PRINT           "Your interpreter claims to not support timed input. "
+ 1f28:  PRINT_PADDR     S001
+ 1f2b:  JUMP            1f54
+ 1f2e:  PRINT           "Your interpreter claims to support timed input. "
+ 1f51:  PRINT_PADDR     S002
+ 1f54:  JUMP            2013
+ 1f57:  JZ              G01 [FALSE] 1fdd
+ 1f5b:  PRINT           "Your interpreter calls the timing interrupt function
+with no arguments. "
+ 1f8e:  JZ              L00 [FALSE] 1fd7
+ 1f92:  PRINT           "This is correct, except that your interpreter claims
+not to support timed input at all. "
+ 1fd1:  PRINT_PADDR     S002
+ 1fd4:  JUMP            1fda
+ 1fd7:  PRINT_PADDR     S001
+ 1fda:  JUMP            2013
+ 1fdd:  PRINT           "Your interpreter calls the timing interrupt function
+with an argument. "
+ 2010:  PRINT_PADDR     S002
+ 2013:  NEW_LINE        
+ 2014:  JUMP            1dbd
+ 2017:  RTRUE           
+
+Routine 2018, 1 local
+
+ 2019:  STORE           G01,L00
+ 201c:  PRINT           "* "
+ 2021:  INC             G02
+ 2023:  JE              G02,#0a [FALSE] 202b
+ 2027:  NEW_LINE        
+ 2028:  STORE           G02,#00
+ 202b:  RFALSE          
+
+Routine 202c, 3 locals
+
+ 202d:  LOADB           #00,#01 -> L02
+ 2031:  AND             L02,#80 -> -(SP)
+ 2035:  JZ              (SP)+ [TRUE] 207c
+ 2039:  STORE           L00,#01
+ 203c:  PRINT           "Your interpreter claims (by its header bit) that it
+DOES support timed input.
+
+"
+ 2079:  JUMP            20c0
+ 207c:  STORE           L00,#00
+ 207f:  PRINT           "Your interpreter claims (by its header bit) that it
+DOES NOT support timed input.
+
+"
+ 20c0:  PRINT           "When you begin this test, you should be able to enter
+a line of input in the usual fashion. Every three seconds, a line of text will
+appear. (If the lines appear at the rate of one every thirty seconds, your
+interpreter is using the incorrect timing rate caused by an old bug in ZIP.)
+
+"
+ 218b:  PRINT           "Interrupts actually are occuring once per second;
+every third interrupt prints a line of text, and the other two have no visible
+effect. After each line, your input should be redrawn so that you can continue
+typing and editing it.
+
+"
+ 222e:  PRINT           "Hit "." to return to the main menu, or any other key
+to begin the test. Type "." on a line by itself to stop the test.
+
+"
+ 2289:  PRINT           "TimedString> "
+ 2296:  CALL_1S         330c -> L02
+ 229a:  JE              L02,#2e [FALSE] 229f
+ 229e:  RTRUE           
+ 229f:  NEW_LINE        
+ 22a0:  PRINT           "Beginning test...
+
+"
+ 22b3:  STORE           G01,#ffa3
+ 22b8:  STORE           G02,#00
+ 22bb:  JZ              #01 [TRUE] 237a
+ 22bf:  PRINT           "TimedString> "
+ 22cc:  SUB             #0050,#03 -> -(SP)
+ 22d2:  STOREB          #059a,#00,(SP)+
+ 22d8:  STOREB          #059a,#01,#00
+ 22de:  STORE           L01,#059a
+ 22e3:  STORE           L02,#00
+ 22e6:  READ            L01,#00,#0a,255c -> L02
+ 22ee:  NEW_LINE        
+ 22ef:  LOADB           #059a,#01 -> -(SP)
+ 22f5:  JZ              (SP)+ [FALSE] 232d
+ 22f9:  PRINT           "You just typed a blank line. (Type "." to stop this
+test.)
+
+"
+ 232a:  JUMP            2360
+ 232d:  PRINT           "You just typed ""
+ 233a:  STORE           L02,#00
+ 233d:  LOADB           #059a,#01 -> -(SP)
+ 2343:  JL              L02,(SP)+ [FALSE] 2359
+ 2347:  ADD             #02,L02 -> -(SP)
+ 234b:  LOADB           #059a,(SP)+ -> -(SP)
+ 2351:  PRINT_CHAR      (SP)+
+ 2354:  INC             L02
+ 2356:  JUMP            233d
+ 2359:  PRINT           "".
+
+"
+ 2360:  LOADB           #059a,#01 -> -(SP)
+ 2366:  JE              (SP)+,#01 [FALSE] 2377
+ 236a:  LOADB           #059a,#02 -> -(SP)
+ 2370:  JE              (SP)+,#2e [FALSE] 2377
+ 2374:  JUMP            237a
+ 2377:  JUMP            22bb
+ 237a:  PRINT           "Test terminated.
+"
+ 2389:  JE              G01,#ffa3 [FALSE] 249f
+ 2390:  PRINT           "The timing interrupt function was not called at all.
+Either your interpreter does not support timed input, or you terminated the
+test before one second elapsed. (Or your interpreter has the "slow" bug and you
+terminated the test before ten seconds elapsed.)
+
+"
+ 2447:  JZ              L00 [FALSE] 2476
+ 244b:  PRINT           "Your interpreter claims to not support timed input. "
+ 2470:  PRINT_PADDR     S001
+ 2473:  JUMP            249c
+ 2476:  PRINT           "Your interpreter claims to support timed input. "
+ 2499:  PRINT_PADDR     S002
+ 249c:  JUMP            255b
+ 249f:  JZ              G01 [FALSE] 2525
+ 24a3:  PRINT           "Your interpreter calls the timing interrupt function
+with no arguments. "
+ 24d6:  JZ              L00 [FALSE] 251f
+ 24da:  PRINT           "This is correct, except that your interpreter claims
+not to support timed input at all. "
+ 2519:  PRINT_PADDR     S002
+ 251c:  JUMP            2522
+ 251f:  PRINT_PADDR     S001
+ 2522:  JUMP            255b
+ 2525:  PRINT           "Your interpreter calls the timing interrupt function
+with an argument. "
+ 2558:  PRINT_PADDR     S002
+ 255b:  RTRUE           
+
+Routine 255c, 1 local
+
+ 255d:  STORE           G01,L00
+ 2560:  INC             G02
+ 2562:  JE              G02,#03 [FALSE] 2593
+ 2567:  STORE           G02,#00
+ 256a:  PRINT           "
+[Every three seconds....]
+TimedString> "
+ 2593:  RFALSE          
+
+Routine 2594, 2 locals
+
+ 2595:  PRINT           "This tests whether your interpreter supports being
+handed input by the game file. (For example, after a function key is hit in
+Beyond Zork, the command prompt appears with text already in place -- whatever
+text you had typed before you interrupted it with the function key.)
+
+"
+ 2658:  PRINT           "The command prompt below should appear with the word
+"Given" already visible after it. You should be able to type more characters,
+or go back and edit the given character as if you had typed them yourself.
+
+"
+ 26eb:  PRINT           "If you see the word "Given" twice, your interpreter is
+printing the given characters, which it shouldn't (that's the responsibility of
+the game file.)
+
+"
+ 275a:  PRINT           "Preload> Given"
+ 2769:  SUB             #0050,#03 -> -(SP)
+ 276f:  STOREB          #059a,#00,(SP)+
+ 2775:  STOREB          #059a,#01,#05
+ 277b:  STOREB          #059a,#02,#47
+ 2781:  STOREB          #059a,#03,#69
+ 2787:  STOREB          #059a,#04,#76
+ 278d:  STOREB          #059a,#05,#65
+ 2793:  STOREB          #059a,#06,#6e
+ 2799:  STORE           L01,#059a
+ 279e:  STORE           L00,#00
+ 27a1:  READ            L01 -> L00
+ 27a5:  LOADB           #059a,#01 -> -(SP)
+ 27ab:  JZ              (SP)+ [FALSE] 27c8
+ 27ae:  PRINT           "You just typed a blank line.
+"
+ 27c5:  JUMP            27f9
+ 27c8:  PRINT           "You just typed ""
+ 27d5:  STORE           L00,#00
+ 27d8:  LOADB           #059a,#01 -> -(SP)
+ 27de:  JL              L00,(SP)+ [FALSE] 27f4
+ 27e2:  ADD             #02,L00 -> -(SP)
+ 27e6:  LOADB           #059a,(SP)+ -> -(SP)
+ 27ec:  PRINT_CHAR      (SP)+
+ 27ef:  INC             L00
+ 27f1:  JUMP            27d8
+ 27f4:  PRINT           "".
+"
+ 27f9:  RTRUE           
+
+Routine 27fc, 4 locals
+
+ 27fd:  PRINT           "This tests the interpreter's ability to do single and
+multiple "undo" commands.
+
+"
+ 283a:  LOADB           #10,#01 -> L01
+ 283e:  AND             L01,#10 -> -(SP)
+ 2842:  JZ              (SP)+ [TRUE] 284b
+ 2845:  STORE           L00,#01
+ 2848:  JUMP            284e
+ 284b:  STORE           L00,#00
+ 284e:  JZ              L00 [TRUE] 288e
+ 2852:  PRINT           "Your interpreter claims (by its header bit) that it
+DOES support undo.
+
+"
+ 288b:  JUMP            28cb
+ 288e:  PRINT           "Your interpreter claims (by its header bit) that it
+DOES NOT support undo.
+
+"
+ 28cb:  STORE           L02,#01
+ 28ce:  STORE           L03,#00
+ 28d1:  PRINT           "Simulating first move...
+"
+ 28e6:  SAVE_UNDO       -> L01
+ 28ea:  STORE           Gef,L01
+ 28ed:  JE              Gef,#ffff [FALSE] 2932
+ 28f4:  PRINT           "Save failed -- interpreter claims that it does not
+support "undo".
+"
+ 2927:  STORE           L02,#00
+ 292a:  STORE           L03,#ffff
+ 292f:  JUMP            29bc
+ 2932:  JE              Gef,#00 [FALSE] 294c
+ 2936:  PRINT           "Save failed.
+"
+ 2943:  STORE           L02,#00
+ 2946:  STORE           L03,#00
+ 2949:  JUMP            29bc
+ 294c:  JE              Gef,#01 [FALSE] 2962
+ 2950:  PRINT           "Save succeeded.
+"
+ 295f:  JUMP            29bc
+ 2962:  JE              Gef,#02 [FALSE] 298d
+ 2967:  PRINT           "Undo succeeded (undid first move).
+"
+ 2984:  STORE           L02,#00
+ 2987:  STORE           L03,#02
+ 298a:  JUMP            29bc
+ 298d:  PRINT           "Save gave unknown result code "
+ 29a4:  PRINT_NUM       L01
+ 29a7:  PRINT           " -- ERROR.
+"
+ 29b6:  STORE           L02,#00
+ 29b9:  STORE           L03,#00
+ 29bc:  JZ              L02 [TRUE] 2bf8
+ 29c0:  PRINT           "
+Simulating second move...
+"
+ 29d7:  SAVE_UNDO       -> L01
+ 29db:  STORE           Gef,L01
+ 29de:  JE              Gef,#ffff [FALSE] 2a23
+ 29e5:  PRINT           "Save failed -- interpreter claims that it does not
+support "undo".
+"
+ 2a18:  STORE           L02,#00
+ 2a1b:  STORE           L03,#ffff
+ 2a20:  JUMP            2bf8
+ 2a23:  JE              Gef,#00 [FALSE] 2a3d
+ 2a27:  PRINT           "Save failed.
+"
+ 2a34:  STORE           L02,#00
+ 2a37:  STORE           L03,#00
+ 2a3a:  JUMP            2bf8
+ 2a3d:  JE              Gef,#01 [FALSE] 2a53
+ 2a41:  PRINT           "Save succeeded.
+"
+ 2a50:  JUMP            2bf8
+ 2a53:  JE              Gef,#02 [FALSE] 2bc9
+ 2a58:  PRINT           "Undo succeeded (undid second move).
+"
+ 2a75:  PRINT           "
+Hit "." to abort this test, or any other key to try a second "undo". (In many
+interpreters, executing the second "undo" will return to exactly the same point
+as the first one. If this occurs, and you see this message a second time (or
+more), your interpreter only supports single-move undo.)
+"
+ 2b4a:  PRINT           "MultipleUndo> "
+ 2b59:  CALL_1S         330c -> L01
+ 2b5d:  NEW_LINE        
+ 2b5e:  JE              L01,#2e [FALSE] 2b6b
+ 2b62:  STORE           L02,#00
+ 2b65:  STORE           L03,#01
+ 2b68:  JUMP            2bf8
+ 2b6b:  PRINT           "
+Second undo...
+"
+ 2b7c:  RESTORE_UNDO    -> L01
+ 2b80:  STORE           Gef,L01
+ 2b83:  JE              Gef,#00 [FALSE] 2b97
+ 2b87:  PRINT           "Undo failed.
+"
+ 2b94:  JUMP            2bc0
+ 2b97:  PRINT           "Undo gave unknown result code "
+ 2bae:  PRINT_NUM       L01
+ 2bb1:  PRINT           " -- ERROR.
+"
+ 2bc0:  STORE           L03,#00
+ 2bc3:  STORE           L02,#00
+ 2bc6:  JUMP            2bf8
+ 2bc9:  PRINT           "Save gave unknown result code "
+ 2be0:  PRINT_NUM       L01
+ 2be3:  PRINT           " -- ERROR.
+"
+ 2bf2:  STORE           L02,#00
+ 2bf5:  STORE           L03,#00
+ 2bf8:  JZ              L02 [TRUE] 2cad
+ 2bfc:  PRINT           "
+Hit "." to abort this test, or any other key to try "undo".
+"
+ 2c2d:  PRINT           "SingleUndo> "
+ 2c3a:  CALL_1S         330c -> L01
+ 2c3e:  NEW_LINE        
+ 2c3f:  JE              L01,#2e [FALSE] 2c4e
+ 2c43:  STORE           L02,#00
+ 2c46:  STORE           L03,#fffe
+ 2c4b:  JUMP            2cad
+ 2c4e:  PRINT           "
+First undo...
+"
+ 2c5d:  RESTORE_UNDO    -> L01
+ 2c61:  STORE           Gef,L01
+ 2c64:  JE              Gef,#00 [FALSE] 2c7e
+ 2c68:  PRINT           "Undo failed.
+"
+ 2c75:  STORE           L02,#00
+ 2c78:  STORE           L03,#00
+ 2c7b:  JUMP            2cad
+ 2c7e:  PRINT           "Undo gave unknown result code "
+ 2c95:  PRINT_NUM       L01
+ 2c98:  PRINT           " -- ERROR.
+"
+ 2ca7:  STORE           L02,#00
+ 2caa:  STORE           L03,#00
+ 2cad:  NEW_LINE        
+ 2cae:  STORE           Gef,L03
+ 2cb1:  JE              Gef,#fffe [FALSE] 2cc9
+ 2cb7:  PRINT           "Test cancelled.
+"
+ 2cc6:  JUMP            2f70
+ 2cc9:  JE              Gef,#ffff [FALSE] 2d98
+ 2cd0:  JZ              L00 [TRUE] 2d41
+ 2cd4:  PRINT           "Your interpreter claims to support "undo", but the
+@save_undo opcode returned -1, indicating that the interpreter does not support
+"undo". "
+ 2d3b:  PRINT_PADDR     S002
+ 2d3e:  JUMP            2d95
+ 2d41:  PRINT           "Your interpreter claims to not support "undo", and the
+@save_undo opcode returned -1, corroborating this. "
+ 2d92:  PRINT_PADDR     S001
+ 2d95:  JUMP            2f70
+ 2d98:  JE              Gef,#00 [FALSE] 2e4d
+ 2d9d:  JZ              L00 [TRUE] 2dd6
+ 2da1:  PRINT           "Your interpreter claims to support "undo", but it
+didn't work. "
+ 2dd0:  PRINT_PADDR     S002
+ 2dd3:  JUMP            2e4a
+ 2dd6:  PRINT           "Your interpreter claims to not support "undo", and in
+fact "undo" failed. However, it did not return -1 from the @save_undo opcode,
+which it should. "
+ 2e47:  PRINT_PADDR     S002
+ 2e4a:  JUMP            2f70
+ 2e4d:  JE              Gef,#01 [FALSE] 2ec4
+ 2e52:  JZ              L00 [TRUE] 2e87
+ 2e56:  PRINT           "Your interpreter claims to support "undo", and it
+does. "
+ 2e81:  PRINT_PADDR     S001
+ 2e84:  JUMP            2ec1
+ 2e87:  PRINT           "Your interpreter claims to not support "undo", but in
+fact it does anyway. "
+ 2ebe:  PRINT_PADDR     S002
+ 2ec1:  JUMP            2f70
+ 2ec4:  JE              Gef,#02 [FALSE] 2f70
+ 2ec9:  JZ              L00 [TRUE] 2f1a
+ 2ecd:  PRINT           "Your interpreter claims to support "undo", and it
+does. In fact, it supports multiple "undo". "
+ 2f14:  PRINT_PADDR     S001
+ 2f17:  JUMP            2f70
+ 2f1a:  PRINT           "Your interpreter claims to not support "undo", but in
+fact it does anyway. In fact, it supports multiple "undo". "
+ 2f6d:  PRINT_PADDR     S002
+ 2f70:  RTRUE           
+
+Routine 2f74, 1 local
+
+ 2f75:  PRINT           "This tests if you can read text which is displayed
+immediately before the program quits. (It is not clear whether this is covered
+by the Z-Spec. However, some games -- including some original Infocom games --
+display important closing text and then immediately quit.)
+
+"
+ 3036:  PRINT           "Hit "." to return to the main menu, or any other key
+to print a line of text and then quit. If the line of text does not appear, or
+appears and vanishes too quickly to read, your interpreter will have trouble
+with those games.
+
+"
+ 30d7:  PRINT           "ClosingText> "
+ 30e4:  CALL_1S         330c -> L00
+ 30e8:  JE              L00,#2e [FALSE] 30fc
+ 30ec:  PRINT           "
+Test aborted.
+"
+ 30fb:  RTRUE           
+ 30fc:  PRINT           "
+
+This is a final line of text. Goodbye.
+"
+ 311d:  QUIT            
+
+Routine 3120, 0 locals
+
+ 3121:  NEW_LINE        
+ 3122:  CALL_1N         3314
+ 3125:  NEW_LINE        
+ 3126:  CALL_1N         3134
+ 3129:  PRINT           "Goodbye.
+"
+ 3132:  QUIT            
+
+Routine 3134, 7 locals
+
+ 3135:  LOADW           #0560,#00 -> -(SP)
+ 313b:  DIV             (SP)+,#02 -> L02
+ 313f:  STORE           L00,#01
+ 3142:  JZ              #01 [TRUE] 3308
+ 3146:  JZ              L00 [TRUE] 31be
+ 314a:  PRINT           "Options: (hit Enter by itself to display this menu)
+"
+ 3173:  PRINT           "  . (period): Exit TerpEtude
+"
+ 318e:  STORE           L03,#00
+ 3191:  JL              L03,L02 [FALSE] 31bb
+ 3196:  PRINT           "  "
+ 3199:  ADD             L03,#01 -> -(SP)
+ 319d:  PRINT_NUM       (SP)+
+ 31a0:  PRINT           ": "
+ 31a3:  MUL             L03,#02 -> -(SP)
+ 31a7:  ADD             (SP)+,#01 -> -(SP)
+ 31ab:  LOADW           #0560,(SP)+ -> -(SP)
+ 31b1:  PRINT_PADDR     (SP)+
+ 31b3:  PRINT           "
+"
+ 31b6:  INC             L03
+ 31b8:  JUMP            3191
+ 31bb:  STORE           L00,#00
+ 31be:  PRINT           "
+> "
+ 31c5:  STOREB          #059a,#00,#4d
+ 31cb:  STOREB          #059a,#01,#00
+ 31d1:  STORE           L01,#059a
+ 31d6:  STORE           L03,#00
+ 31d9:  READ            L01 -> L03
+ 31dd:  NEW_LINE        
+ 31de:  LOADB           #059a,#01 -> L05
+ 31e4:  STORE           L04,#00
+ 31e7:  JL              L04,L05 [FALSE] 31fe
+ 31eb:  ADD             #02,L04 -> -(SP)
+ 31ef:  LOADB           #059a,(SP)+ -> -(SP)
+ 31f5:  JE              (SP)+,#20 [FALSE] 31fe
+ 31f9:  INC             L04
+ 31fb:  JUMP            31e7
+ 31fe:  JL              L04,L05 [FALSE] 3213
+ 3202:  ADD             #02,L04 -> -(SP)
+ 3206:  LOADB           #059a,(SP)+ -> -(SP)
+ 320c:  JE              (SP)+,#2e [FALSE] 3213
+ 3210:  JUMP            3308
+ 3213:  JE              L04,L05 [TRUE] 3234
+ 3218:  ADD             #02,L04 -> -(SP)
+ 321c:  LOADB           #059a,(SP)+ -> -(SP)
+ 3222:  JL              (SP)+,#30 [TRUE] 3234
+ 3226:  ADD             #02,L04 -> -(SP)
+ 322a:  LOADB           #059a,(SP)+ -> -(SP)
+ 3230:  JG              (SP)+,#39 [FALSE] 323a
+ 3234:  STORE           L00,#01
+ 3237:  JUMP            3142
+ 323a:  STORE           L06,#00
+ 323d:  JL              L04,L05 [FALSE] 327a
+ 3242:  ADD             #02,L04 -> -(SP)
+ 3246:  LOADB           #059a,(SP)+ -> -(SP)
+ 324c:  JL              (SP)+,#30 [TRUE] 327a
+ 3251:  ADD             #02,L04 -> -(SP)
+ 3255:  LOADB           #059a,(SP)+ -> -(SP)
+ 325b:  JG              (SP)+,#39 [TRUE] 327a
+ 325f:  ADD             #02,L04 -> -(SP)
+ 3263:  LOADB           #059a,(SP)+ -> -(SP)
+ 3269:  SUB             (SP)+,#30 -> -(SP)
+ 326d:  MUL             L06,#0a -> -(SP)
+ 3271:  ADD             (SP)+,(SP)+ -> L06
+ 3275:  INC             L04
+ 3277:  JUMP            323d
+ 327a:  JL              L06,#01 [TRUE] 3283
+ 327e:  JG              L06,L02 [FALSE] 32d7
+ 3283:  PRINT           "Please enter a value from 1 to "
+ 329a:  PRINT_NUM       L02
+ 329d:  PRINT           ", or "." to exit, or hit Enter by itself to display
+the menu of options.
+"
+ 32d4:  JUMP            3142
+ 32d7:  MUL             L06,#02 -> -(SP)
+ 32db:  LOADW           #0560,(SP)+ -> L03
+ 32e1:  JZ              L03 [FALSE] 3303
+ 32e5:  PRINT           "That option is not yet implemented.
+"
+ 3300:  JUMP            3142
+ 3303:  CALL_1N         L03
+ 3305:  JUMP            3142
+ 3308:  RTRUE           
+
+Routine 330c, 1 local
+
+ 330d:  READ_CHAR       #01 -> L00
+ 3311:  RET             L00
+
+Routine 3314, 0 locals
+
+ 3315:  PRINT           "TerpEtude: A Z-machine Interpreter Exerciser
+"
+ 333a:  PRINT           "By Andrew Plotkin (erkyrath@netcom.com)
+"
+ 335d:  PRINT           "Release "
+ 3364:  LOADW           #00,#01 -> -(SP)
+ 3368:  AND             (SP)+,#03ff -> -(SP)
+ 336e:  PRINT_NUM       (SP)+
+ 3371:  PRINT           " / built with Inform v"
+ 3382:  LOADB           #00,#3c -> Gef
+ 3386:  PRINT_CHAR      Gef
+ 3389:  LOADB           #00,#3d -> Gef
+ 338d:  PRINT_CHAR      Gef
+ 3390:  LOADB           #00,#3e -> Gef
+ 3394:  PRINT_CHAR      Gef
+ 3397:  LOADB           #00,#3f -> Gef
+ 339b:  PRINT_CHAR      Gef
+ 339e:  NEW_LINE        
+ 339f:  PRINT           "Tests compliance with Z-Machine Standards Document
+0.99.
+"
+ 33ce:  NEW_LINE        
+ 33cf:  PRINT           "NOTE: This program does not test everything in the
+Z-Spec. Passing all the tests in this program does NOT guarantee that your
+interpreter is Z-Spec-compliant.
+
+"
+ 344a:  PRINT           "For that matter, this program may have mistakes in it.
+I don't think it does, but you should not assume it is the Fount of All
+Z-Machineness. If you find something strange, check the Z-Spec, check existing
+interpreters, check Infocom's interpreters, and then send me mail if you're
+still confused.
+"
+ 3523:  RTRUE           
+
+Routine 3524, 0 locals
+
+ 3525:  PRINT           "In the beginning, TerpEtude was written. That was
+release DRAFT-1.
+
+"
+ 355e:  PRINT           "   Release 2:
+Accented-out test: Added ability to display characters in bold, underline, and
+fixed-width styles.
+"
+ 35b3:  PRINT           "Accented-out test: Noted that >> and << are, in fact,
+tested correctly.
+"
+ 35f2:  PRINT           "Given-text test: It's the game file's job to print the
+given text before it calls @read. Fixed test to do this.
+"
+ 3647:  PRINT           "Timed-string test: Changed test to do both "invisible"
+and "visible" interrupts (only one interrupt in three actually prints text.)
+"
+ 36a8:  PRINT           "
+   Upcoming Test Features:
+"
+ 36c1:  PRINT           "List of terminating characters
+Fonts
+Stream 3 nesting
+"
+ 36ec:  PRINT           "
+   Credits:
+"
+ 36f9:  PRINT           "Title: Jon Ferro
+"
+ 370a:  PRINT           "Spec Aid: Graham, SJ, PDD, and the rest of the crowd
+"
+ 3737:  RTRUE           
+
+[End of code at 3738]
+
+[Start of text at 3738]
+
+ 3738: S001 "This aspect of your interpreter appears to behave according to
+spec.
+"
+ 3768: S002 "This aspect of your interpreter appears to behave WRONG.
+"
+ 3794: S003 ""
+ 3798: S004 ""
+ 379c: S005 "Black"
+ 37a0: S006 "Red"
+ 37a4: S007 "Green"
+ 37a8: S008 "Yellow"
+ 37b0: S009 "Blue"
+ 37b4: S010 "Magenta"
+ 37bc: S011 "Cyan"
+ 37c0: S012 "White"
+ 37c4: S013 "13 * 5"
+ 37cc: S014 "13 * -5"
+ 37d8: S015 "-13 * 5"
+ 37e4: S016 "-13 * -5"
+ 37f0: S017 "13 / 5"
+ 37f8: S018 "13 / -5"
+ 3800: S019 "-13 / 5"
+ 3808: S020 "-13 / -5"
+ 3814: S021 "13 % 5"
+ 381c: S022 "13 % -5"
+ 3828: S023 "-13 % 5"
+ 3834: S024 "-13 % -5"
+ 3840: S025 "a-umlaut:ae"
+ 384c: S026 "o-umlaut:oe"
+ 3858: S027 "u-umlaut:ue"
+ 3864: S028 "A-umlaut:Ae"
+ 3870: S029 "O-umlaut:Oe"
+ 387c: S030 "U-umlaut:Ue"
+ 3888: S031 "sz-ligature:ss"
+ 3894: S032 ">>-quotes:>>"
+ 38a4: S033 "<<-quotes:<<"
+ 38b4: S034 "e-umlaut:e"
+ 38c0: S035 "i-umlaut:i"
+ 38cc: S036 "y-umlaut:y"
+ 38d8: S037 "E-umlaut:E"
+ 38e4: S038 "I-umlaut:I"
+ 38f0: S039 "a-acute:a"
+ 38fc: S040 "e-acute:e"
+ 3908: S041 "i-acute:i"
+ 3914: S042 "o-acute:o"
+ 3920: S043 "u-acute:u"
+ 392c: S044 "y-acute:y"
+ 3938: S045 "A-acute:A"
+ 3944: S046 "E-acute:E"
+ 3950: S047 "I-acute:I"
+ 395c: S048 "O-acute:O"
+ 3968: S049 "U-acute:U"
+ 3974: S050 "Y-acute:Y"
+ 3980: S051 "a-grave:a"
+ 398c: S052 "e-grave:e"
+ 3998: S053 "i-grave:i"
+ 39a4: S054 "o-grave:o"
+ 39b0: S055 "u-grave:u"
+ 39bc: S056 "A-grave:A"
+ 39c8: S057 "E-grave:E"
+ 39d4: S058 "I-grave:I"
+ 39e0: S059 "O-grave:O"
+ 39ec: S060 "U-grave:U"
+ 39f8: S061 "a-circumflex:a"
+ 3a08: S062 "e-circumflex:e"
+ 3a18: S063 "i-circumflex:i"
+ 3a28: S064 "o-circumflex:o"
+ 3a38: S065 "u-circumflex:u"
+ 3a48: S066 "A-circumflex:A"
+ 3a58: S067 "E-circumflex:E"
+ 3a68: S068 "I-circumflex:I"
+ 3a78: S069 "O-circumflex:O"
+ 3a88: S070 "U-circumflex:U"
+ 3a98: S071 "a-ring:a"
+ 3aa4: S072 "A-ring:A"
+ 3ab0: S073 "o-slash:o"
+ 3abc: S074 "O-slash:O"
+ 3ac8: S075 "a-tilde:a"
+ 3ad4: S076 "n-tilde:n"
+ 3ae0: S077 "o-tilde:o"
+ 3aec: S078 "A-tilde:A"
+ 3af8: S079 "N-tilde:N"
+ 3b04: S080 "O-tilde:O"
+ 3b10: S081 "ae-ligature:ae"
+ 3b1c: S082 "AE-ligature:AE"
+ 3b2c: S083 "c-cedilla:c"
+ 3b38: S084 "C-cedilla:C"
+ 3b44: S085 "thorn:th"
+ 3b4c: S086 "eth:th"
+ 3b54: S087 "Thorn:Th"
+ 3b5c: S088 "Eth:Th"
+ 3b64: S089 "pound-symbol:L"
+ 3b74: S090 "oe-ligature:oe"
+ 3b80: S091 "OE-ligature:OE"
+ 3b90: S092 "inverse-!:!"
+ 3b9c: S093 "inverse-?:?"
+ 3ba8: S094 "Version"
+ 3bb0: S095 "Recent changes to TerpEtude"
+ 3bc4: S096 "Header flags analysis"
+ 3bd4: S097 "Styled text"
+ 3bdc: S098 "Colored text"
+ 3be8: S099 "Multiplication, division, remainder"
+ 3c04: S100 "Accented character output"
+ 3c18: S101 "Single-key input"
+ 3c24: S102 "Full-line input"
+ 3c30: S103 "Timed single-key input"
+ 3c40: S104 "Timed full-line input"
+ 3c50: S105 "Pre-loading of input line"
+ 3c64: S106 "Undo capability"
+ 3c70: S107 "Printing before quitting"
+ 3c84: S108 "<unknown attribute>"
+ 3c98: S109 "<unknown attribute>"
+ 3cac: S110 "<unknown attribute>"
+ 3cc0: S111 "<unknown attribute>"
+ 3cd4: S112 "<unknown attribute>"
+ 3ce8: S113 "<unknown attribute>"
+ 3cfc: S114 "<unknown attribute>"
+ 3d10: S115 "<unknown attribute>"
+ 3d24: S116 "<unknown attribute>"
+ 3d38: S117 "<unknown attribute>"
+ 3d4c: S118 "<unknown attribute>"
+ 3d60: S119 "<unknown attribute>"
+ 3d74: S120 "<unknown attribute>"
+ 3d88: S121 "<unknown attribute>"
+ 3d9c: S122 "<unknown attribute>"
+ 3db0: S123 "<unknown attribute>"
+ 3dc4: S124 "<unknown attribute>"
+ 3dd8: S125 "<unknown attribute>"
+ 3dec: S126 "<unknown attribute>"
+ 3e00: S127 "<unknown attribute>"
+ 3e14: S128 "<unknown attribute>"
+ 3e28: S129 "<unknown attribute>"
+ 3e3c: S130 "<unknown attribute>"
+ 3e50: S131 "<unknown attribute>"
+ 3e64: S132 "<unknown attribute>"
+ 3e78: S133 "<unknown attribute>"
+ 3e8c: S134 "<unknown attribute>"
+ 3ea0: S135 "<unknown attribute>"
+ 3eb4: S136 "<unknown attribute>"
+ 3ec8: S137 "<unknown attribute>"
+ 3edc: S138 "<unknown attribute>"
+ 3ef0: S139 "<unknown attribute>"
+ 3f04: S140 "<unknown attribute>"
+ 3f18: S141 "<unknown attribute>"
+ 3f2c: S142 "<unknown attribute>"
+ 3f40: S143 "<unknown attribute>"
+ 3f54: S144 "<unknown attribute>"
+ 3f68: S145 "<unknown attribute>"
+ 3f7c: S146 "<unknown attribute>"
+ 3f90: S147 "<unknown attribute>"
+ 3fa4: S148 "<unknown attribute>"
+ 3fb8: S149 "<unknown attribute>"
+ 3fcc: S150 "<unknown attribute>"
+ 3fe0: S151 "<unknown attribute>"
+ 3ff4: S152 "<unknown attribute>"
+ 4008: S153 "<unknown attribute>"
+ 401c: S154 "<unknown attribute>"
+ 4030: S155 "<unknown attribute>"
+ 4044: S156 "name"
+ 4048: S157 "create"
+ 404c: S158 "recreate"
+ 4054: S159 "destroy"
+ 405c: S160 "remaining"
+ 4064: S161 "copy"
+ 4068: S162 "call"
+ 406c: S163 "print"
+ 4070: S164 "print_to_array"
+
+[End of text at 407c]
+
+[End of file]
