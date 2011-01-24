@@ -17,7 +17,7 @@ class Head:
 	self.decode()
     
     def __str__(self):
-	string_rep = '(' + self.optype + ':' + str(self.opcode) + ') '
+	string_rep = '(' + str(self.optype) + ':' + str(self.opcode) + ') '
 	for type, value in self.get_operands():
 	    if (type == 0):
 		string_rep += "#%04x, " % value
@@ -30,7 +30,7 @@ class Head:
 		    string_rep += "L%02x, " % (value - 1)
 		elif (value <= 0xff):
 		    string_rep += "G%02x, " % (value - 0x10)
-        if not (self.optype == '0OP'):
+        if not (self.optype == 0):
             string_rep = string_rep[:-2] + ' '
         return string_rep
 
@@ -76,9 +76,9 @@ class Head:
         #logger.debug('variable form')
 
         if (first_byte & 0b00100000): # checking bit 5 for optype
-            self.optype = 'VAR'
+            self.optype = 3
         else:
-            self.optype = '2OP'
+            self.optype = 2
 
         self.opcode = first_byte & 0b00011111 # lower 5 bits give opcode
 	
@@ -97,7 +97,7 @@ class Head:
             mask_pos -= 1
 
         # for ops call_vs2 and call_vn2 a second byte of operand types is given
-        if (self.optype == 'VAR') and (self.opcode in [0x1A, 0xC]):
+        if (self.optype == 3) and (self.opcode in [0x1A, 0xC]):
             mask = 0b11000000
             mask_pos = 3
             packed_types = self.code.read_byte(self.pc)
@@ -118,10 +118,10 @@ class Head:
         self.operand_types = [(first_byte & 0b00110000) >> 4]
 
         if (self.operand_types[0] == 0b11):
-            self.optype = '0OP'
+            self.optype = 0
 	    self.operand_types = []
         else:
-            self.optype = '1OP'
+            self.optype = 1
 
         self.opcode = first_byte & 0b00001111 # lower 4 bits give operator type
         self.operand_values = self.get_operand_values(self.operand_types)
@@ -137,7 +137,7 @@ class Head:
     def decode_long(self, first_byte):
         #logger.debug('long form')
 	
-	self.optype = '2OP'
+	self.optype = 2
 
         self.opcode = first_byte & 0b00011111 # lower 5 bits give operator type
 

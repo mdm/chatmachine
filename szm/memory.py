@@ -1,12 +1,9 @@
 #import struct
 #import ctypes
 import array
-import logging
 
 import zstring
 
-logger = logging.getLogger('memory')
-logger.setLevel(logging.WARNING)
 
 class Memory:
     def __init__(self, filename):
@@ -245,7 +242,6 @@ class ObjectTable:
         else:
             parent = self.heap.read_word(object_addr + 6)
 
-        logger.debug("parent of %d is %d" % (object_number, parent))
         return parent
 
     def set_object_parent(self, object_number, parent):
@@ -256,8 +252,6 @@ class ObjectTable:
             self.heap.write_byte(object_addr + 4, parent)
         else:
             self.heap.write_word(object_addr + 6, parent)
-
-        logger.debug("parent of %d is %d" % (object_number, parent))
 
     def get_object_sibling(self, object_number):
         version = self.header.get_z_version()
@@ -372,13 +366,11 @@ class ObjectTable:
         #TODO: check for illegal property numbers
         version = self.header.get_z_version()
         properties_table = self.get_object_properties_table(object_number)
-        logger.debug("Properties table at %04X." % properties_table)
         short_name_words = self.heap.read_byte(properties_table)
 
         property_info_addr = properties_table + 1 + 2 * short_name_words
         number, size = self.get_property_info_forwards(property_info_addr)
         while (number > 0):
-            logger.debug("%d %d %d" % (property_info_addr, number, size))
             if (number == property_number):
                 if (version < 4) or (size < 3):
                     return property_info_addr + 1
@@ -391,7 +383,6 @@ class ObjectTable:
                     property_info_addr += size + 2
                 number, size = self.get_property_info_forwards(property_info_addr)
         
-        logger.warning("Object %d doesn't have property %d." % (object_number, property_number))
         return 0
 
     def get_property_data(self, object_number, property_number):
