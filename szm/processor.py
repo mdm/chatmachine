@@ -39,6 +39,14 @@ class Processor:
         self.op_total = 0
         
         self.lut_2op = {0x1: self.execute_2op_je, 0x2: self.execute_2op_jl, 0x3: self.execute_2op_jg, 0x4: self.execute_2op_dec_chk, 0x5: self.execute_2op_inc_chk, 0x6: self.execute_2op_jin, 0x7: self.execute_2op_test, 0x8: self.execute_2op_or, 0x9: self.execute_2op_and, 0xA: self.execute_2op_test_attr, 0xB: self.execute_2op_set_attr, 0xC: self.execute_2op_clear_attr, 0xD: self.execute_2op_store, 0xE: self.execute_2op_insert_obj, 0xF: self.execute_2op_loadw, 0x10: self.execute_2op_loadb, 0x11: self.execute_2op_get_prop, 0x12: self.execute_2op_get_prop_addr, 0x13: self.execute_2op_get_next_prop, 0x14: self.execute_2op_add, 0x15: self.execute_2op_sub, 0x16: self.execute_2op_mul, 0x17: self.execute_2op_div, 0x18: self.execute_2op_mod, 0x19: self.execute_2op_call_2s, 0x1A: self.execute_2op_call_2n, 0x1B: self.execute_2op_set_colour, 0x1C: self.execute_2op_throw}
+        
+        self.lut_1op = {0x0: execute_1op_jz, 0x1: execute_1op_get_sibling, 0x2: execute_1op_get_child, 0x3: execute_1op_get_parent, 0x4: execute_1op_get_prop_len, 0x5: execute_1op_inc, 0x6: execute_1op_dec, 0x7: execute_1op_print_addr, 0x8: execute_1op_call_1s, 0x9: execute_1op_remove_obj, 0xA: execute_1op_print_obj, 0xB: execute_1op_ret, 0xC: execute_1op_jump, 0xD: execute_1op_print_paddr, 0xE: execute_1op_load, 0xF: execute_1op_not_or_call_1n}
+        
+        self.lut_0op = {0x0: execute_0op_rtrue, 0x1: execute_0op_rfalse, 0x2: execute_0op_print, 0x3: execute_0op_print_ret, 0x4: execute_0op_nop, 0x5: execute_0op_save, 0x6: execute_0op_restore, 0x7: execute_0op_restart, 0x8: execute_0op_ret_popped, 0x9: execute_0op_pop_or_catch, 0xA: execute_0op_quit, 0xB: execute_0op_new_line, 0xC: execute_0op_show_status, 0xD: execute_0op_verify, 0xE: execute_0op_, 0xF: execute_0op_piracy}
+        
+        self.lut_var = {0x0: execute_var_call_vs, 0x1: execute_var_storew, 0x2: execute_var_storeb, 0x3: execute_var_put_prop, 0x4: execute_var_sread_or_aread, 0x5: execute_var_print_char, 0x6: execute_var_print_num, 0x7: execute_var_random, 0x8: execute_var_push, 0x9: execute_var_pull, 0xA: execute_var_split_window, 0xB: execute_var_set_window, 0xC: execute_var_call_vs2, 0xD: execute_var_erase_window, 0xE: execute_var_erase_line, 0xF: execute_var_set_cursor, 0x10: execute_var_get_cursor, 0x11: execute_var_set_text_style, 0x12: execute_var_buffer_mode, 0x13: execute_var_output_stream, 0x14: execute_var_input_stream, 0x15: execute_var_sound_effect, 0x16: execute_var_read_char, 0x17: execute_var_scan_table, 0x18: execute_var_not, 0x19: execute_var_call_vn, 0x1A: execute_var_call_vn2, 0x1B: execute_var_tokenise, 0x1C: execute_var_encode_text, 0x1D: execute_var_copy_table, 0x1E: execute_var_print_table, 0x1F: execute_var_check_arg_count}
+        
+        self.lut_ext = {0x0: execute_ext_save, 0x1: execute_ext_restore, 0x2: execute_ext_log_shift, 0x3: execute_ext_art_shift, 0x4: execute_ext_set_font, 0x9: execute_ext_save_undo, 0xA: execute_ext_restore_undo, 0xB: execute_ext_print_unicode, 0xC: execute_ext_check_unicode}
 
     def print_state(self):
         print self.pc
@@ -400,6 +408,567 @@ class Processor:
         print self.op2str(self.pc, 'throw', head, tail)
         self.is_running = False
         print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_1op_jz(self, head, operands):
+        tail = zoperator.Tail(head, False, True, False)
+        #logger.debug(self.op2str(self.pc, 'jz', head, tail))
+        self.pc = self.branch_helper(tail, operands[0] == 0)
+
+    def execute_1op_get_sibling(self, head, operands):
+        tail = zoperator.Tail(head, True, True, False)
+        #logger.debug(self.op2str(self.pc, 'get_sibling', head, tail))
+        sibling = self.object_table.get_object_sibling(operands[0])
+        self.store_helper(tail, sibling)
+        self.pc = self.branch_helper(tail, not sibling == 0)
+
+    def execute_1op_get_child(self, head, operands):
+        tail = zoperator.Tail(head, True, True, False)
+        #logger.debug(self.op2str(self.pc, 'get_child', head, tail))
+        child = self.object_table.get_object_child(operands[0])
+        self.store_helper(tail, child)
+        self.pc = self.branch_helper(tail, not child == 0)
+        #print operands[0], child, "%x" % self.pc
+
+    def execute_1op_get_parent(self, head, operands):
+        tail = zoperator.Tail(head, True, False, False)
+        #logger.debug(self.op2str(self.pc, 'get_parent', head, tail))
+        parent = self.object_table.get_object_parent(operands[0])
+        #print parent
+        self.pc = self.store_helper(tail, parent)
+
+    def execute_1op_get_prop_len(self, head, operands):
+        tail = zoperator.Tail(head, True, False, False)
+        #logger.debug(self.op2str(self.pc, 'get_prop_len', head, tail))
+        number, size = self.object_table.get_property_info_backwards(operands[0])
+        self.pc = self.store_helper(tail, size)
+
+    def execute_1op_inc(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'inc', head, tail))
+        self.set_variable(operands[0], self.unsigned_word(self.signed_word(self.get_variable(operands[0])) + 1))
+        self.pc = tail.get_new_pc()
+
+    def execute_1op_dec(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'dec', head, tail))
+        self.set_variable(operands[0], self.unsigned_word(self.signed_word(self.get_variable(operands[0])) - 1))
+        self.pc = tail.get_new_pc()
+
+    def execute_1op_print_addr(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'print_addr', head, tail))
+        addr = operands[0]
+        string = self.heap.read_string(addr)[1]
+        self.output_helper(string)
+        self.pc = tail.get_new_pc()
+
+    def execute_1op_call_1s(self, head, operands):
+        tail = zoperator.Tail(head, True, False, False)
+        #logger.debug(self.op2str(self.pc, 'call_1s', head, tail))
+        self.pc = self.call_helper(tail, operands)
+
+    def execute_1op_remove_obj(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'remove_obj', head, tail))
+        #self.object_table.dump_dot_file('objects_%d.dot' % self.pc, 232)
+        #print '[remove_obj %d]' % operands[0]
+        parent = self.object_table.get_object_parent(operands[0])
+        sibling = self.object_table.get_object_sibling(operands[0])
+        child = self.object_table.get_object_child(operands[0])
+        parent_child = self.object_table.get_object_child(parent)
+        #print '***', operands[0]
+        #print '***', parent, sibling, child
+        #print '##', parent_child
+        while (self.object_table.get_object_sibling(parent_child)):
+            parent_child = self.object_table.get_object_sibling(parent_child)
+            #print '##', parent_child
+        self.object_table.set_object_parent(operands[0], 0)
+        if (parent > 0):
+            sibling = self.object_table.get_object_sibling(operands[0])
+            self.object_table.set_object_sibling(operands[0], 0)
+            parent_child = self.object_table.get_object_child(parent)
+            if (parent_child == operands[0]):
+                self.object_table.set_object_child(parent, sibling)
+            else:
+                other_sibling = parent_child
+                next = self.object_table.get_object_sibling(other_sibling)
+                while (next > 0) and not (next == operands[0]):
+                    other_sibling = next
+                    next = self.object_table.get_object_sibling(other_sibling)
+                if (next == 0):
+                    print 'ERROR: Malformed object tree.'
+                    self.is_running = False
+                else:
+                    self.object_table.set_object_sibling(other_sibling, sibling)
+        self.pc = tail.get_new_pc()
+        #self.object_table.dump_dot_file('objects_%d.dot' % self.pc, 232)
+
+    def execute_1op_print_obj(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'print_obj', head, tail)
+        self.output_helper(self.object_table.get_object_short_name(operands[0]))
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_1op_ret(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'ret', head, tail))
+        self.pc = self.return_helper(operands[0])
+
+    def execute_1op_jump(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'jump', head, tail))
+        self.pc = tail.get_new_pc() + self.signed_word(operands[0]) - 2
+        #print self.signed_word(operands[0])
+        #print "%04x" % self.pc
+
+    def execute_1op_print_paddr(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'print_paddr', head, tail))
+        addr = self.unpack_address(operands[0])
+        string = self.memory.read_string(addr)[1]
+        self.output_helper(string)
+        self.pc = tail.get_new_pc()
+
+    def execute_1op_load(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'load', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_1op_not_or_call_1n(self, head, operands):
+        version = self.header.get_z_version()
+        #identifier: 'not_or_call_1n'
+        if (version < 5):
+            tail = zoperator.Tail(head, True, False, False)
+            print self.op2str(self.pc, 'not', head, tail)
+            self.is_running = False
+            print 'NOT IMPLEMENTED. Halting.'
+        else:
+            tail = zoperator.Tail(head, False, False, False)
+            #logger.debug(self.op2str(self.pc, 'call_1n', head, tail))
+            self.pc = self.call_helper(tail, operands)
+    
+    def execute_0op_rtrue(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'rtrue', head, tail))
+        self.pc = self.return_helper(1)
+
+    def execute_0op_rfalse(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'rfalse', head, tail))
+        self.pc = self.return_helper(0)
+
+    def execute_0op_print(self, head, operands):
+        tail = zoperator.Tail(head, False, False, True)
+        #logger.debug(self.op2str(self.pc, 'print', head, tail))
+        self.pc, string = self.memory.read_string(tail.get_new_pc())
+        self.output_helper(string)
+        #TODO: include string and length handling with tail
+
+    def execute_0op_print_ret(self, head, operands):
+        tail = zoperator.Tail(head, False, False, True)
+        #logger.debug(self.op2str(self.pc, 'print_ret', head, tail))
+        self.pc, string = self.heap.read_string(tail.get_new_pc())
+        self.output_helper(string)
+        self.pc = self.return_helper(1)
+
+    def execute_0op_nop(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'nop', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_0op_save(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'save', head, tail)
+        version = self.header.get_z_version()
+        if (version == 1):
+            pass
+        elif (version < 5):
+            pass
+        else:
+            print 'ILLEGAL'
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_0op_restore(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'restore', head, tail)
+        version = self.header.get_z_version()
+        if (version == 1):
+            pass
+        elif (version < 5):
+            pass
+        else:
+            print 'ILLEGAL'
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_0op_restart(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'restart', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_0op_ret_popped(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'ret_popped', head, tail))
+        self.pc = self.return_helper(self.get_variable(0))
+
+    def execute_0op_pop_or_catch(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #identifier: 'pop_or_catch'
+        version = self.header.get_z_version()
+        if (version < 5):
+            print self.op2str(self.pc, 'pop', head, tail)
+        else:
+            print self.op2str(self.pc, 'catch', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_0op_quit(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'quit', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_0op_new_line(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'new_line', head, tail))
+        self.output_helper("\n")
+        self.pc = tail.get_new_pc()
+
+    def execute_0op_show_status(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'show_status', head, tail)
+        version = self.header.get_z_version()
+        if (version ==  3):
+            pass
+        else:
+            print 'ILLEGAL'
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_0op_verify(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'verify', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_0op_(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, '', head, tail)
+        print '*extended*'
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_0op_piracy(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'piracy', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+    
+    def execute_var_call_vs(self, head, operands):
+        tail = zoperator.Tail(head, True, False, False)
+        #logger.debug(self.op2str(self.pc, 'call_vs', head, tail))
+        self.pc = self.call_helper(tail, operands)
+        #logger.debug("locals %d, args %d" % (self.stack.get_num_locals(), self.arg_count))
+        #print "%x" % self.pc
+
+    def execute_var_storew(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'storew', head, tail))
+        self.memory.write_word(operands[0] + 2 * operands[1], operands[2])
+        self.pc = tail.get_new_pc()
+
+    def execute_var_storeb(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'storeb', head, tail))
+        if(operands[2] > 255):
+            self.is_running = False
+            logger.error('Trying to store word')
+        self.memory.write_byte(operands[0] + operands[1], operands[2])
+        self.pc = tail.get_new_pc()
+
+    def execute_var_put_prop(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'put_prop', head, tail)
+        self.object_table.set_property_data(operands[0], operands[1], operands[2])
+
+    def execute_var_sread_or_aread(self, head, operands):
+        version = self.header.get_z_version()
+        #identifier: 'sread_or_aread'
+        if (version < 4):
+            tail = zoperator.Tail(head, False, False, False)
+            print self.op2str(self.pc, 'sread', head, tail)
+            #TODO: redisplay status line
+            self.is_running = False
+            print 'NOT IMPLEMENTED. Halting.'
+            #TODO: read until CR
+        elif (version == 4):
+            tail = zoperator.Tail(head, False, False, False)
+            print self.op2str(self.pc, 'sread', head, tail)
+            #TODO: read until CR
+            self.is_running = False
+            print 'NOT IMPLEMENTED. Halting.'
+        else:
+            tail = zoperator.Tail(head, True, False, False)
+            #logger.debug(self.op2str(self.pc, 'aread', head, tail))
+            #TODO: read until CR or any other terminating character
+            max_len = self.memory.read_byte(operands[0])
+            input = self.input[self.selected_input].read(max_len, 0, '')
+            self.memory.write_byte(operands[0] + 1, len(input) - 1)
+            addr = operands[0] + 2
+            for char in input[:-1]:
+                self.memory.write_byte(addr, ord(char))
+                addr += 1
+            if not (operands[1] == 0):
+                self.parse_helper(operands[1], input[:-1], self.dictionary)
+            self.pc = self.store_helper(tail, ord(input[-1]))
+
+    def execute_var_print_char(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'print_char', head, tail))
+        self.output_helper(chr(operands[0]))
+        self.pc = tail.get_new_pc()
+
+    def execute_var_print_num(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'print_num', head, tail))
+        self.output_helper(str(self.signed_word(operands[0])))
+        self.pc = tail.get_new_pc()
+
+    def execute_var_random(self, head, operands):
+        tail = zoperator.Tail(head, True, False, False)
+        #logger.debug(self.op2str(self.pc, 'random', head, tail))
+        if (operands[0] > 0):
+            self.store_helper(tail, random.randint(1, operands[0]))                
+        elif (operands[0] < 0):
+            random.seed(operands[0])
+            self.store_helper(tail, 0)
+        else:
+            random.seed()
+            self.store_helper(tail, 0)
+        self.pc = tail.get_new_pc()
+
+    def execute_var_push(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'push', head, tail))
+        self.set_variable(0, operands[0])
+        self.pc = tail.get_new_pc()
+
+    def execute_var_pull(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'pull', head, tail))
+        self.set_variable(operands[0], self.get_variable(0))
+        self.pc = tail.get_new_pc()
+
+    def execute_var_split_window(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'split_window', head, tail))
+        self.output['screen'].screen.split_window(operands[0])
+        self.pc = tail.get_new_pc()
+
+    def execute_var_set_window(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'set_window', head, tail))
+        self.output['screen'].screen.set_window(operands[0])
+        self.pc = tail.get_new_pc()
+
+    def execute_var_call_vs2(self, head, operands):
+        tail = zoperator.Tail(head, True, False, False)
+        #logger.debug(self.op2str(self.pc, 'call_vs2', head, tail))
+        self.pc = self.call_helper(tail, operands)
+
+    def execute_var_erase_window(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'erase_window', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_var_erase_line(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'erase_line', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_var_set_cursor(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'set_cursor', head, tail))
+        self.output['screen'].screen.set_cursor(operands[0], operands[1])
+        self.pc = tail.get_new_pc()
+
+    def execute_var_get_cursor(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'get_cursor', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_var_set_text_style(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'set_text_style', head, tail))
+        self.output['screen'].screen.set_text_style(operands[0])
+        self.pc = tail.get_new_pc()
+
+    def execute_var_buffer_mode(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'buffer_mode', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_var_output_stream(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'output_stream', head, tail)
+        #print self.op2str(self.pc, 'output_stream', head, tail)
+        operands[0] = self.signed_word(operands[0])
+        if (operands[0] > 0):
+            if (operands[0] == 1):
+                self.output['screen'].select()
+            if (operands[0] == 2):
+                self.output['transcript'].select()               
+            if (operands[0] == 3):
+                self.output['memory'].select(operands[1])   
+            if (operands[0] == 4):
+                self.output['command'].select()
+        elif (operands[0] < 0):
+            if (operands[0] == -1):
+                self.output['screen'].deselect()
+            if (operands[0] == -2):
+                self.output['transcript'].deselect()               
+            if (operands[0] == -3):
+                self.output['memory'].deselect()   
+            if (operands[0] == -4):
+                self.output['command'].deselect()
+        else:
+            self.is_running = False
+            print 'NOT IMPLEMENTED. Halting.'
+        self.pc = tail.get_new_pc()
+
+    def execute_var_input_stream(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'input_stream', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_var_sound_effect(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'sound_effect', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_var_read_char(self, head, operands):
+        tail = zoperator.Tail(head, True, False, False)
+        print self.op2str(self.pc, 'read_char', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_var_scan_table(self, head, operands):
+        tail = zoperator.Tail(head, True, True, False)
+        print self.op2str(self.pc, 'scan_table', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_var_not(self, head, operands):
+        tail = zoperator.Tail(head, True, False, False)
+        #logger.debug(self.op2str(self.pc, 'not', head, tail))
+        self.pc = self.store_helper(tail, (~operands[0]) & 0xffff)
+
+    def execute_var_call_vn(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'call_vn', head, tail))
+        self.pc = self.call_helper(tail, operands)
+        #logger.debug("locals %d, args %d" % (self.stack.get_num_locals(), self.arg_count))
+
+    def execute_var_call_vn2(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        #logger.debug(self.op2str(self.pc, 'call_vn2', head, tail))
+        self.pc = self.call_helper(tail, operands)
+        #logger.debug("locals %d, args %d" % (self.stack.get_num_locals(), self.arg_count))
+
+    def execute_var_tokenise(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'tokenise', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_var_encode_text(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'encode_text', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_var_copy_table(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'copy_table', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_var_print_table(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'print_table', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_var_check_arg_count(self, head, operands):
+        tail = zoperator.Tail(head, False, True, False)
+        #logger.debug(self.op2str(self.pc, 'check_arg_count', head, tail))
+        #logger.debug("arg count: %d" % self.arg_count)
+        self.pc = self.branch_helper(tail, operands[0] <= self.arg_count)
+
+    def execute_ext_save(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'save', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_ext_restore(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'restore', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_ext_log_shift(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'log_shift', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_ext_art_shift(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'art_shift', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_ext_set_font(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'set_font', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_ext_save_undo(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'save_undo', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_ext_restore_undo(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'restore_undo', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_ext_print_unicode(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'print_unicode', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
+
+    def execute_ext_check_unicode(self, head, operands):
+        tail = zoperator.Tail(head, False, False, False)
+        print self.op2str(self.pc, 'check_unicode', head, tail)
+        self.is_running = False
+        print 'NOT IMPLEMENTED. Halting.'
     
     def execute_2OP(self, head):
         opcode = head.get_opcode()
@@ -409,521 +978,22 @@ class Processor:
     def execute_1OP(self, head):
         opcode = head.get_opcode()
         operands = self.resolve_vars(head.get_operands())
-        if (opcode == 0x0):
-            tail = zoperator.Tail(head, False, True, False)
-            #logger.debug(self.op2str(self.pc, 'jz', head, tail))
-            self.pc = self.branch_helper(tail, operands[0] == 0)
-        elif (opcode == 0x1):
-            tail = zoperator.Tail(head, True, True, False)
-            #logger.debug(self.op2str(self.pc, 'get_sibling', head, tail))
-            sibling = self.object_table.get_object_sibling(operands[0])
-            self.store_helper(tail, sibling)
-            self.pc = self.branch_helper(tail, not sibling == 0)
-        elif (opcode == 0x2):
-            tail = zoperator.Tail(head, True, True, False)
-            #logger.debug(self.op2str(self.pc, 'get_child', head, tail))
-            child = self.object_table.get_object_child(operands[0])
-            self.store_helper(tail, child)
-            self.pc = self.branch_helper(tail, not child == 0)
-            #print operands[0], child, "%x" % self.pc
-        elif (opcode == 0x3):
-            tail = zoperator.Tail(head, True, False, False)
-            #logger.debug(self.op2str(self.pc, 'get_parent', head, tail))
-            parent = self.object_table.get_object_parent(operands[0])
-            #print parent
-            self.pc = self.store_helper(tail, parent)
-        elif (opcode == 0x4):
-            tail = zoperator.Tail(head, True, False, False)
-            #logger.debug(self.op2str(self.pc, 'get_prop_len', head, tail))
-            number, size = self.object_table.get_property_info_backwards(operands[0])
-            self.pc = self.store_helper(tail, size)
-        elif (opcode == 0x5):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'inc', head, tail))
-            self.set_variable(operands[0], self.unsigned_word(self.signed_word(self.get_variable(operands[0])) + 1))
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0x6):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'dec', head, tail))
-            self.set_variable(operands[0], self.unsigned_word(self.signed_word(self.get_variable(operands[0])) - 1))
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0x7):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'print_addr', head, tail))
-            addr = operands[0]
-            string = self.heap.read_string(addr)[1]
-            self.output_helper(string)
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0x8):
-            tail = zoperator.Tail(head, True, False, False)
-            #logger.debug(self.op2str(self.pc, 'call_1s', head, tail))
-            self.pc = self.call_helper(tail, operands)
-        elif (opcode == 0x9):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'remove_obj', head, tail))
-            #self.object_table.dump_dot_file('objects_%d.dot' % self.pc, 232)
-            #print '[remove_obj %d]' % operands[0]
-
-            parent = self.object_table.get_object_parent(operands[0])
-            sibling = self.object_table.get_object_sibling(operands[0])
-            child = self.object_table.get_object_child(operands[0])
-            parent_child = self.object_table.get_object_child(parent)
-
-            #print '***', operands[0]
-            #print '***', parent, sibling, child
-
-            #print '##', parent_child
-            while (self.object_table.get_object_sibling(parent_child)):
-                parent_child = self.object_table.get_object_sibling(parent_child)
-                #print '##', parent_child
-
-            self.object_table.set_object_parent(operands[0], 0)
-
-            if (parent > 0):
-                sibling = self.object_table.get_object_sibling(operands[0])
-                self.object_table.set_object_sibling(operands[0], 0)
-                parent_child = self.object_table.get_object_child(parent)
-                if (parent_child == operands[0]):
-                    self.object_table.set_object_child(parent, sibling)
-                else:
-                    other_sibling = parent_child
-                    next = self.object_table.get_object_sibling(other_sibling)
-                    while (next > 0) and not (next == operands[0]):
-                        other_sibling = next
-                        next = self.object_table.get_object_sibling(other_sibling)
-                    if (next == 0):
-                        print 'ERROR: Malformed object tree.'
-                        self.is_running = False
-                    else:
-                        self.object_table.set_object_sibling(other_sibling, sibling)
-
-            self.pc = tail.get_new_pc()
-            #self.object_table.dump_dot_file('objects_%d.dot' % self.pc, 232)
-        elif (opcode == 0xA):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'print_obj', head, tail)
-            self.output_helper(self.object_table.get_object_short_name(operands[0]))
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0xB):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'ret', head, tail))
-            self.pc = self.return_helper(operands[0])
-        elif (opcode == 0xC):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'jump', head, tail))
-            self.pc = tail.get_new_pc() + self.signed_word(operands[0]) - 2
-            #print self.signed_word(operands[0])
-            #print "%04x" % self.pc
-        elif (opcode == 0xD):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'print_paddr', head, tail))
-            addr = self.unpack_address(operands[0])
-            string = self.memory.read_string(addr)[1]
-            self.output_helper(string)
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0xE):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'load', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0xF):
-            version = self.header.get_z_version()
-            if (version < 5):
-                tail = zoperator.Tail(head, True, False, False)
-                print self.op2str(self.pc, 'not', head, tail)
-                self.is_running = False
-                print 'NOT IMPLEMENTED. Halting.'
-            else:
-                tail = zoperator.Tail(head, False, False, False)
-                #logger.debug(self.op2str(self.pc, 'call_1n', head, tail))
-                self.pc = self.call_helper(tail, operands)
-        else:
-            self.is_running = False
-            print 'Unkown operator. Halting.'
+        self.lut_1op[opcode](head, operands)
 
     def execute_0OP(self, head):
         opcode = head.get_opcode()
         operands = self.resolve_vars(head.get_operands())
-        if (opcode == 0x0):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'rtrue', head, tail))
-            self.pc = self.return_helper(1)
-        elif (opcode == 0x1):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'rfalse', head, tail))
-            self.pc = self.return_helper(0)
-        elif (opcode == 0x2):
-            tail = zoperator.Tail(head, False, False, True)
-            #logger.debug(self.op2str(self.pc, 'print', head, tail))
-            self.pc, string = self.memory.read_string(tail.get_new_pc())
-            self.output_helper(string)
-            #TODO: include string and length handling with tail
-        elif (opcode == 0x3):
-            tail = zoperator.Tail(head, False, False, True)
-            #logger.debug(self.op2str(self.pc, 'print_ret', head, tail))
-            self.pc, string = self.heap.read_string(tail.get_new_pc())
-            self.output_helper(string)
-            self.pc = self.return_helper(1)
-        elif (opcode == 0x4):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'nop', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x5):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'save', head, tail)
-            version = self.header.get_z_version()
-            if (version == 1):
-                pass
-            elif (version < 5):
-                pass
-            else:
-                print 'ILLEGAL'
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x6):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'restore', head, tail)
-            version = self.header.get_z_version()
-            if (version == 1):
-                pass
-            elif (version < 5):
-                pass
-            else:
-                print 'ILLEGAL'
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x7):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'restart', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x8):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'ret_popped', head, tail))
-            self.pc = self.return_helper(self.get_variable(0))
-        elif (opcode == 0x9):
-            tail = zoperator.Tail(head, False, False, False)
-            version = self.header.get_z_version()
-            if (version < 5):
-                print self.op2str(self.pc, 'pop', head, tail)
-            else:
-                print self.op2str(self.pc, 'catch', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0xA):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'quit', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0xB):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'new_line', head, tail))
-            self.output_helper("\n")
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0xC):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'show_status', head, tail)
-            version = self.header.get_z_version()
-            if (version ==  3):
-                pass
-            else:
-                print 'ILLEGAL'
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0xD):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'verify', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0xE):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, '', head, tail)
-            print '*extended*'
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0xF):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'piracy', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        else:
-            self.is_running = False
-            print 'Unkown operator. Halting.'
+        self.lut_0op[opcode](head, operands)
 
     def execute_VAR(self, head):
         opcode = head.get_opcode()
         operands = self.resolve_vars(head.get_operands())
-        if (opcode == 0x0):
-            tail = zoperator.Tail(head, True, False, False)
-            #logger.debug(self.op2str(self.pc, 'call_vs', head, tail))
-            self.pc = self.call_helper(tail, operands)
-            #logger.debug("locals %d, args %d" % (self.stack.get_num_locals(), self.arg_count))
-            #print "%x" % self.pc
-        elif (opcode == 0x1):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'storew', head, tail))
-            self.memory.write_word(operands[0] + 2 * operands[1], operands[2])
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0x2):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'storeb', head, tail))
-            if(operands[2] > 255):
-                self.is_running = False
-                logger.error('Trying to store word')
-            self.memory.write_byte(operands[0] + operands[1], operands[2])
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0x3):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'put_prop', head, tail)
-            self.object_table.set_property_data(operands[0], operands[1], operands[2])
-        elif (opcode == 0x4):
-            version = self.header.get_z_version()
-            if (version < 4):
-                tail = zoperator.Tail(head, False, False, False)
-                print self.op2str(self.pc, 'sread', head, tail)
-                #TODO: redisplay status line
-                self.is_running = False
-                print 'NOT IMPLEMENTED. Halting.'
-                #TODO: read until CR
-            elif (version == 4):
-                tail = zoperator.Tail(head, False, False, False)
-                print self.op2str(self.pc, 'sread', head, tail)
-                #TODO: read until CR
-                self.is_running = False
-                print 'NOT IMPLEMENTED. Halting.'
-            else:
-                tail = zoperator.Tail(head, True, False, False)
-                #logger.debug(self.op2str(self.pc, 'aread', head, tail))
-                #TODO: read until CR or any other terminating character
-                max_len = self.memory.read_byte(operands[0])
-                input = self.input[self.selected_input].read(max_len, 0, '')
-                self.memory.write_byte(operands[0] + 1, len(input) - 1)
-                addr = operands[0] + 2
-                for char in input[:-1]:
-                    self.memory.write_byte(addr, ord(char))
-                    addr += 1
-                if not (operands[1] == 0):
-                    self.parse_helper(operands[1], input[:-1], self.dictionary)
-                self.pc = self.store_helper(tail, ord(input[-1]))
-        elif (opcode == 0x5):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'print_char', head, tail))
-            self.output_helper(chr(operands[0]))
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0x6):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'print_num', head, tail))
-            self.output_helper(str(self.signed_word(operands[0])))
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0x7):
-            tail = zoperator.Tail(head, True, False, False)
-            #logger.debug(self.op2str(self.pc, 'random', head, tail))
-            if (operands[0] > 0):
-                self.store_helper(tail, random.randint(1, operands[0]))                
-            elif (operands[0] < 0):
-                random.seed(operands[0])
-                self.store_helper(tail, 0)
-            else:
-                random.seed()
-                self.store_helper(tail, 0)
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0x8):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'push', head, tail))
-            self.set_variable(0, operands[0])
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0x9):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'pull', head, tail))
-            self.set_variable(operands[0], self.get_variable(0))
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0xA):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'split_window', head, tail))
-            self.output['screen'].screen.split_window(operands[0])
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0xB):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'set_window', head, tail))
-            self.output['screen'].screen.set_window(operands[0])
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0xC):
-            tail = zoperator.Tail(head, True, False, False)
-            #logger.debug(self.op2str(self.pc, 'call_vs2', head, tail))
-            self.pc = self.call_helper(tail, operands)
-        elif (opcode == 0xD):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'erase_window', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0xE):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'erase_line', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0xF):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'set_cursor', head, tail))
-            self.output['screen'].screen.set_cursor(operands[0], operands[1])
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0x10):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'get_cursor', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x11):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'set_text_style', head, tail))
-            self.output['screen'].screen.set_text_style(operands[0])
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0x12):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'buffer_mode', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x13):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'output_stream', head, tail)
-            #print self.op2str(self.pc, 'output_stream', head, tail)
-            operands[0] = self.signed_word(operands[0])
-            if (operands[0] > 0):
-                if (operands[0] == 1):
-                    self.output['screen'].select()
-                if (operands[0] == 2):
-                    self.output['transcript'].select()               
-                if (operands[0] == 3):
-                    self.output['memory'].select(operands[1])   
-                if (operands[0] == 4):
-                    self.output['command'].select()
-            elif (operands[0] < 0):
-                if (operands[0] == -1):
-                    self.output['screen'].deselect()
-                if (operands[0] == -2):
-                    self.output['transcript'].deselect()               
-                if (operands[0] == -3):
-                    self.output['memory'].deselect()   
-                if (operands[0] == -4):
-                    self.output['command'].deselect()
-            else:
-                self.is_running = False
-                print 'NOT IMPLEMENTED. Halting.'
-            self.pc = tail.get_new_pc()
-        elif (opcode == 0x14):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'input_stream', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x15):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'sound_effect', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x16):
-            tail = zoperator.Tail(head, True, False, False)
-            print self.op2str(self.pc, 'read_char', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x17):
-            tail = zoperator.Tail(head, True, True, False)
-            print self.op2str(self.pc, 'scan_table', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x18):
-            tail = zoperator.Tail(head, True, False, False)
-            #logger.debug(self.op2str(self.pc, 'not', head, tail))
-            self.pc = self.store_helper(tail, (~operands[0]) & 0xffff)
-        elif (opcode == 0x19):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'call_vn', head, tail))
-            self.pc = self.call_helper(tail, operands)
-            #logger.debug("locals %d, args %d" % (self.stack.get_num_locals(), self.arg_count))
-        elif (opcode == 0x1A):
-            tail = zoperator.Tail(head, False, False, False)
-            #logger.debug(self.op2str(self.pc, 'call_vn2', head, tail))
-            self.pc = self.call_helper(tail, operands)
-            #logger.debug("locals %d, args %d" % (self.stack.get_num_locals(), self.arg_count))
-        elif (opcode == 0x1B):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'tokenise', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x1C):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'encode_text', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x1D):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'copy_table', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x1E):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'print_table', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x1F):
-            tail = zoperator.Tail(head, False, True, False)
-            #logger.debug(self.op2str(self.pc, 'check_arg_count', head, tail))
-            #logger.debug("arg count: %d" % self.arg_count)
-            self.pc = self.branch_helper(tail, operands[0] <= self.arg_count)
-        else:
-            self.is_running = False
-            print 'Unkown operator. Halting.'
+        self.lut_var[opcode](head, operands)
 
     def execute_EXT(self, head):
         opcode = head.get_opcode()
         operands = self.resolve_vars(head.get_operands())
-        if (opcode == 0x0):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'save', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x1):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'restore', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x2):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'log_shift', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x3):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'art_shift', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x4):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'set_font', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0x9):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'save_undo', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0xA):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'restore_undo', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0xB):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'print_unicode', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        elif (opcode == 0xC):
-            tail = zoperator.Tail(head, False, False, False)
-            print self.op2str(self.pc, 'check_unicode', head, tail)
-            self.is_running = False
-            print 'NOT IMPLEMENTED. Halting.'
-        else:
-            self.is_running = False
-            print 'Unkown operator. Halting.'
+        self.lut_ext[opcode](head, operands)
 
     def execute(self):
         head = zoperator.Head(self.memory, self.pc)
