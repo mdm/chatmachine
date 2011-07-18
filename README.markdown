@@ -1,3 +1,15 @@
-A Z-machine interpreter in Python and a Skype plugin to use it over the web.
+A Z-machine interpreter written in Python.
+------------------------------------------
 
-Before attempting a more complex emulator I thought this would be a good exercise. That's why I'm writing it from scratch. I'm aware of zvm (http://code.google.com/p/zvm/) and I might later on try to integrate my code with their (incomplete) interpreter. But for now I'll keep it a seperate project.
+Goals:
+  * Be fast enough to run Inform 7 games
+  * A debugger
+  * Interfaces for console, Faceboob Chat and Skype
+  * Correctness
+
+Current features:
+  * JIT-compilation to Python bytecode
+  * Caches blocks of code to avoid unneccessary recompilaton
+  * Unit tests for all implemented operators
+  * Runs version 1 games (i.e. Zork I, Release 5)
+
