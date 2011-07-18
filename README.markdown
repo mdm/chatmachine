@@ -1,7 +1,7 @@
 A Z-machine interpreter written in Python.
 ------------------------------------------
 
-___Goals:__
+__Goals:__
 
  * Be fast enough to run Inform 7 games
  * A debugger
