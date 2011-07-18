@@ -1,11 +1,11 @@
 import unittest
 
-import szm.stack
+import chatmachine.vm.stack
 
 class TestStack(unittest.TestCase):
     def setUp(self):
-        self.stack1 = szm.stack.Stack()
-        self.stack2 = szm.stack.Stack()
+        self.stack1 = chatmachine.vm.stack.Stack()
+        self.stack2 = chatmachine.vm.stack.Stack()
 
     def test_init(self):
         pass

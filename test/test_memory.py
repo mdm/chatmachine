@@ -1,10 +1,10 @@
 import unittest
 
-import szm.memory
+import chatmachine.vm.memory
 
 class TestMemory(unittest.TestCase):
     def setUp(self):
-        self.data = szm.memory.Memory('data/Bronze.z5')
+        self.data = chatmachine.vm.memory.Memory('data/Bronze.z5')
 
     def test_read_byte_first(self):
         self.assertEquals(0x08, self.data.read_byte(0))
@@ -44,7 +44,7 @@ class TestMemory(unittest.TestCase):
     
 class TestHeader(unittest.TestCase):
     def setUp(self):
-        self.header = szm.memory.Memory('data/Bronze.z5').get_header()
+        self.header = chatmachine.vm.memory.Memory('data/Bronze.z5').get_header()
 
     def test_get_z_version(self):
 	    self.assertEquals(self.header.get_z_version(), 8)
@@ -52,6 +52,6 @@ class TestHeader(unittest.TestCase):
 
 class TestObjectTable(unittest.TestCase):
     def setUp(self):
-        self.object_table = szm.memory.Memory('Bronze.z8').get_object_table()
+        self.object_table = chatmachine.vm.memory.Memory('Bronze.z8').get_object_table()
 
 

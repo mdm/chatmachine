@@ -1,24 +1,24 @@
 import unittest
 
-import szm.memory
-import szm.stack
-import szm.streams
-import szm.processor
+import chatmachine.vm.memory
+import chatmachine.vm.stack
+import chatmachine.vm.streams
+import chatmachine.vm.processor
 
 
-class MockOutputStreamV1(szm.streams.OutputStream):
+class MockOutputStreamV1(chatmachine.vm.streams.OutputStream):
     def write(self, string):
         self.string = string
 
 
 class TestOperatorV1(unittest.TestCase):
     def setUp(self):
-        self.memory = szm.memory.Memory('data/zork1-5.z5')
-        self.stack = szm.stack.Stack()
-        self.input = szm.streams.KeyboardInputStreamV1()
+        self.memory = chatmachine.vm.memory.Memory('data/zork1-5.z5')
+        self.stack = chatmachine.vm.stack.Stack()
+        self.input = chatmachine.vm.streams.KeyboardInputStreamV1()
         self.output = MockOutputStreamV1()
 
-        self.processor = szm.processor.ProcessorV1(self.memory, self.stack, self.input, self.output)
+        self.processor = chatmachine.vm.processor.ProcessorV1(self.memory, self.stack, self.input, self.output)
         
     def test_add_both_positive_no_overflow(self):
         self.memory.write_word(self.processor.header.get_globals_table_location() + (0x72 << 1), 1000 - 0xb4)
@@ -687,12 +687,12 @@ class TestOperatorV1(unittest.TestCase):
 
 class TestDecoderV1(unittest.TestCase):
     def setUp(self):
-        self.memory = szm.memory2.Memory('data/zork1-5.z5')
-        self.stack = szm.stack.Stack()
-        self.input = szm.streams2.KeyboardInputStreamV1()
-        self.output = szm.streams2.ScreenOutputStreamV1()
+        self.memory = chatmachine.vm.memory.Memory('data/zork1-5.z5')
+        self.stack = chatmachine.vm.stack.Stack()
+        self.input = chatmachine.vm.streams.KeyboardInputStreamV1()
+        self.output = chatmachine.vm.streams.ScreenOutputStreamV1()
 
-        self.processor = szm.processor2.ProcessorV1(self.memory, self.stack, self.input, self.output)
+        self.processor = chatmachine.vm.processor.ProcessorV1(self.memory, self.stack, self.input, self.output)
         
     def test_decode_calling(self):
         instruction = self.processor.decoder.decode_instruction(0x47ad)
