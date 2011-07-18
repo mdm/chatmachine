@@ -1,38 +1,18 @@
 import sys
 import cProfile
 
-import memory
+import memory2
 import stack
-import screen
-import keyboard
-import streams
-import processor
+import streams2
+import processor2
 
 
-memory = memory.Memory(sys.argv[1])
+memory = memory2.Memory(sys.argv[1])
 stack = stack.Stack()
+input = streams2.KeyboardInputStreamV1()
+output = streams2.ScreenOutputStreamV1()
 
-screen = screen.Screen(memory.get_header().get_z_version())
-out_screen = streams.ScreenWriter(screen)
-
-transcript_file = None
-out_transcript = streams.FileWriter(transcript_file)
-
-out_memory = streams.MemoryWriter(memory)
-
-command_file = None
-out_command = streams.FileWriter(command_file)
-
-
-#keyboard = keyboard.Keyboard()
-keyboard = None
-in_keyboard = streams.KeyboardReader(keyboard)
-
-input_file = None
-in_file = streams.FileReader(input_file)
-
-
-processor = processor.Processor(memory, stack, out_screen, out_transcript, out_memory, out_command, in_keyboard, in_file)
+processor = processor2.ProcessorV1(memory, stack, input, output)
 
 
 #profile = ''

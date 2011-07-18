@@ -1,18 +1,13 @@
-#import struct
-#import ctypes
 import array
-
-import zstring
-
 
 class Memory:
     def __init__(self, filename):
         story_file = open(filename)
         #self.data = ctypes.create_string_buffer(story_file.read())
         self.data = array.array('B', story_file.read())
-        self.header = Header(self)
+        self.header = HeaderV1(self)
         self.object_table = ObjectTable(self)
-        self.dictionary = Dictionary(self, self.header.get_dictionary_location())
+        self.dictionary = DictionaryV1(self, self.header.get_dictionary_location())
 
     def read_byte(self, address):
         #if not (0 <= address < len(self.data)): raise IndexError
@@ -41,15 +36,64 @@ class Memory:
         self.data[address] = value >> 8
         self.data[address + 1] = value & 0xFF
 
-    def read_string(self, address):
-        words = []
-        words.append(self.read_word(address))
-        while not (words[-1] & 0x8000):
+    def decode_zscii(self, code):
+        if (code == 0):
+            char = ''
+        elif (code == 13):
+            char = '\\n'
+        elif (32 <= code <= 126):
+            char = chr(code)
+        elif (155 <= code <= 251):
+            #TODO: implement default unicode table
+            char = '?'
+        return char
+    
+    def decode_string(self, address):
+        #TODO: cache alphabets somewhere
+        alphabets = [list('abcdefghijklmnopqrstuvwxyz'), list('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), list(' 0123456789.,!?_#\'\"/\\<-:()')]
+        alphabets[2][17] = '\\\''
+        alphabets[2][17] = '\\\"'
+        alphabets[2][20] = '\\\\'
+        previous = 0
+        current = 0
+        constructing = -2 # nice hack from gnusto: -2: not constructing multi-zchar zscii, -1: constructing, n>=0: read 1 byte
+        zscii = []
+        while True:
+            word = self.read_word(address)
+            zchars = [(word & 0x7c00) >> 10, (word & 0x3e0) >> 5, word & 0x1f]
+            for zchar in zchars:
+                if (zchar == 0):
+                    zscii.append(' ')
+                elif (zchar == 1):
+                    zscii.append('\\n')
+                elif (zchar == 2):
+                    previous = current
+                    current = (current + 1) % 3
+                elif (zchar == 3):
+                    previous = current
+                    current = (current + 2) % 3
+                elif (zchar == 4):
+                    current = (current + 1) % 3
+                    previous = current
+                elif (zchar == 5):
+                    current = (current + 2) % 3
+                    previous = current
+                elif (current == 2) and (zchar == 6):
+                    constructing = -1
+                else:
+                    if (constructing == -2):
+                        zscii.append(alphabets[current][zchar - 6])
+                        current = previous
+                    elif (constructing == -1):
+                        constructing = zchar << 5
+                    else:
+                        code = constructing + zchar
+                        zscii.append(self.decode_zscii(code))
             address += 2
-            words.append(self.read_word(address))
-        string = zstring.ZString()
-        string.unpack_words(words)
-        return (address + 2), string.decode()
+            if (word & 0x8000):
+                break
+                
+        return ''.join(zscii), address
 
     def get_header(self):
         return self.header
@@ -70,127 +114,73 @@ class Memory:
             char = self.read_byte(addr)
 
 
-class Header:
+class HeaderV1:
     #STATUS_TYPE, FILE_SPLIT, STATUS_AVAILABLE, SCREEN_SPLIT_AVAILABLE, VARIABLE_DEFAULT_FONT = 1, 2, 4, 5, 6
-    def __init__(self, heap):
-        self.heap = heap
+    def __init__(self, memory):
+        self.memory = memory
 
     def get_z_version(self):
-        return self.heap.read_byte(0x0)
-
-    def get_flags1(self):
-        return self.heap.read_byte(0x1)
+        return self.memory.read_byte(0x0)
 
     def get_high_memory_base(self):
-        return self.heap.read_word(0x4)
+        return self.memory.read_word(0x4)
 
     def get_initial_pc(self):
-        #print self.memory
-        return self.heap.read_word(0x6)
+        return self.memory.read_word(0x6)
 
     def get_dictionary_location(self):
-        return self.heap.read_word(0x8)
+        return self.memory.read_word(0x8)
 
     def get_object_table_location(self):
-        return self.heap.read_word(0xA)
+        return self.memory.read_word(0xA)
 
     def get_globals_table_location(self):
-        return self.heap.read_word(0xC)
+        return self.memory.read_word(0xC)
 
     def get_static_memory_base(self):
-        return self.heap.read_word(0xE)
+        return self.memory.read_word(0xE)
 
-    def get_flags2(self):
-        return self.heap.read_word(0x10)
+    def get_flag_transcript(self):
+        return self.memory.read_word(0x10) & 0x100
 
-    def get_abbrevations_table_location(self):
-        return self.heap.read_word(0x18)
+    def set_flag_transcript(self):
+        self.memory.read_word(0x10, self.memory.read_word(0x10) | 0x100)
+        
+    def get_standard_revision_number(self):
+        return self.memory.read_word(0x32)
 
-    def get_file_length(self):
-        return self.heap.read_word(0x1A) # TODO: multiply by version-dependant constant
-
-    def get_checksum(self):
-        return self.heap.read_word(0x1C)
-
-    def get_interpreter_number(self):
-        return self.heap.read_byte(0x1E)
-
-    def get_interpreter_version(self):
-        return self.heap.read_byte(0x1F)
-
-    def get_screen_height(self):
-        return self.heap.read_byte(0x20)
-
-    def get_screen_width(self):
-        return self.heap.read_byte(0x21)
-
-    # TODO: some entires ommitted. check.
-
-    def get_terminating_chars_table_location(self):
-        return self.heap.read_word(0x2E)
-
-    def get_alphabet_table_location(self):
-        return self.heap.read_word(0x34)
-
-    def get_header_extension_table_location(self):
-        return self.heap.read_word(0x36)
-    
-    def set_flags1_v3(self, use_score, has_two_discs, do_censor, has_no_statusline, has_screen_splitting, has_variable_pitch_default_font):
-        self.heap.write_byte(0x1, value)
-
-    def set_flags1_v458(self, has_colors, has_pictures, has_boldface, has_italic, has_monospace, has_sound, has_timed_input):
-        self.heap.write_byte(0x1, value)
-
-    def set_flags2(self, do_transcript, do_redraw_statusline, use_pictures, use_undo, use_mouse, use_colors, use_sound, use_menus):
-        self.heap.write_byte(0x1, value)
-
-    # flags
-
-    #def set_has_status_line
+    def set_standard_revision_number(self, value):
+        self.memory.write_word(0x32, value)
 
 
 class ObjectTable:
-    def __init__(self, heap):
-        self.heap = heap
-        self.header = self.heap.get_header()
+    def __init__(self, memory):
+        self.memory = memory
+        self.header = self.memory.get_header()
 
     def get_default_property_data(self, property_number):
         object_table = self.header.get_object_table_location()
         #TODO: check for illegal property numbers
-        return self.heap.read_word(object_table + 2 * (property_number - 1))
+        return self.memory.read_word(object_table + 2 * (property_number - 1))
 
     def get_object_addr(self, object_number):
         #TODO: check for illegal object numbers
-        version = self.header.get_z_version()
         object_table = self.header.get_object_table_location()
 
-        if (version < 4):
-            max_properties = 31
-            object_size = 9
-        else:
-            max_properties = 63
-            object_size = 14
+        max_properties = 31
+        object_size = 9
         
         first_object = object_table + 2 * max_properties
         return first_object + object_size * (object_number - 1)
 
     def get_object_attribute(self, object_number, attribute_number):
         #TODO: check for illegal attribute numbers
-        version = self.header.get_z_version()
         object_addr = self.get_object_addr(object_number)
 
-        if (version < 4):
-            if (attribute_number < 16):
-                is_set = self.heap.read_word(object_addr) & (1 << (15 - attribute_number))
-            else:
-                is_set = self.heap.read_word(object_addr + 2) & (1 << (31 - attribute_number))
+        if (attribute_number < 16):
+            is_set = self.memory.read_word(object_addr) & (1 << (15 - attribute_number))
         else:
-            if (attribute_number < 16):
-                is_set = self.heap.read_word(object_addr) & (1 << (15 - attribute_number))
-            elif (attribute_number < 32):
-                is_set = self.heap.read_word(object_addr + 2) & (1 << (31 - attribute_number))
-            else:
-                is_set = self.heap.read_word(object_addr + 4) & (1 << (47 - attribute_number))
+            is_set = self.memory.read_word(object_addr + 2) & (1 << (31 - attribute_number))
 
         if (is_set):
             return True
@@ -199,188 +189,87 @@ class ObjectTable:
 
     def set_object_attribute(self, object_number, attribute_number):
         #TODO: check for illegal attribute numbers
-        version = self.header.get_z_version()
         object_addr = self.get_object_addr(object_number)
-
-        if (version < 4):
-            if (attribute_number < 16):
-                self.heap.write_word(object_addr, self.heap.read_word(object_addr) | (1 << (15 - attribute_number)))
-            else:
-                self.heap.write_word(object_addr + 2, self.heap.read_word(object_addr + 2) | (1 << (31 - attribute_number)))
+        
+        if (attribute_number < 16):
+            self.memory.write_word(object_addr, self.memory.read_word(object_addr) | (1 << (15 - attribute_number)))
         else:
-            if (attribute_number < 16):
-                self.heap.write_word(object_addr, self.heap.read_word(object_addr) | (1 << (15 - attribute_number)))
-            elif (attribute_number < 32):
-                self.heap.write_word(object_addr + 2, self.heap.read_word(object_addr + 2) | (1 << (31 - attribute_number)))
-            else:
-                self.heap.write_word(object_addr + 4, self.heap.read_word(object_addr + 4) | (1 << (47 - attribute_number)))
+            self.memory.write_word(object_addr + 2, self.memory.read_word(object_addr + 2) | (1 << (31 - attribute_number)))
 
     def clear_object_attribute(self, object_number, attribute_number):
         #TODO: check for illegal attribute numbers
-        version = self.header.get_z_version()
         object_addr = self.get_object_addr(object_number)
 
-        if (version < 4):
-            if (attribute_number < 16):
-                self.heap.write_word(object_addr, self.heap.read_word(object_addr) & ~(1 << (15 - attribute_number)))
-            else:
-                self.heap.write_word(object_addr + 2, self.heap.read_word(object_addr + 2) & ~(1 << (31 - attribute_number)))
+        if (attribute_number < 16):
+            self.memory.write_word(object_addr, self.memory.read_word(object_addr) & ~(1 << (15 - attribute_number)))
         else:
-            if (attribute_number < 16):
-                self.heap.write_word(object_addr, self.heap.read_word(object_addr) & ~(1 << (15 - attribute_number)))
-            elif (attribute_number < 32):
-                self.heap.write_word(object_addr + 2, self.heap.read_word(object_addr + 2) & ~(1 << (31 - attribute_number)))
-            else:
-                self.heap.write_word(object_addr + 4, self.heap.read_word(object_addr + 4) & ~(1 << (47 - attribute_number)))
+            self.memory.write_word(object_addr + 2, self.memory.read_word(object_addr + 2) & ~(1 << (31 - attribute_number)))
 
     def get_object_parent(self, object_number):
-        version = self.header.get_z_version()
         object_addr = self.get_object_addr(object_number)
-
-        if (version < 4):
-            parent = self.heap.read_byte(object_addr + 4)
-        else:
-            parent = self.heap.read_word(object_addr + 6)
-
-        return parent
+        return self.memory.read_byte(object_addr + 4)
 
     def set_object_parent(self, object_number, parent):
-        version = self.header.get_z_version()
         object_addr = self.get_object_addr(object_number)
-
-        if (version < 4):
-            self.heap.write_byte(object_addr + 4, parent)
-        else:
-            self.heap.write_word(object_addr + 6, parent)
+        self.memory.write_byte(object_addr + 4, parent)
 
     def get_object_sibling(self, object_number):
-        version = self.header.get_z_version()
         object_addr = self.get_object_addr(object_number)
-
-        if (version < 4):
-            sibling = self.heap.read_byte(object_addr + 5)
-        else:
-            sibling = self.heap.read_word(object_addr + 8)
-
-        return sibling
+        return self.memory.read_byte(object_addr + 5)
 
     def set_object_sibling(self, object_number, sibling):
-        version = self.header.get_z_version()
         object_addr = self.get_object_addr(object_number)
-
-        if (version < 4):
-            self.heap.write_byte(object_addr + 5, sibling)
-        else:
-            self.heap.write_word(object_addr + 8, sibling)
+        self.memory.write_byte(object_addr + 5, sibling)
 
     def get_object_child(self, object_number):
-        version = self.header.get_z_version()
         object_addr = self.get_object_addr(object_number)
-
-        if (version < 4):
-            child = self.heap.read_byte(object_addr + 6)
-        else:
-            child = self.heap.read_word(object_addr + 10)
-
-        return child
+        return self.memory.read_byte(object_addr + 6)
 
     def set_object_child(self, object_number, child):
-        version = self.header.get_z_version()
         object_addr = self.get_object_addr(object_number)
-
-        if (version < 4):
-            self.heap.write_byte(object_addr + 6, child)
-        else:
-            self.heap.write_word(object_addr + 10, child)
+        self.memory.write_byte(object_addr + 6, child)
 
     def get_object_properties_table(self, object_number):
-        version = self.header.get_z_version()
         object_addr = self.get_object_addr(object_number)
 
-        if (version < 4):
-            properties_table = self.heap.read_word(object_addr + 7)
-        else:
-            properties_table = self.heap.read_word(object_addr + 12)
-
+        properties_table = self.memory.read_word(object_addr + 7)
+        
         return properties_table
 
     def get_object_short_name(self, object_number):
         properties_table = self.get_object_properties_table(object_number)
-        short_name_words = self.heap.read_byte(properties_table)
-        addr = properties_table + 1
-        string = zstring.ZString()
-        while(string.add(self.heap.read_word(addr))):
-            addr += 2
-        #print short_name_words
-        return string
+        #short_name_words = self.memory.read_byte(properties_table)
+        return self.memory.decode_string(properties_table + 1)[0]
 
     def get_property_info_forwards(self, property_info_addr):
-        version = self.header.get_z_version()
-        size_byte = self.heap.read_byte(property_info_addr)
+        size_byte = self.memory.read_byte(property_info_addr)
 
-        if (version < 4):
-            number = size_byte & 0x1f
-        else:
-            number = size_byte & 0x3f
-        
-        if (version < 4):
-            size = (size_byte >> 5) + 1
-        else:
-            if (size_byte & 128):
-                size_byte = self.heap.read_byte(property_info_addr + 1)
-                size = size_byte & 0x3f
-                if (size == 0):
-                    size = 64
-                elif (size < 3):
-                    print 'WARNING: Property', number, 'has size', size, 'encoded as two bytes!'
-            else:
-                size = (size_byte >> 6) + 1
+        number = size_byte & 0x1f
+        size = (size_byte >> 5) + 1
 
         return (number, size)
 
     def get_property_info_backwards(self, property_data_addr):
-        version = self.header.get_z_version()
-        size_byte = self.heap.read_byte(property_data_addr - 1)
+        size_byte = self.memory.read_byte(property_data_addr - 1)
 
-        if (version < 4):
-            size = (size_byte >> 5) + 1
-        else:
-            if (size_byte & 128):
-                size = size_byte & 0x3f
-                if (size == 0):
-                    size = 64
-                elif (size < 3):
-                    print 'WARNING: Property', number, 'has size', size, 'encoded as two bytes!'
-                size_byte = self.heap.read_byte(property_data_addr - 2)
-            else:
-                size = (size_byte >> 6) + 1
-
-        if (version < 4):
-            number = size_byte & 0x1f
-        else:
-            number = size_byte & 0x3f
+        number = size_byte & 0x1f
+        size = (size_byte >> 5) + 1
         
         return (number, size)
 
     def get_property_data_addr(self, object_number, property_number):
         #TODO: check for illegal property numbers
-        version = self.header.get_z_version()
+        #TODO: use binary search
         properties_table = self.get_object_properties_table(object_number)
-        short_name_words = self.heap.read_byte(properties_table)
+        short_name_words = self.memory.read_byte(properties_table)
 
         property_info_addr = properties_table + 1 + 2 * short_name_words
         number, size = self.get_property_info_forwards(property_info_addr)
         while (number > 0):
             if (number == property_number):
-                if (version < 4) or (size < 3):
-                    return property_info_addr + 1
-                else:
-                    return property_info_addr + 2
+                return property_info_addr + 1
             else:
-                if (version < 4) or (size < 3):
-                    property_info_addr += size + 1
-                else:
-                    property_info_addr += size + 2
+                property_info_addr += size + 1
                 number, size = self.get_property_info_forwards(property_info_addr)
         
         return 0
@@ -393,20 +282,20 @@ class ObjectTable:
         else:
             number, size = self.get_property_info_backwards(property_data_addr)
             if (size == 1):
-                return self.heap.read_byte(property_data_addr)
+                return self.memory.read_byte(property_data_addr)
             elif (size == 2):
-                return self.heap.read_word(property_data_addr)
+                return self.memory.read_word(property_data_addr)
             else:
                 print 'ERROR: size > 2. get_prop undefined.'
-
+                
     def set_property_data(self, object_number, property_number, value):
         property_data_addr = self.get_property_data_addr(object_number, property_number)
         number, size = self.get_property_info_backwards(property_data_addr)
         
         if (size == 1):
-            self.heap.write_byte(property_data_addr, value)
+            self.memory.write_byte(property_data_addr, value)
         elif (size == 2):
-            self.heap.write_word(property_data_addr, value)
+            self.memory.write_word(property_data_addr, value)
         else:
             print 'ERROR: size > 2. set_prop undefined.'
     
@@ -428,21 +317,21 @@ class ObjectTable:
         dotfile.close()
 
 
-class Dictionary:
-    def __init__(self, heap, location):
-        self.heap = heap
-        self.header = self.heap.get_header()
+class DictionaryV1:
+    def __init__(self, memory, location):
+        self.memory = memory
+        self.header = self.memory.get_header()
         self.location = location
-        location += self.heap.read_byte(location) + 1
-        self.entry_length = self.heap.read_byte(location)
-        self.num_entries = self.heap.read_word(location + 1)
+        location += self.memory.read_byte(location) + 1
+        self.entry_length = self.memory.read_byte(location)
+        self.num_entries = self.memory.read_word(location + 1)
         self.first_entry = location + 3
 
     def get_word_separators(self):
-        num_separators = self.heap.read_byte(self.location)
+        num_separators = self.memory.read_byte(self.location)
         separators = ''
         for i in range(num_separators):
-            separators += chr(self.heap.read_byte(self.location + i + 1))
+            separators += chr(self.memory.read_byte(self.location + i + 1))
         return separators
 
     def get_num_entries(self):
@@ -452,14 +341,9 @@ class Dictionary:
         return self.first_entry + (number - 1) * self.entry_length
 
     def get_encoded_text(self, number): # this is 1-based
-        version = self.header.get_z_version()
         addr = self.get_entry_addr(number)
         encoded = []
-        if (version < 4):
-            for i in range(2):
-                encoded.append(self.heap.read_word(addr + i * 2))
-        else:
-            for i in range(3):
-                encoded.append(self.heap.read_word(addr + i * 2))
+        for i in range(2):
+                encoded.append(self.memory.read_word(addr + i * 2))
         return encoded
 
