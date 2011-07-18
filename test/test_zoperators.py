@@ -1,24 +1,24 @@
 import unittest
 
-import szm.memory2
+import szm.memory
 import szm.stack
-import szm.streams2
-import szm.processor2
+import szm.streams
+import szm.processor
 
 
-class MockOutputStreamV1(szm.streams2.OutputStream):
+class MockOutputStreamV1(szm.streams.OutputStream):
     def write(self, string):
         self.string = string
 
 
 class TestOperatorV1(unittest.TestCase):
     def setUp(self):
-        self.memory = szm.memory2.Memory('data/zork1-5.z5')
+        self.memory = szm.memory.Memory('data/zork1-5.z5')
         self.stack = szm.stack.Stack()
-        self.input = szm.streams2.KeyboardInputStreamV1()
+        self.input = szm.streams.KeyboardInputStreamV1()
         self.output = MockOutputStreamV1()
 
-        self.processor = szm.processor2.ProcessorV1(self.memory, self.stack, self.input, self.output)
+        self.processor = szm.processor.ProcessorV1(self.memory, self.stack, self.input, self.output)
         
     def test_add_both_positive_no_overflow(self):
         self.memory.write_word(self.processor.header.get_globals_table_location() + (0x72 << 1), 1000 - 0xb4)

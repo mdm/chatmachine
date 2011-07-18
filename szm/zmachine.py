@@ -1,18 +1,18 @@
 import sys
 import cProfile
 
-import memory2
+import memory
 import stack
-import streams2
-import processor2
+import streams
+import processor
 
 
-memory = memory2.Memory(sys.argv[1])
+memory = memory.Memory(sys.argv[1])
 stack = stack.Stack()
-input = streams2.KeyboardInputStreamV1()
-output = streams2.ScreenOutputStreamV1()
+input = streams.KeyboardInputStreamV1()
+output = streams.ScreenOutputStreamV1()
 
-processor = processor2.ProcessorV1(memory, stack, input, output)
+processor = processor.ProcessorV1(memory, stack, input, output)
 
 
 #profile = ''

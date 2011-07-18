@@ -1,5 +1,5 @@
 import zoperators
-import streams2
+import streams
 import sys
 
 class ProcessorV1(object):
