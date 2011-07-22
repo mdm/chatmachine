@@ -43,8 +43,26 @@ class ProcessorV1(object):
                     instruction = self.decoder.decode_instruction(pc)
                     if instruction.name == 'sub' and count > 5:
                         raise NotImplementedError, 'untested sub'
+                    if instruction.name == 'call' and count > 303:
+                        raise NotImplementedError, 'untested call'
                     if instruction.name == 'clear_attr' and count > 0:
                         raise NotImplementedError, 'untested clear_attr'
+                    if instruction.name == 'inc_chk' and count > 304:
+                        raise NotImplementedError, 'untested inc_chk (stack)'
+                    if instruction.name == 'inc_chk' and count > 304:
+                        raise NotImplementedError, 'untested inc_chk (global)'
+                    if instruction.name == 'loadb' and count > 136:
+                        raise NotImplementedError, 'untested loadb (local)'
+                    if instruction.name == 'loadb' and count > 136:
+                        raise NotImplementedError, 'untested loadb (global)'
+                    if instruction.name == 'loadw' and count > 131:
+                        raise NotImplementedError, 'untested loadw (local)'
+                    if instruction.name == 'loadw' and count > 131:
+                        raise NotImplementedError, 'untested loadw (global)'
+                    if instruction.name == 'put_prop' and count > 112:
+                        raise NotImplementedError, 'untested put_prop (size 1)'
+                    if instruction.name == 'store' and count > 301:
+                        raise NotImplementedError, 'untested store (stack)'
                     assembled, continuable = instruction.assemble(self.debugging)
                     block.append(assembled)
                     if continuable:

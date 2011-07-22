@@ -240,7 +240,16 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(self.stack.pop(), 0x42ad)
         
     def test_get_sibling(self):
-        self.fail()
+        self.stack.locals[-1] = [42, 42, 42, 252]
+        instruction = self.processor.decoder.decode_instruction(0x6057)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0x6057)
+        self.assertEqual(instruction.name, 'get_sibling')
+        self.assertEqual(instruction.next, 0x605b)
+        self.assertEqual(self.stack.get_local(3), 199)
+        self.assertEqual(next, 0x605b)
         
     def test_inc_chk_stack(self):
         self.fail()
@@ -286,7 +295,16 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(next, 0x4731)
                 
     def test_jin(self):
-        self.fail()
+        self.stack.push_call([35], 1000, 0, 0)
+        instruction = self.processor.decoder.decode_instruction(0x6113)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0x6113)
+        self.assertEqual(instruction.name, 'jin')
+        self.assertEqual(instruction.next, 0x6117)
+        self.assertEqual(next, 1000)
+        self.assertEqual(self.stack.pop(), 0)
         
     def test_jump(self):
         instruction = self.processor.decoder.decode_instruction(0x4755)    
@@ -424,7 +442,17 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(self.output.string, string)
         
     def test_print_paddr(self):
-        self.fail()
+        self.stack.locals[-1] = [42, 42, 42, 0xf490 >> 1]
+        instruction = self.processor.decoder.decode_instruction(0x5f82)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0x5f82)
+        self.assertEqual(instruction.name, 'print_paddr')
+        self.assertEqual(instruction.next, 0x5f84)
+        self.assertEqual(next, None)
+        string = 'There is a small mailbox here.'
+        self.assertEqual(self.output.string, string)
         
     def test_pull(self):
         self.stack.locals[-1] = [42, 42]
@@ -528,10 +556,29 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(result, 1000)
         
     def test_ret_popped(self):
-        self.fail()
+        self.stack.push_call([], 1000, 0, 42)
+        self.stack.push(42)
+        instruction = self.processor.decoder.decode_instruction(0x5f48)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0x5f48)
+        self.assertEqual(instruction.name, 'ret_popped')
+        self.assertEqual(instruction.next, 0x5f49)
+        self.assertEqual(next, 1000)
+        self.assertEqual(self.stack.pop(), 42)
         
     def test_rfalse(self):
-        self.fail()
+        self.stack.push_call([], 1000, 0, 42)
+        instruction = self.processor.decoder.decode_instruction(0x7967)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0x7967)
+        self.assertEqual(instruction.name, 'rfalse')
+        self.assertEqual(instruction.next, 0x7968)
+        self.assertEqual(next, 1000)
+        self.assertEqual(self.stack.pop(), 0)
         
     def test_rtrue(self):
         self.stack.push_call([], 1000, 0, 42)
@@ -565,7 +612,17 @@ class TestOperatorV1(unittest.TestCase):
         self.fail()
         
     def test_store_local(self):
-        self.fail()
+        self.stack.locals[-1] = [42, 42]
+        instruction = self.processor.decoder.decode_instruction(0x5edf)    
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0x5edf)
+        self.assertEqual(instruction.name, 'store')
+        self.assertEqual(instruction.next, 0x5ee2)
+        self.assertEqual(next, None)
+        result = self.stack.get_local(1)
+        self.assertEqual(result, 1)
         
     def test_store_global(self):
         instruction = self.processor.decoder.decode_instruction(0x481d)    
