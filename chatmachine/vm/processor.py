@@ -2,6 +2,9 @@ import zoperators
 import streams
 import sys
 
+import logging
+logging.basicConfig(filename='debug.log',level=logging.DEBUG)
+
 class ProcessorV1(object):
     def __init__(self, memory, stack, input, output):
         #TODO: handle Z-code versions via processor subclasses
@@ -37,40 +40,37 @@ class ProcessorV1(object):
         self.running = True
         while (self.running):
             try:
-                if pc in self.cache:
+                if (pc in self.cache) and (len(block) == 0):
+                    logging.debug('%x\n(cached)' % pc)
                     pc = self.execute(self.cache[pc])
                 else:
                     instruction = self.decoder.decode_instruction(pc)
                     if instruction.name == 'sub' and count > 5:
                         raise NotImplementedError, 'untested sub'
-                    if instruction.name == 'call' and count > 303:
-                        raise NotImplementedError, 'untested call'
+                    if instruction.name == 'call' and count > 324:
+                        raise NotImplementedError, 'untested call (more args than locals)'
                     if instruction.name == 'clear_attr' and count > 0:
                         raise NotImplementedError, 'untested clear_attr'
                     if instruction.name == 'inc_chk' and count > 304:
                         raise NotImplementedError, 'untested inc_chk (stack)'
                     if instruction.name == 'inc_chk' and count > 304:
                         raise NotImplementedError, 'untested inc_chk (global)'
-                    if instruction.name == 'loadb' and count > 136:
-                        raise NotImplementedError, 'untested loadb (local)'
-                    if instruction.name == 'loadb' and count > 136:
-                        raise NotImplementedError, 'untested loadb (global)'
-                    if instruction.name == 'loadw' and count > 131:
-                        raise NotImplementedError, 'untested loadw (local)'
-                    if instruction.name == 'loadw' and count > 131:
+                    if instruction.name == 'loadw' and count > 317: #317
                         raise NotImplementedError, 'untested loadw (global)'
                     if instruction.name == 'put_prop' and count > 112:
                         raise NotImplementedError, 'untested put_prop (size 1)'
-                    if instruction.name == 'store' and count > 301:
+                    if instruction.name == 'store' and count > 315:
                         raise NotImplementedError, 'untested store (stack)'
                     assembled, continuable = instruction.assemble(self.debugging)
                     block.append(assembled)
                     if continuable:
+                        logging.debug('%x\n(building)' % pc)
                         pc = instruction.next
                     else:
                         compiled = compile('\n'.join(block), '<jit>', 'exec')   
                         block = []
                         self.cache[pc] = compiled
+                        logging.debug('%x\n%s\n(new block)' % (pc, str(instruction)))
                         pc = self.execute(compiled)
                 count += 1
             except Exception:

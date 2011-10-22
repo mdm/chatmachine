@@ -7,7 +7,7 @@ import streams
 import processor
 
 
-memory = memory.Memory(sys.argv[1])
+memory = memory.MemoryV1(sys.argv[1])
 stack = stack.Stack()
 input = streams.KeyboardInputStreamV1()
 output = streams.ScreenOutputStreamV1()

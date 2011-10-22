@@ -13,7 +13,7 @@ class MockOutputStreamV1(chatmachine.vm.streams.OutputStream):
 
 class TestOperatorV1(unittest.TestCase):
     def setUp(self):
-        self.memory = chatmachine.vm.memory.Memory('data/zork1-5.z5')
+        self.memory = chatmachine.vm.memory.MemoryV1('data/zork1-5.z5')
         self.stack = chatmachine.vm.stack.Stack()
         self.input = chatmachine.vm.streams.KeyboardInputStreamV1()
         self.output = MockOutputStreamV1()
@@ -188,6 +188,15 @@ class TestOperatorV1(unittest.TestCase):
         
     def test_clear_attr(self):
         self.fail()
+
+    def test_dec_chk_stack(self):
+        self.fail()
+        
+    def test_dec_chk_local(self):
+        self.fail()
+        
+    def test_dec_chk_global(self):
+        self.fail()
         
     def test_get_child(self):
         self.memory.write_word(self.processor.header.get_globals_table_location(), 35)
@@ -354,10 +363,30 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(self.stack.pop(), 100)
         
     def test_loadb_local(self):
-        self.fail()
+        self.stack.locals.append([38, 42, 42, 42, 42])
+        self.memory.write_byte(42, 100)
+        
+        instruction = self.processor.decoder.decode_instruction(0x4c8d)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0x4c8d)
+        self.assertEqual(instruction.name, 'loadb')
+        self.assertEqual(instruction.next, 0x4c91)
+        self.assertEqual(self.stack.get_local(4), 100)
         
     def test_loadb_global(self):
-        self.fail()
+        self.memory.write_word(self.processor.header.get_globals_table_location() + (0x34 << 1), 41)
+        self.memory.write_byte(42, 100)
+        
+        instruction = self.processor.decoder.decode_instruction(0x4aa0)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0x4aa0)
+        self.assertEqual(instruction.name, 'loadb')
+        self.assertEqual(instruction.next, 0x4aa4)
+        self.assertEqual(self.memory.read_word(self.processor.header.get_globals_table_location() + (0x0b << 1)), 100)
         
     def test_loadw_stack(self):
         self.stack.locals.append([42, 42, 42, 96])
@@ -373,11 +402,22 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(self.stack.pop(), 1000)
         
     def test_loadw_local(self):
-        self.fail()
+        self.memory.write_word(self.processor.header.get_globals_table_location() + (0x34 << 1), 42)
+        self.stack.locals.append([0, 42])
+        self.memory.write_word(42, 1000)
+        
+        instruction = self.processor.decoder.decode_instruction(0x4ac4)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0x4ac4)
+        self.assertEqual(instruction.name, 'loadw')
+        self.assertEqual(instruction.next, 0x4ac8)
+        self.assertEqual(self.stack.get_local(1), 1000)
         
     def test_loadw_global(self):
         self.fail()
-        
+                                
     def test_new_line(self):
         instruction = self.processor.decoder.decode_instruction(0x63cb)
         assembled, continuable = instruction.assemble(False)
@@ -608,6 +648,9 @@ class TestOperatorV1(unittest.TestCase):
         result = self.processor.object_table.get_object_attribute(35, 0x1c)
         self.assertTrue(result)
         
+    def test_sread(self):
+        self.fail()
+        
     def test_store_stack(self):
         self.fail()
         
@@ -744,7 +787,7 @@ class TestOperatorV1(unittest.TestCase):
 
 class TestDecoderV1(unittest.TestCase):
     def setUp(self):
-        self.memory = chatmachine.vm.memory.Memory('data/zork1-5.z5')
+        self.memory = chatmachine.vm.memory.MemoryV1('data/zork1-5.z5')
         self.stack = chatmachine.vm.stack.Stack()
         self.input = chatmachine.vm.streams.KeyboardInputStreamV1()
         self.output = chatmachine.vm.streams.ScreenOutputStreamV1()
@@ -759,9 +802,13 @@ class TestDecoderV1(unittest.TestCase):
         instruction = self.processor.decoder.decode_instruction(0x47e7)
         self.assertEqual(str(instruction), 'ADD G21,#02 -> -(SP)')
         
-    def test_decode_branching(self):
+    def test_decode_branching_one_byte(self):
         instruction = self.processor.decoder.decode_instruction(0x472d)
         self.assertEqual(str(instruction), 'JE L03,L02 [FALSE] 4747')
+        
+    def test_decode_branching_two_bytes(self):
+        instruction = self.processor.decoder.decode_instruction(0x608d)
+        self.assertEqual(str(instruction), 'TEST_ATTR L03,#1d [TRUE] 60d1')
         
     def test_decode_2op_sc_sc(self):
         instruction = self.processor.decoder.decode_instruction(0x481d)

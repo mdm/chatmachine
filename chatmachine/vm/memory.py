@@ -1,12 +1,12 @@
 import array
 
-class Memory:
+class MemoryV1:
     def __init__(self, filename):
         story_file = open(filename)
         #self.data = ctypes.create_string_buffer(story_file.read())
         self.data = array.array('B', story_file.read())
         self.header = HeaderV1(self)
-        self.object_table = ObjectTable(self)
+        self.object_table = ObjectTableV1(self)
         self.dictionary = DictionaryV1(self, self.header.get_dictionary_location())
 
     def read_byte(self, address):
@@ -52,7 +52,7 @@ class Memory:
         #TODO: cache alphabets somewhere
         alphabets = [list('abcdefghijklmnopqrstuvwxyz'), list('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), list(' 0123456789.,!?_#\'\"/\\<-:()')]
         alphabets[2][17] = '\\\''
-        alphabets[2][17] = '\\\"'
+        alphabets[2][18] = '\\\"'
         alphabets[2][20] = '\\\\'
         previous = 0
         current = 0
@@ -94,6 +94,78 @@ class Memory:
                 break
                 
         return ''.join(zscii), address
+    
+    def tokenize(self, text, parse, dictionary = None, flag = False):
+        if dictionary == None:
+            dictionary = self.get_default_dictionary()
+        seperators = dictionary.get_word_separators()
+        words = []
+        current = []
+        pos = 1
+        start = pos
+        char = chr(self.read_byte(text + pos))
+        while not char == '\0':
+            if char == ' ':
+                if len(current) > 0:
+                    words.append((start, ''.join(current)))
+                    current = []
+                start = pos + 1
+            elif char in seperators:
+                if len(current) > 0:
+                    words.append((start, ''.join(current)))
+                    current = []
+                words.append((pos, char))
+                start = pos + 1
+            else:
+                current.append(char)
+            pos += 1
+            char = chr(self.read_byte(text + pos))
+        if len(current) > 0:
+            words.append((start, "".join(current)))
+        
+        alphabet2 = ' 0123456789.,!?_#\'\"/\\<-:()'
+        #alphabet2[17] = '\\\''
+        #alphabet2[18] = '\\\"'
+        #alphabet2[20] = '\\\\'
+        #print '@@@', words, alphabet2
+        #words = [(0, 'pdp10'), (1, 'r2d2'), (2, 'test'), (3, 'longtest'), (4, 'storm-')]
+        words = words[:self.read_byte(parse)]
+        self.write_byte(parse + 1, len(words)) #TODO: handle security?
+        token = []
+        shifting = -1
+        pos = 2
+        for word in words:
+            #print '***', word
+            for char in word[1]:
+                index = alphabet2.find(char)
+                if index > -1:
+                    if shifting > -1:
+                        token[shifting] = 5
+                    else:
+                        shifting = len(token)
+                        token.append(3)
+                    token.append(index + 6)
+                else:
+                    shifting = -1
+                    token.append(ord(char) - 97 + 6)
+            token = token[:6]
+            token.extend([5]  * (6 - len(token)))
+            encoded = [(token[0] << 10) + (token[1] << 5) + token[2], (token[3] << 10) + (token[4] << 5) + token[5]]
+            if not token[5] == 3:
+             encoded[1] = encoded[1] | 0x8000
+            print token, encoded
+            address = 0
+            for i in range(1, abs(dictionary.get_num_entries()) + 1): # optimize for sorted dicts
+                entry = dictionary.get_encoded_string(i)
+                if entry[0] == encoded[0] and entry[1] == encoded[1]:
+                    address = dictionary.get_entry_addr(i)
+                    break
+            self.write_word(parse + pos, address)
+            self.write_byte(parse + pos + 2, len(word[1]))
+            self.write_byte(parse + pos + 3, word[0])
+            pos += 4
+            token = []
+            
 
     def get_header(self):
         return self.header
@@ -101,7 +173,7 @@ class Memory:
     def get_object_table(self):
         return self.object_table
 
-    def get_dictionary(self):
+    def get_default_dictionary(self):
         return self.dictionary
     
     def get_terminating_chars(self):
@@ -153,7 +225,7 @@ class HeaderV1:
         self.memory.write_word(0x32, value)
 
 
-class ObjectTable:
+class ObjectTableV1:
     def __init__(self, memory):
         self.memory = memory
         self.header = self.memory.get_header()
@@ -329,18 +401,21 @@ class DictionaryV1:
 
     def get_word_separators(self):
         num_separators = self.memory.read_byte(self.location)
-        separators = ''
+        separators = []
         for i in range(num_separators):
-            separators += chr(self.memory.read_byte(self.location + i + 1))
+            separators.append(chr(self.memory.read_byte(self.location + i + 1)))
         return separators
 
+    def get_entry_length(self):
+        return self.entry_length
+    
     def get_num_entries(self):
         return self.num_entries
 
     def get_entry_addr(self, number): # this is 1-based
         return self.first_entry + (number - 1) * self.entry_length
 
-    def get_encoded_text(self, number): # this is 1-based
+    def get_encoded_string(self, number): # this is 1-based
         addr = self.get_entry_addr(number)
         encoded = []
         for i in range(2):

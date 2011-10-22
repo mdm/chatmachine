@@ -7,6 +7,11 @@ class OutputStream(object):
 class ScreenOutputStreamV1(OutputStream):
     def write(self, string):
         sys.stdout.write(string)
+        
+    def redraw_status(self, room, score, turns):
+        string = "(%s,    score: %d, turns: %d)\n" % (room, score, turns)
+        sys.stdout.write(string)
+       
     
 class FileOutputStreamV1(OutputStream):
     pass
@@ -19,11 +24,12 @@ class OutputDemuxV1(OutputStream):
 
 
 class InputStream(object):
-    def read(time = 0):
+    def read(self):
         pass
         
 class KeyboardInputStreamV1(InputStream):
-    pass
+    def read(self):
+        return raw_input()
 
 class FileInputStream(InputStream):
     pass

@@ -233,7 +233,7 @@ class DecoderV1(object):
         }
         
         self.effects = {}
-        self.effects['store'] = ['or', 'and', 'loadw', 'loadb', 'get_prop', 'get_prop_addr', 'get_next_prop', 'add', 'sub', 'mul', 'div', 'mod', 'get_sibling', 'get_child', 'get_parent', 'get_prop_len', 'load', 'not', 'call', 'sread', 'random']
+        self.effects['store'] = ['or', 'and', 'loadw', 'loadb', 'get_prop', 'get_prop_addr', 'get_next_prop', 'add', 'sub', 'mul', 'div', 'mod', 'get_sibling', 'get_child', 'get_parent', 'get_prop_len', 'load', 'not', 'call', 'random']
         self.effects['branch'] = ['je', 'jl', 'jg', 'dec_chk', 'inc_chk', 'jin', 'test', 'test_attr', 'jz', 'get_sibling', 'get_child', 'save', 'restore', ]
         self.effects['call'] = ['call']
         self.effects['return'] = ['ret', 'rtrue', 'rfalse', 'print_ret', 'ret_popped']
@@ -253,7 +253,19 @@ class DecoderV1(object):
                             '    init_locals.append(self.memory.read_word(operands[0] + (len(init_locals) << 1) + 1))\n' \
                             'next = operands[0] + (len(init_locals) << 1) + 1\n' % self.packed_address_shift
         self.code['clear_attr'] = 'self.object_table.clear_object_attribute(operands[0], operands[1])'
-        self.code['dec_chk'] = 'raise NotImplementedError, "dec_chk"\n'
+        self.code['dec_chk'] = 'if (operands[0] == 0):\n' \
+                               '    value = self.stack.pop()\n' \
+                               '    value -= 1\n' \
+                               '    self.stack.push(value)\n' \
+                               'elif (operands[0] < 0x10):\n' \
+                               '    value = self.stack.get_local(operands[0] - 1)\n' \
+                               '    value -= 1\n' \
+                               '    self.stack.set_local(operands[0] - 1, value)\n' \
+                               'else:\n' \
+                               '    value = self.memory.read_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1))\n' \
+                               '    value -= 1\n' \
+                               '    self.memory.write_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1), value)\n' \
+                               'result = value < operands[1]\n'
         self.code['dec'] = 'raise NotImplementedError, "dec"\n'
         self.code['div'] = 'raise NotImplementedError, "div"\n'
         self.code['get_child'] = 'result = self.object_table.get_object_child(operands[0])\n'
@@ -273,7 +285,7 @@ class DecoderV1(object):
                                '    value += 1\n' \
                                '    self.stack.set_local(operands[0] - 1, value)\n' \
                                'else:\n' \
-                               '    self.memory.read_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1))\n' \
+                               '    value = self.memory.read_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1))\n' \
                                '    value += 1\n' \
                                '    self.memory.write_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1), value)\n' \
                                'result = value > operands[1]\n'
@@ -327,7 +339,19 @@ class DecoderV1(object):
         self.code['rtrue'] = 'result = 1\n'
         self.code['save'] = 'raise NotImplementedError, "save"\n'
         self.code['set_attr'] = 'self.object_table.set_object_attribute(operands[0], operands[1])\n'
-        self.code['sread'] = 'raise NotImplementedError, "sread"\n'
+        self.code['sread'] = 'room = self.object_table.get_object_short_name(self.memory.read_word(self.header.get_globals_table_location()))\n' \
+                             'score = self.memory.read_word(self.header.get_globals_table_location() + 2)\n' \
+                             'turns = self.memory.read_word(self.header.get_globals_table_location() + 4)\n' \
+                             'self.output.redraw_status(room, score, turns)\n' \
+                             'max_length = self.memory.read_byte(operands[0])\n' \
+                             'old_chars = self.memory.read_byte(operands[0] + 1)\n' \
+                             'chars = list(self.input.read()[:max_length].lower())\n' \
+                             'pos = 1 + old_chars\n' \
+                             'for char in chars:\n' \
+                             '    self.memory.write_byte(operands[0] + pos, ord(char))\n' \
+                             '    pos += 1\n' \
+                             'self.memory.write_byte(operands[0] + pos, 0)\n' \
+                             'self.memory.tokenize(operands[0], operands[1])\n'
         self.code['store'] = 'if (operands[0] == 0):\n' \
                              '    self.stack.pop()\n' \
                              '    self.stack.push(operands[1])\n' \
@@ -338,7 +362,7 @@ class DecoderV1(object):
         self.code['storeb'] = 'raise NotImplementedError, "storeb"\n'
         self.code['storew'] = 'self.memory.write_word(operands[0] + (operands[1] << 1), operands[2])\n'
         self.code['sub'] = 'result = (operands[0] - operands[1]) & 0xffff\n'
-        self.code['test'] = 'raise NotImplementedError, "test"\n'
+        self.code['test'] = 'result = (operands[0] & operands[1] == operands[1])\n'
         self.code['test_attr'] = 'result = self.object_table.get_object_attribute(operands[0], operands[1])\n'
     
     def decode_branching(self, address):
@@ -355,8 +379,8 @@ class DecoderV1(object):
         else:
             byte2 = self.memory.read_byte(address + 1)
             bytes = 2
-            offset = (byte1 & 0x3f) << 8 + byte2
-
+            offset = ((byte1 & 0x3f) << 8) + byte2
+            
         return (condition, offset, bytes)
     
     def decode_variable_operator(self, operator, address):
