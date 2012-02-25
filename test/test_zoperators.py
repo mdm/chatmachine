@@ -184,7 +184,7 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(arg_count, 1)
         
     def test_call_more_arguments_than_locals(self):
-        self.fail()
+        self.fail() #0x4a04, 0x4a56, -> 0x57f4
         
     def test_clear_attr(self):
         self.fail()
@@ -221,7 +221,7 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(instruction.next, 0x5eee)
         self.assertEqual(self.stack.pop(), 35)
         self.assertEqual(next, None)
-        
+    
     def test_get_prop_default(self):
         self.stack.locals[-1] = [42, 42, 42]
         self.memory.write_word(self.processor.header.get_globals_table_location(), 35)
@@ -248,6 +248,15 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(next, None)
         self.assertEqual(self.stack.pop(), 0x42ad)
         
+    def test_get_prop_addr_existing(self):
+        self.fail()
+            
+    def test_get_prop_addr_missing(self):
+        self.fail()
+            
+    def test_get_prop_len(self):
+        self.fail()
+            
     def test_get_sibling(self):
         self.stack.locals[-1] = [42, 42, 42, 252]
         instruction = self.processor.decoder.decode_instruction(0x6057)
@@ -259,6 +268,15 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(instruction.next, 0x605b)
         self.assertEqual(self.stack.get_local(3), 199)
         self.assertEqual(next, 0x605b)
+        
+    def test_inc_stack(self):
+        self.fail()
+        
+    def test_inc_local(self):
+        self.fail()
+        
+    def test_inc_global(self):
+        self.fail()
         
     def test_inc_chk_stack(self):
         self.fail()
@@ -302,7 +320,34 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(instruction.name, 'je')
         self.assertEqual(instruction.next, 0x4731)
         self.assertEqual(next, 0x4731)
-                
+    
+    def test_jg_both_negative(self):
+        self.fail() #46d0
+    
+    def test_jg_both_positive(self):
+        self.stack.locals.append([42 ,42 , 1, 42])
+        
+        instruction = self.processor.decoder.decode_instruction(0x4c95)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0x4c95)
+        self.assertEqual(instruction.name, 'jg')
+        self.assertEqual(instruction.next, 0x4c99)
+        self.assertEqual(next, 0x4c99)
+        
+    def test_jg_positive_and_negative(self):
+        self.stack.locals.append([42 ,42 , 0xffff, 42])
+        
+        instruction = self.processor.decoder.decode_instruction(0x4c95)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0x4c95)
+        self.assertEqual(instruction.name, 'jg')
+        self.assertEqual(instruction.next, 0x4c99)
+        self.assertEqual(next, 0x4c99)
+        
     def test_jin(self):
         self.stack.push_call([35], 1000, 0, 0)
         instruction = self.processor.decoder.decode_instruction(0x6113)
@@ -414,10 +459,16 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(instruction.name, 'loadw')
         self.assertEqual(instruction.next, 0x4ac8)
         self.assertEqual(self.stack.get_local(1), 1000)
-        
-    def test_loadw_global(self):
+    
+    def test_mul_both_negative(self):
         self.fail()
-                                
+        
+    def test_mul_both_positive_with_overflow(self):
+        self.fail()
+        
+    def test_mul_positive_and_negative(self):
+        self.fail()
+        
     def test_new_line(self):
         instruction = self.processor.decoder.decode_instruction(0x63cb)
         assembled, continuable = instruction.assemble(False)
@@ -467,7 +518,20 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(next, None)
         string = str(42)
         self.assertEqual(self.output.string, string)
-        
+    
+    def test_print_num_negative(self):
+        self.stack.push(0xffff)
+        instruction = self.processor.decoder.decode_instruction(0x63a8)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0x63a8)
+        self.assertEqual(instruction.name, 'print_num')
+        self.assertEqual(instruction.next, 0x63ab)
+        self.assertEqual(next, None)
+        string = str(-1)
+        self.assertEqual(self.output.string, string)
+    
     def test_print_obj(self):
         self.memory.write_word(self.processor.header.get_globals_table_location(), 35)
         instruction = self.processor.decoder.decode_instruction(0x5ee2)
@@ -678,6 +742,9 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(next, None)
         result = self.memory.read_word(self.processor.header.get_globals_table_location())
         self.assertEqual(result, 0x23)
+    
+    def test_storeb(self):
+        self.fail()
         
     def test_storew(self):
         self.stack.locals[-1] = [1000, 42, 42, 42, 46]
@@ -751,16 +818,16 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(result, 0x7fff)
         
     def test_sub_second_negative_no_overflow(self):
-        self.fail()
+        self.fail() #0x4ff1
         
     def test_sub_second_negative_with_overflow(self):
-        self.fail()
+        self.fail()  #0x4ff1
         
     def test_sub_both_negative_no_overflow(self):
-        self.fail()
+        self.fail() #0x5590
         
     def test_sub_both_negative_with_overflow(self):
-        self.fail()
+        self.fail()  #0x5590
         
     def test_test_attr_false(self):
         self.memory.write_word(self.processor.header.get_globals_table_location(), 35)
@@ -831,7 +898,8 @@ class TestDecoderV1(unittest.TestCase):
         self.assertEqual(str(instruction), 'JUMP 472d')
         
     def test_decode_1op_sc(self):
-        self.fail()
+        instruction = self.processor.decoder.decode_instruction(0x4ca1)
+        self.assertEqual(str(instruction), 'INC #04')
         
     def test_decode_1op_var(self):
         instruction = self.processor.decoder.decode_instruction(0x4735)

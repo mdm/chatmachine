@@ -51,9 +51,6 @@ class MemoryV1:
     def decode_string(self, address):
         #TODO: cache alphabets somewhere
         alphabets = [list('abcdefghijklmnopqrstuvwxyz'), list('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), list(' 0123456789.,!?_#\'\"/\\<-:()')]
-        alphabets[2][17] = '\\\''
-        alphabets[2][18] = '\\\"'
-        alphabets[2][20] = '\\\\'
         previous = 0
         current = 0
         constructing = -2 # nice hack from gnusto: -2: not constructing multi-zchar zscii, -1: constructing, n>=0: read 1 byte
@@ -347,6 +344,7 @@ class ObjectTableV1:
         return 0
 
     def get_property_data(self, object_number, property_number):
+        print '@@@@', object_number, property_number
         property_data_addr = self.get_property_data_addr(object_number, property_number)
 
         if (property_data_addr == 0):
@@ -354,8 +352,10 @@ class ObjectTableV1:
         else:
             number, size = self.get_property_info_backwards(property_data_addr)
             if (size == 1):
+                print self.memory.read_byte(property_data_addr)
                 return self.memory.read_byte(property_data_addr)
             elif (size == 2):
+                print  self.memory.read_word(property_data_addr)
                 return self.memory.read_word(property_data_addr)
             else:
                 print 'ERROR: size > 2. get_prop undefined.'

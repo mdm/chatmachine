@@ -45,24 +45,14 @@ class ProcessorV1(object):
                     pc = self.execute(self.cache[pc])
                 else:
                     instruction = self.decoder.decode_instruction(pc)
-                    if instruction.name == 'sub' and count > 5:
-                        raise NotImplementedError, 'untested sub'
-                    if instruction.name == 'call' and count > 324:
-                        raise NotImplementedError, 'untested call (more args than locals)'
                     if instruction.name == 'clear_attr' and count > 0:
                         raise NotImplementedError, 'untested clear_attr'
-                    if instruction.name == 'inc_chk' and count > 304:
-                        raise NotImplementedError, 'untested inc_chk (stack)'
-                    if instruction.name == 'inc_chk' and count > 304:
-                        raise NotImplementedError, 'untested inc_chk (global)'
-                    if instruction.name == 'loadw' and count > 317: #317
-                        raise NotImplementedError, 'untested loadw (global)'
                     if instruction.name == 'put_prop' and count > 112:
                         raise NotImplementedError, 'untested put_prop (size 1)'
-                    if instruction.name == 'store' and count > 315:
-                        raise NotImplementedError, 'untested store (stack)'
                     assembled, continuable = instruction.assemble(self.debugging)
                     block.append(assembled)
+                    #if instruction.name == 'call':
+                    #    raise NotImplementedError, 'untested call'
                     if continuable:
                         logging.debug('%x\n(building)' % pc)
                         pc = instruction.next
@@ -80,7 +70,7 @@ class ProcessorV1(object):
                 print 'stack:', self.stack.stack
                 print '0x%x' % instruction.start, str(instruction)
                 print assembled
-                print self.memory.read_word(self.header.get_globals_table_location() + (0x0 << 1))
+                print self.memory.read_word(self.header.get_globals_table_location() + (0x26 << 1))
                 raise
 
 
