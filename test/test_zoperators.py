@@ -297,6 +297,12 @@ class TestOperatorV1(unittest.TestCase):
     def test_inc_chk_global(self):
         self.fail()
         
+    def test_insert_obj_first_child(self):
+        self.fail()
+        
+    def test_insert_obj_third_child(self):
+        self.fail()
+        
     def test_je_false_on_false(self):
         self.stack.locals.append([42 ,42 ,0, 42])
         
@@ -360,6 +366,15 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(next, 1000)
         self.assertEqual(self.stack.pop(), 0)
         
+    def test_jl_both_negative(self):
+        self.fail()
+            
+    def test_jl_both_positive(self):
+        self.fail()
+            
+    def test_jl_positive_and_negative(self):
+        self.fail()
+            
     def test_jump(self):
         instruction = self.processor.decoder.decode_instruction(0x4755)    
         assembled, continuable = instruction.assemble(False)

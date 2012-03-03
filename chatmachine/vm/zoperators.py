@@ -263,7 +263,7 @@ class DecoderV1(object):
                             '    while len(init_locals) < num_locals:\n' \
                             '        init_locals.append(self.memory.read_word(operands[0] + (len(init_locals) << 1) + 1))\n' \
                             '    next = operands[0] + (len(init_locals) << 1) + 1\n' % self.packed_address_shift
-        self.code['clear_attr'] = 'self.object_table.clear_object_attribute(operands[0], operands[1])'
+        self.code['clear_attr'] = 'self.object_table.clear_object_attribute(operands[0], operands[1])\n'
         self.code['dec_chk'] = 'if (operands[0] == 0):\n' \
                                '    value = self.stack.pop()\n' \
                                '    value -= 1\n' \
@@ -309,7 +309,21 @@ class DecoderV1(object):
                                '    value += 1\n' \
                                '    self.memory.write_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1), value)\n' \
                                'result = value > operands[1]\n'
-        self.code['insert_obj'] = 'raise NotImplementedError, "insert_obj"\n'
+        self.code['insert_obj'] = 'parent = self.object_table.get_object_parent(operands[0])\n' \
+                                  'if not (parent == 0):\n' \
+                                  '    parent_first_child = self.object_table.get_object_child(parent)\n' \
+                                  '    sibling = self.object_table.get_object_sibling(operands[0])\n' \
+                                  '    if (parent_first_child == operands[0]):\n' \
+                                  '        self.object_table.set_object_child(parent, sibling)\n' \
+                                  '    else:\n' \
+                                  '        parent_child = parent_first_child\n' \
+                                  '        while not (parent_child == operands[0]):\n' \
+                                  '            parent_child = self.object_table.get_object_sibling(parent_child)\n' \
+                                  '        self.object_table.set_object_sibling(parent_child, sibling)\n' \
+                                  'self.object_table.set_object_parent(operands[0], operands[1])\n' \
+                                  'sibling = self.object_table.get_object_child(operands[1])\n' \
+                                  'self.object_table.set_object_child(operands[1], operands[0])\n' \
+                                  'self.object_table.set_object_sibling(operands[0], sibling)\n' #TODO stop closing sibling chain at sibling 0
         self.code['je'] = 'result = False\n' \
                           'for operand in operands[1:]:\n' \
                           '    if (operand == operands[0]):\n' \
@@ -321,7 +335,11 @@ class DecoderV1(object):
                           '    operands[1] -= 0x10000\n' \
                           'result = (operands[0] > operands[1])\n'
         self.code['jin'] = 'result = self.object_table.get_object_parent(operands[0]) == operands[1]\n'
-        self.code['jl'] = 'raise NotImplementedError, "jl"\n'
+        self.code['jl'] = 'if (operands[0] & 0x8000):\n' \
+                          '    operands[0] -= 0x10000\n' \
+                          'if (operands[1] & 0x8000):\n' \
+                          '    operands[1] -= 0x10000\n' \
+                          'result = (operands[0] < operands[1])\n'
         self.code['jump'] = 'next = (%d + operands[0] - 2) & 0xffff\n'
         self.code['jz'] = 'result = (operands[0] == 0)\n'
         self.code['load'] = 'raise NotImplementedError, "load"\n'

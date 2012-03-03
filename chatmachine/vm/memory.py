@@ -150,7 +150,7 @@ class MemoryV1:
             encoded = [(token[0] << 10) + (token[1] << 5) + token[2], (token[3] << 10) + (token[4] << 5) + token[5]]
             if not token[5] == 3:
              encoded[1] = encoded[1] | 0x8000
-            print token, encoded
+            #print token, encoded
             address = 0
             for i in range(1, abs(dictionary.get_num_entries()) + 1): # optimize for sorted dicts
                 entry = dictionary.get_encoded_string(i)
@@ -344,7 +344,6 @@ class ObjectTableV1:
         return 0
 
     def get_property_data(self, object_number, property_number):
-        print '@@@@', object_number, property_number
         property_data_addr = self.get_property_data_addr(object_number, property_number)
 
         if (property_data_addr == 0):
@@ -352,10 +351,8 @@ class ObjectTableV1:
         else:
             number, size = self.get_property_info_backwards(property_data_addr)
             if (size == 1):
-                print self.memory.read_byte(property_data_addr)
                 return self.memory.read_byte(property_data_addr)
             elif (size == 2):
-                print  self.memory.read_word(property_data_addr)
                 return self.memory.read_word(property_data_addr)
             else:
                 print 'ERROR: size > 2. get_prop undefined.'

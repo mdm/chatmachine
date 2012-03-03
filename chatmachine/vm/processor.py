@@ -45,8 +45,6 @@ class ProcessorV1(object):
                     pc = self.execute(self.cache[pc])
                 else:
                     instruction = self.decoder.decode_instruction(pc)
-                    if instruction.name == 'clear_attr' and count > 0:
-                        raise NotImplementedError, 'untested clear_attr'
                     if instruction.name == 'put_prop' and count > 112:
                         raise NotImplementedError, 'untested put_prop (size 1)'
                     assembled, continuable = instruction.assemble(self.debugging)
