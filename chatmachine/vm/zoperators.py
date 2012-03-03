@@ -267,15 +267,15 @@ class DecoderV1(object):
         self.code['dec_chk'] = 'if (operands[0] == 0):\n' \
                                '    value = self.stack.pop()\n' \
                                '    value -= 1\n' \
-                               '    self.stack.push(value)\n' \
+                               '    self.stack.push(value & 0xffff)\n' \
                                'elif (operands[0] < 0x10):\n' \
                                '    value = self.stack.get_local(operands[0] - 1)\n' \
                                '    value -= 1\n' \
-                               '    self.stack.set_local(operands[0] - 1, value)\n' \
+                               '    self.stack.set_local(operands[0] - 1, value & 0xffff)\n' \
                                'else:\n' \
                                '    value = self.memory.read_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1))\n' \
                                '    value -= 1\n' \
-                               '    self.memory.write_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1), value)\n' \
+                               '    self.memory.write_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1), value & 0xffff)\n' \
                                'result = value < operands[1]\n'
         self.code['dec'] = 'raise NotImplementedError, "dec"\n'
         self.code['div'] = 'raise NotImplementedError, "div"\n'
