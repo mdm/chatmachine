@@ -422,7 +422,8 @@ class DecoderV1(object):
             byte2 = self.memory.read_byte(address + 1)
             bytes = 2
             offset = ((byte1 & 0x3f) << 8) + byte2
-            print '@@@', condition, offset, bytes, hex(byte1), hex(byte2)
+            if (offset & 0x2000):
+                offset -= 0x4000
         return (condition, offset, bytes)
     
     def decode_variable_operator(self, operator, address):
