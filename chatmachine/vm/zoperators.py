@@ -385,10 +385,10 @@ class DecoderV1(object):
                              'score = self.memory.read_word(self.header.get_globals_table_location() + 2)\n' \
                              'turns = self.memory.read_word(self.header.get_globals_table_location() + 4)\n' \
                              'self.output.redraw_status(room, score, turns)\n' \
-                             'max_length = self.memory.read_byte(operands[0])\n' \
-                             'old_chars = self.memory.read_byte(operands[0] + 1)\n' \
+                             'max_length = 1 + self.memory.read_byte(operands[0])\n' \
                              'chars = list(self.input.read()[:max_length].lower())\n' \
-                             'pos = 1 + old_chars\n' \
+                             'print "@@@", chars, max_length\n' \
+                             'pos = 1\n' \
                              'for char in chars:\n' \
                              '    self.memory.write_byte(operands[0] + pos, ord(char))\n' \
                              '    pos += 1\n' \

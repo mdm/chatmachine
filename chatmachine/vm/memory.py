@@ -126,7 +126,9 @@ class MemoryV1:
         #alphabet2[20] = '\\\\'
         #print '@@@', words, alphabet2
         #words = [(0, 'pdp10'), (1, 'r2d2'), (2, 'test'), (3, 'longtest'), (4, 'storm-')]
+        print '$$$', words
         words = words[:self.read_byte(parse)]
+        print '$$$', words
         self.write_byte(parse + 1, len(words)) #TODO: handle security?
         token = []
         shifting = -1
@@ -150,7 +152,7 @@ class MemoryV1:
             encoded = [(token[0] << 10) + (token[1] << 5) + token[2], (token[3] << 10) + (token[4] << 5) + token[5]]
             if not token[5] == 3:
              encoded[1] = encoded[1] | 0x8000
-            #print token, encoded
+            print token, encoded
             address = 0
             for i in range(1, abs(dictionary.get_num_entries()) + 1): # optimize for sorted dicts
                 entry = dictionary.get_encoded_string(i)
