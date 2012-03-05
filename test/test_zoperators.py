@@ -387,7 +387,10 @@ class TestOperatorV1(unittest.TestCase):
     def test_jl_positive_and_negative(self):
         self.fail()
             
-    def test_jump(self):
+    def test_jump_positive_offset(self):
+        self.fail()
+            
+    def test_jump_negative_offset(self):
         instruction = self.processor.decoder.decode_instruction(0x4755)    
         assembled, continuable = instruction.assemble(False)
         compiled = compile(assembled, '<test>', 'exec')
@@ -571,7 +574,10 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(next, None)
         string = 'West of House'
         self.assertEqual(self.output.string, string)
-        
+    
+    def test_print_addr(self):
+        self.fail()
+            
     def test_print_paddr(self):
         self.stack.locals[-1] = [42, 42, 42, 0xf490 >> 1]
         instruction = self.processor.decoder.decode_instruction(0x5f82)
@@ -900,10 +906,13 @@ class TestDecoderV1(unittest.TestCase):
         instruction = self.processor.decoder.decode_instruction(0x472d)
         self.assertEqual(str(instruction), 'JE L03,L02 [FALSE] 4747')
         
-    def test_decode_branching_two_bytes(self):
+    def test_decode_branching_two_bytes_positive_offset(self):
         instruction = self.processor.decoder.decode_instruction(0x608d)
         self.assertEqual(str(instruction), 'TEST_ATTR L03,#1d [TRUE] 60d1')
         
+    def test_decode_branching_two_bytes_negative_offset(self):
+        self.fail() #0x56d1
+    
     def test_decode_2op_sc_sc(self):
         instruction = self.processor.decoder.decode_instruction(0x481d)
         self.assertEqual(str(instruction), 'STORE #10,#23')

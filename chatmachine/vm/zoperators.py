@@ -353,7 +353,7 @@ class DecoderV1(object):
         self.code['or'] = 'raise NotImplementedError, "or"\n'
         self.code['pop'] = 'raise NotImplementedError, "pop"\n'
         self.code['print'] = 'self.output.write("%s")\n'
-        self.code['print_addr'] = 'raise NotImplementedError, "print_addr"\n'
+        self.code['print_addr'] = 'self.output.write(self.memory.decode_string(operands[0])[0])\n'
         self.code['print_char'] = 'self.output.write(self.memory.decode_zscii(operands[0]))\n'
         self.code['print_num'] = 'if (operands[0] & 0x8000):\n' \
                                  '    operands[0] -= 0x10000\n' \
