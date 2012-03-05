@@ -198,6 +198,18 @@ class TestOperatorV1(unittest.TestCase):
     def test_dec_chk_global(self):
         self.fail()
         
+    def test_div_both_positive(self):
+        self.fail()
+        
+    def test_div_first_negative(self):
+        self.fail()
+        
+    def test_div_second_negative(self):
+        self.fail()
+        
+    def test_div_both_negative(self):
+        self.fail()
+        
     def test_get_child(self):
         self.memory.write_word(self.processor.header.get_globals_table_location(), 35)
         instruction = self.processor.decoder.decode_instruction(0x5f2c)

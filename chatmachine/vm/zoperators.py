@@ -278,7 +278,7 @@ class DecoderV1(object):
                                '    self.memory.write_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1), value & 0xffff)\n' \
                                'result = value < operands[1]\n'
         self.code['dec'] = 'raise NotImplementedError, "dec"\n'
-        self.code['div'] = 'raise NotImplementedError, "div"\n'
+        self.code['div'] = 'result = int(float(operands[0])/operands[1])\n' # C-style integer division
         self.code['get_child'] = 'result = self.object_table.get_object_child(operands[0])\n'
         self.code['get_next_prop'] = 'raise NotImplementedError, "get_next_prop"\n'
         self.code['get_parent'] = 'result = self.object_table.get_object_parent(operands[0])\n'
@@ -422,7 +422,7 @@ class DecoderV1(object):
             byte2 = self.memory.read_byte(address + 1)
             bytes = 2
             offset = ((byte1 & 0x3f) << 8) + byte2
-            
+            print '@@@', condition, offset, bytes, hex(byte1), hex(byte2)
         return (condition, offset, bytes)
     
     def decode_variable_operator(self, operator, address):
