@@ -187,28 +187,88 @@ class TestOperatorV1(unittest.TestCase):
         self.fail() #0x4a04, 0x4a56, -> 0x57f4
         
     def test_clear_attr(self):
-        self.fail()
+        self.assertEqual(self.memory.get_object_table().get_object_attribute(23, 0x1b), True)
+        self.stack.locals.append([42 ,42 ,42, 42, 23])
+        instruction = self.processor.decoder.decode_instruction(0x5a3c)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0x5a3c)
+        self.assertEqual(instruction.name, 'clear_attr')
+        self.assertEqual(instruction.next, 0x5a3f)
+        self.assertEqual(self.memory.get_object_table().get_object_attribute(23, 0x1b), False)
 
-    def test_dec_chk_stack(self):
-        self.fail()
-        
     def test_dec_chk_local(self):
-        self.fail()
+        self.stack.locals.append([42 ,0x8000])
+        instruction = self.processor.decoder.decode_instruction(0x5052)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0x5052)
+        self.assertEqual(instruction.name, 'dec_chk')
+        self.assertEqual(instruction.next, 0x5056)
+        self.assertEqual(next, 0x507a)
+        self.assertEqual(self.stack.get_local(1), 0x7fff)
         
     def test_dec_chk_global(self):
-        self.fail()
+        self.memory.write_word(self.processor.header.get_globals_table_location() + (0x0b << 1), 0)
+        instruction = self.processor.decoder.decode_instruction(0x4abd)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0x4abd)
+        self.assertEqual(instruction.name, 'dec_chk')
+        self.assertEqual(instruction.next, 0x4ac1)
+        self.assertEqual(next, 0x4ac1)
+        self.assertEqual(self.memory.read_word(self.processor.header.get_globals_table_location() + (0x0b << 1)), 0xffff)
         
     def test_div_both_positive(self):
-        self.fail()
+        self.memory.write_word(self.processor.header.get_globals_table_location() + (0x01 << 1), 11)
+        self.stack.push(2)
+        instruction = self.processor.decoder.decode_instruction(0xe6e1)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0xe6e1)
+        self.assertEqual(instruction.name, 'div')
+        self.assertEqual(instruction.next, 0xe6e5)
+        self.assertEqual(self.stack.pop(), 5)
         
     def test_div_first_negative(self):
-        self.fail()
+        self.memory.write_word(self.processor.header.get_globals_table_location() + (0x01 << 1), -11 & 0xffff)
+        self.stack.push(2)
+        instruction = self.processor.decoder.decode_instruction(0xe6e1)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0xe6e1)
+        self.assertEqual(instruction.name, 'div')
+        self.assertEqual(instruction.next, 0xe6e5)
+        self.assertEqual(self.stack.pop(), -5 & 0xffff)
         
     def test_div_second_negative(self):
-        self.fail()
+        self.memory.write_word(self.processor.header.get_globals_table_location() + (0x01 << 1), 11)
+        self.stack.push(-2 & 0xffff)
+        instruction = self.processor.decoder.decode_instruction(0xe6e1)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0xe6e1)
+        self.assertEqual(instruction.name, 'div')
+        self.assertEqual(instruction.next, 0xe6e5)
+        self.assertEqual(self.stack.pop(), -5 & 0xffff)
         
     def test_div_both_negative(self):
-        self.fail()
+        self.memory.write_word(self.processor.header.get_globals_table_location() + (0x01 << 1), -11 & 0xffff)
+        self.stack.push(-2 & 0xffff)
+        instruction = self.processor.decoder.decode_instruction(0xe6e1)
+        assembled, continuable = instruction.assemble(False)
+        compiled = compile(assembled, '<test>', 'exec')
+        next = self.processor.execute(compiled)
+        self.assertEqual(instruction.start, 0xe6e1)
+        self.assertEqual(instruction.name, 'div')
+        self.assertEqual(instruction.next, 0xe6e5)
+        self.assertEqual(self.stack.pop(), 5)
         
     def test_get_child(self):
         self.memory.write_word(self.processor.header.get_globals_table_location(), 35)
@@ -860,6 +920,9 @@ class TestOperatorV1(unittest.TestCase):
         self.fail() #0x5590
         
     def test_sub_both_negative_with_overflow(self):
+        self.fail()  #0x5590
+        
+    def test_test(self):
         self.fail()  #0x5590
         
     def test_test_attr_false(self):

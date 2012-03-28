@@ -156,11 +156,14 @@ class MemoryV1:
             address = 0
             for i in range(1, abs(dictionary.get_num_entries()) + 1): # optimize for sorted dicts
                 entry = dictionary.get_encoded_string(i)
+                #print self.decode_string(dictionary.get_entry_addr(i))
+                #print '!!!', entry, word
                 if entry[0] == encoded[0] and entry[1] == encoded[1]:
                     address = dictionary.get_entry_addr(i)
                     break
+            print '!!!', hex(address), len(word[1]), word[0]
             self.write_word(parse + pos, address)
-            self.write_byte(parse + pos + 2, len(word[1]))
+            self.write_byte(parse + pos + 2, len(word[1]) + 1)
             self.write_byte(parse + pos + 3, word[0])
             pos += 4
             token = []
@@ -416,6 +419,7 @@ class DictionaryV1:
 
     def get_encoded_string(self, number): # this is 1-based
         addr = self.get_entry_addr(number)
+        #print '%%%', self.memory.decode_string(addr)
         encoded = []
         for i in range(2):
                 encoded.append(self.memory.read_word(addr + i * 2))
