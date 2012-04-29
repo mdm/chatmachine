@@ -70,8 +70,8 @@ class Operator(object):
                     assembled += 'self.memory.write_word(self.header.get_globals_table_location() + %d, result)\n' % ((self.store - 0x10) << 1)
         if (self.branch):
             #TODO: handle branch offset of 2 (no branch)
-            assembled += 'if (result == %s):\n' % str(self.branch[0])
-            if (self.branch[1] < 2):
+            assembled += 'if (bool(result) == %s):\n' % str(self.branch[0])
+            if (self.branch[1] == 0 or self.branch[1] == 1):
                 assembled += '    result = %d\n' \
                           '    return_address, result_variable, _ = self.stack.pop_call()\n' \
                           '    if not (result_variable == None):\n' \
@@ -534,7 +534,10 @@ class DecoderV1(object):
                 # they have neither the 'store' nor the 'branch' effect, so it's ok to decode the string here
                 # decode z-string
                 string, new_address = self.memory.decode_string(address + 1)
+                #try:
                 operator = Operator(address, name, self.code[name] % string) #TODO: escape double-quotes in string
+                #except TypeError:
+                #    print '@@', string, hex(address), hex(new_address)
                 address = new_address
             else:
                 operator = Operator(address, name, self.code[name])
