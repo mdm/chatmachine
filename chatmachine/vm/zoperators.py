@@ -372,7 +372,8 @@ class DecoderV1(object):
                                  'self.output.write(str(operands[0]))\n'
         self.code['print_obj'] = 'self.output.write(self.object_table.get_object_short_name(operands[0]))\n'
         self.code['print_paddr'] = 'self.output.write(self.memory.decode_string(operands[0] << %d)[0])\n' % self.packed_address_shift
-        self.code['print_ret'] = 'raise NotImplementedError, "print_ret"\n'
+        self.code['print_ret'] = 'self.output.write("%s\\n")\n' \
+                                 'result = 1\n'
         self.code['pull'] = 'result = self.stack.pop()\n' \
                             'if (operands[0] == 0):\n' \
                             '    self.stack.push(result)\n' \

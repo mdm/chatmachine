@@ -760,6 +760,9 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(next, None)
         string = 'There is a small mailbox here.'
         self.assertEqual(self.output.string, string)
+
+    def test_print_ret(self):
+        self.fail()
         
     def test_pull(self):
         self.stack.locals[-1] = [42, 42]
