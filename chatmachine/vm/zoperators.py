@@ -365,13 +365,13 @@ class DecoderV1(object):
         self.code['or'] = 'raise NotImplementedError, "or"\n'
         self.code['pop'] = 'raise NotImplementedError, "pop"\n'
         self.code['print'] = 'self.output.write("%s")\n'
-        self.code['print_addr'] = 'self.output.write(self.memory.decode_string(operands[0])[0])\n'
+        self.code['print_addr'] = 'self.output.write(self.memory.decode_string(operands[0], "\\n")[0])\n'
         self.code['print_char'] = 'self.output.write(self.memory.decode_zscii(operands[0]))\n'
         self.code['print_num'] = 'if (operands[0] & 0x8000):\n' \
                                  '    operands[0] -= 0x10000\n' \
                                  'self.output.write(str(operands[0]))\n'
         self.code['print_obj'] = 'self.output.write(self.object_table.get_object_short_name(operands[0]))\n'
-        self.code['print_paddr'] = 'self.output.write(self.memory.decode_string(operands[0] << %d)[0])\n' % self.packed_address_shift
+        self.code['print_paddr'] = 'self.output.write(self.memory.decode_string(operands[0] << %d, "\\n")[0])\n' % self.packed_address_shift
         self.code['print_ret'] = 'self.output.write("%s\\n")\n' \
                                  'result = 1\n'
         self.code['pull'] = 'result = self.stack.pop()\n' \
@@ -534,7 +534,7 @@ class DecoderV1(object):
                 # these operators are followed by literal z-encoded strings
                 # they have neither the 'store' nor the 'branch' effect, so it's ok to decode the string here
                 # decode z-string
-                string, new_address = self.memory.decode_string(address + 1)
+                string, new_address = self.memory.decode_string(address + 1, '\\n')
                 #try:
                 operator = Operator(address, name, self.code[name] % string) #TODO: escape double-quotes in string
                 #except TypeError:

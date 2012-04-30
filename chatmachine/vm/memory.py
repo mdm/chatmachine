@@ -48,7 +48,7 @@ class MemoryV1:
             char = '?'
         return char
     
-    def decode_string(self, address):
+    def decode_string(self, address, newline):
         #TODO: cache alphabets somewhere
         alphabets = [list('abcdefghijklmnopqrstuvwxyz'), list('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), list(' 0123456789.,!?_#\'\"/\\<-:()')]
         previous = 0
@@ -59,38 +59,49 @@ class MemoryV1:
             word = self.read_word(address)
             zchars = [(word & 0x7c00) >> 10, (word & 0x3e0) >> 5, word & 0x1f]
             for zchar in zchars:
-                if (zchar == 0):
-                    zscii.append(' ')
-                elif (zchar == 1):
-                    zscii.append('\\n')
-                elif (zchar == 2):
-                    previous = current
-                    current = (current + 1) % 3
-                elif (zchar == 3):
-                    previous = current
-                    current = (current + 2) % 3
-                elif (zchar == 4):
-                    current = (current + 1) % 3
-                    previous = current
-                elif (zchar == 5):
-                    current = (current + 2) % 3
-                    previous = current
-                elif (current == 2) and (zchar == 6):
-                    constructing = -1
-                else:
-                    if (constructing == -2):
+                if (constructing == -2):
+                    if (zchar == 0):
+                        zscii.append(' ')
+                    elif (zchar == 1):
+                        zscii.append(newline)
+                    elif (zchar == 2):
+                        previous = current
+                        current = (current + 1) % 3
+                    elif (zchar == 3):
+                        previous = current
+                        current = (current + 2) % 3
+                    elif (zchar == 4):
+                        current = (current + 1) % 3
+                        previous = current
+                    elif (zchar == 5):
+                        current = (current + 2) % 3
+                        previous = current
+                    elif (current == 2) and (zchar == 6):
+                        constructing = -1
+                    else:
                         zscii.append(alphabets[current][zchar - 6])
                         current = previous
-                    elif (constructing == -1):
-                        constructing = zchar << 5
-                    else:
-                        code = constructing + zchar
-                        zscii.append(self.decode_zscii(code))
+                elif (constructing == -1):
+                    constructing = zchar << 5
+                else:
+                    code = constructing + zchar
+                    zscii.append(self.decode_zscii(code))
+                    constructing = -2
             address += 2
             if (word & 0x8000):
                 break
                 
         return ''.join(zscii), address
+
+    def dump_string(self, address):
+        zchars = []
+        while True:
+            word = self.read_word(address)
+            zchars.extend([(word & 0x7c00) >> 10, (word & 0x3e0) >> 5, word & 0x1f])
+            address += 2
+            if (word & 0x8000):
+                break
+        print zchars
     
     def tokenize(self, text, parse, dictionary = None, flag = False):
         if dictionary == None:
@@ -126,9 +137,9 @@ class MemoryV1:
         #alphabet2[20] = '\\\\'
         #print '@@@', words, alphabet2
         #words = [(0, 'pdp10'), (1, 'r2d2'), (2, 'test'), (3, 'longtest'), (4, 'storm-')]
-        print '$$$', words
+        #print '$$$', words
         words = words[:self.read_byte(parse)]
-        print '$$$', words
+        #print '$$$', words
         self.write_byte(parse + 1, len(words)) #TODO: handle security?
         token = []
         shifting = -1
@@ -152,7 +163,7 @@ class MemoryV1:
             encoded = [(token[0] << 10) + (token[1] << 5) + token[2], (token[3] << 10) + (token[4] << 5) + token[5]]
             if not token[5] == 3:
              encoded[1] = encoded[1] | 0x8000
-            print token, encoded
+            #print token, encoded
             address = 0
             for i in range(1, abs(dictionary.get_num_entries()) + 1): # optimize for sorted dicts
                 entry = dictionary.get_encoded_string(i)
@@ -161,7 +172,7 @@ class MemoryV1:
                 if entry[0] == encoded[0] and entry[1] == encoded[1]:
                     address = dictionary.get_entry_addr(i)
                     break
-            print '!!!', hex(address), len(word[1]), word[0]
+            #print '!!!', hex(address), len(word[1]), word[0]
             self.write_word(parse + pos, address)
             self.write_byte(parse + pos + 2, len(word[1]) + 1)
             self.write_byte(parse + pos + 3, word[0])
@@ -313,7 +324,7 @@ class ObjectTableV1:
     def get_object_short_name(self, object_number):
         properties_table = self.get_object_properties_table(object_number)
         #short_name_words = self.memory.read_byte(properties_table)
-        return self.memory.decode_string(properties_table + 1)[0]
+        return self.memory.decode_string(properties_table + 1, '\n')[0]
 
     def get_property_info_forwards(self, property_info_addr):
         size_byte = self.memory.read_byte(property_info_addr)
