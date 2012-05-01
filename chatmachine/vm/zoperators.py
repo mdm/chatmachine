@@ -41,6 +41,7 @@ class Operator(object):
                 elif (op_value < 0x10):
                     assembled += 'operands.append(self.stack.get_local(%d))\n' % (op_value - 1)
                 else:
+                    #TODO: inline table location
                     assembled += 'operands.append(self.memory.read_word(self.header.get_globals_table_location() + %d))\n' % ((op_value - 0x10) << 1)
                     
         assembled += self.code
@@ -281,7 +282,15 @@ class DecoderV1(object):
                                'if (operands[1] & 0x8000):\n' \
                                '    operands[1] -= 0x10000\n' \
                                'result = value < operands[1]\n'
-        self.code['dec'] = 'raise NotImplementedError, "dec"\n'
+        self.code['dec'] = 'if (operands[0] == 0):\n' \
+                           '    value = self.stack.pop()\n' \
+                           '    self.stack.push((value - 1) & 0xffff)\n' \
+                           'elif (operands[0] < 0x10):\n' \
+                           '    value = self.stack.get_local(operands[0] - 1)\n' \
+                           '    self.stack.set_local(operands[0] - 1, (value - 1) & 0xffff)\n' \
+                           'else:\n' \
+                           '    value = self.memory.read_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1))\n' \
+                           '    self.memory.write_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1), (value - 1) & 0xffff)\n'
         self.code['div'] = 'if (operands[0] & 0x8000):\n' \
                            '    operands[0] -= 0x10000\n' \
                            'if (operands[1] & 0x8000):\n' \
@@ -357,13 +366,17 @@ class DecoderV1(object):
         self.code['load'] = 'raise NotImplementedError, "load"\n'
         self.code['loadb'] = 'result = self.memory.read_byte(operands[0] + operands[1])\n'
         self.code['loadw'] = 'result = self.memory.read_word(operands[0] + (operands[1] << 1))\n'
-        self.code['mod'] = 'raise NotImplementedError, "mod"\n'
+        self.code['mod'] = 'if (operands[0] & 0x8000):\n' \
+                           '    operands[0] -= 0x10000\n' \
+                           'if (operands[1] & 0x8000):\n' \
+                           '    operands[1] -= 0x10000\n' \
+                           'result = (operands[0] - operands[1] * int(float(operands[0])/operands[1])) & 0xffff\n' # C-style integer division
         self.code['mul'] = 'result = (operands[0] * operands[1]) & 0xffff\n'
         self.code['new_line'] = 'self.output.write("\\n")\n'
-        self.code['nop'] = 'raise NotImplementedError, "nop"\n'
-        self.code['not'] = 'raise NotImplementedError, "not"\n'
-        self.code['or'] = 'raise NotImplementedError, "or"\n'
-        self.code['pop'] = 'raise NotImplementedError, "pop"\n'
+        self.code['nop'] = '# NOP\n'
+        self.code['not'] = 'result = (~operands[0]) & 0xffff\n'
+        self.code['or'] = 'result = operands[0] | operands[1]\n'
+        self.code['pop'] = 'self.stack.pop()\n'
         self.code['print'] = 'self.output.write("%s")\n'
         self.code['print_addr'] = 'self.output.write(self.memory.decode_string(operands[0], "\\n")[0])\n'
         self.code['print_char'] = 'self.output.write(self.memory.decode_zscii(operands[0]))\n'
@@ -383,8 +396,17 @@ class DecoderV1(object):
                             '    self.memory.write_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1), result)\n'
         self.code['push'] = 'self.stack.push(operands[0])\n'
         self.code['put_prop'] = 'self.object_table.set_property_data(operands[0], operands[1], operands[2])\n'
-        self.code['quit'] = 'raise NotImplementedError, "quit"\n'
-        self.code['random'] = 'raise NotImplementedError, "random"\n'
+        self.code['quit'] = 'self.halt()\n'
+        self.code['random'] = 'if (operands[0] & 0x8000):\n' \
+                              '    operands[0] -= 0x10000\n' \
+                              'if (operands[0] > 0):\n' \
+                              '    result = random.randint(1, operands[0])\n' \
+                              'else:\n' \
+                              '    if (operands[0] < 0):\n' \
+                              '        random.seed(operands[0])\n' \
+                              '    else:\n' \
+                              '        random.seed(None)\n' \
+                              '    result = 0\n'
         self.code['remove_obj'] = 'raise NotImplementedError, "remove_obj"\n'
         self.code['restart'] = 'raise NotImplementedError, "restart"\n'
         self.code['restore'] = 'raise NotImplementedError, "restore"\n'
@@ -416,8 +438,7 @@ class DecoderV1(object):
         self.code['storeb'] = 'self.memory.write_byte(operands[0] + operands[1], operands[2])\n'
         self.code['storew'] = 'self.memory.write_word(operands[0] + (operands[1] << 1), operands[2])\n'
         self.code['sub'] = 'result = (operands[0] - operands[1]) & 0xffff\n'
-        self.code['test'] = 'result = (operands[0] & operands[1] == operands[1])\n' \
-                            'logging.debug(result)\n'
+        self.code['test'] = 'result = (operands[0] & operands[1] == operands[1])\n'
         self.code['test_attr'] = 'result = self.object_table.get_object_attribute(operands[0], operands[1])\n'
     
     def decode_branching(self, address):

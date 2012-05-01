@@ -1,6 +1,6 @@
 import zoperators
 import streams
-import sys
+import random
 
 import logging
 logging.basicConfig(filename='debug.log',level=logging.DEBUG)
@@ -19,7 +19,7 @@ class ProcessorV1(object):
         self.decoder = zoperators.DecoderV1(self.memory)                   
         self.cache = {}
         self.running = False
-        self.debugging = True
+        self.debugging = False
     
     def execute(self, instruction):
         next = None
@@ -27,39 +27,43 @@ class ProcessorV1(object):
         return next
     
     def debug(self):
-        pass
+        self.debugging = True
+        self.run()
         
-    def halt():
+    def halt(self):
         self.running = False
 
     def run(self):
         pc = self.memory.get_header().get_initial_pc()
     
         block = []
+        start = pc
         count = 0
         self.running = True
+        
         while (self.running):
             try:
                 if (pc in self.cache) and (len(block) == 0):
-                    logging.debug('%x\n(cached)' % pc)
+                    logging.debug('%x: (cached block)' % pc)
                     pc = self.execute(self.cache[pc])
+                    start = pc
                 else:
                     instruction = self.decoder.decode_instruction(pc)
-                    if instruction.name == 'put_prop' and count > 112:
-                        raise NotImplementedError, 'untested put_prop (size 1)'
                     assembled, continuable = instruction.assemble(self.debugging)
                     block.append(assembled)
+                    logging.debug('%x: %s' % (pc, str(instruction)))
                     #if instruction.name == 'call':
                     #    raise NotImplementedError, 'untested call'
                     if continuable:
-                        logging.debug('%x\n(building)' % pc)
                         pc = instruction.next
                     else:
+                        #logging.debug(' %d, %d' % (start, pc))
+                        #logging.debug('\n' + '\n'.join(block))
                         compiled = compile('\n'.join(block), '<jit>', 'exec')   
-                        block = []
-                        self.cache[pc] = compiled
-                        logging.debug('%x\n%s\n(new block)' % (pc, str(instruction)))
+                        self.cache[start] = compiled
                         pc = self.execute(compiled)
+                        block = []
+                        start = pc
                 count += 1
             except Exception:
                 print count, 'instructions were executed.', self.debugging
@@ -70,5 +74,4 @@ class ProcessorV1(object):
                 print assembled
                 print self.memory.read_word(self.header.get_globals_table_location() + (0x26 << 1))
                 raise
-
 

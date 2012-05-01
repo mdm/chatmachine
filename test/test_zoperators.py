@@ -198,6 +198,9 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(instruction.next, 0x5a3f)
         self.assertEqual(self.memory.get_object_table().get_object_attribute(23, 0x1b), False)
 
+    def test_dec(self):
+        self.fail()
+        
     def test_dec_chk_local(self):
         self.stack.locals.append([42 ,0x8000])
         instruction = self.processor.decoder.decode_instruction(0x5052)
@@ -281,6 +284,9 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(instruction.next, 0x5f30)
         self.assertEqual(next, 0x5f30)
         self.assertEqual(self.stack.pop(), 252)
+        
+    def test_get_next_prop(self):
+        self.fail()
         
     def test_get_parent(self):
         self.memory.write_word(self.processor.header.get_globals_table_location() + (0x26 << 1), 252)
@@ -635,6 +641,9 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(instruction.next, 0x4ac8)
         self.assertEqual(self.stack.get_local(1), 1000)
             
+    def test_mod(self):
+        self.fail()
+        
     def test_mul_both_positive(self):
         self.stack.locals.append([42, 42, 42, 42])
         self.stack.push(0x4000)
@@ -670,6 +679,16 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(next, None)
         string = '\n'
         self.assertEqual(self.output.string, string)
+        
+    def test_not(self):
+        self.fail()
+
+    def test_or(self):
+        self.fail()
+        
+    def test_pop(self):
+        self.fail()
+        
         
     def test_print(self):
         instruction = self.processor.decoder.decode_instruction(0x6329)
@@ -808,6 +827,12 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(instruction.next, 0x47e7)
         result = self.memory.read_word(0x0c76)
         self.assertEqual(result, 0x001f)
+        
+    def test_quit(self):
+        self.fail()
+        
+    def test_random(self):
+        self.fail()
         
     def test_ret_none(self):
         self.stack.push_call([42, 42, 42, 42, 1000], 1000, None, 2)

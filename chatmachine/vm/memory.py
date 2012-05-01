@@ -359,6 +359,27 @@ class ObjectTableV1:
         
         return 0
 
+    def get_next_property_number(self, object_number, property_number):
+        #TODO: check for illegal property numbers
+        #TODO: use binary search
+        properties_table = self.get_object_properties_table(object_number)
+        short_name_words = self.memory.read_byte(properties_table)
+
+        property_info_addr = properties_table + 1 + 2 * short_name_words
+        number, size = self.get_property_info_forwards(property_info_addr)
+        
+        if (property__number == 0):
+            return number
+        else:
+            while (number > 0):
+                old_number = number
+                property_info_addr += size + 1
+                number, size = self.get_property_info_forwards(property_info_addr)
+                if (old_number == property_number):
+                    return number
+        
+        return 0
+
     def get_property_data(self, object_number, property_number):
         property_data_addr = self.get_property_data_addr(object_number, property_number)
 
