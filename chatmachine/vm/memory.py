@@ -226,10 +226,10 @@ class HeaderV1:
         return self.memory.read_word(0xE)
 
     def get_flag_transcript(self):
-        return self.memory.read_word(0x10) & 0x100
+        return bool(self.memory.read_word(0x10) & 1)
 
     def set_flag_transcript(self):
-        self.memory.read_word(0x10, self.memory.read_word(0x10) | 0x100)
+        self.memory.write_word(0x10, self.memory.read_word(0x10) | 1)
         
     def get_standard_revision_number(self):
         return self.memory.read_word(0x32)

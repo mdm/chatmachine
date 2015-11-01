@@ -421,7 +421,10 @@ class DecoderV1(object):
                              'turns = self.memory.read_word(self.header.get_globals_table_location() + 4)\n' \
                              'self.output.redraw_status(room, score, turns)\n' \
                              'max_length = self.memory.read_byte(operands[0])\n' \
-                             'chars = list(self.input.read()[:max_length].lower())\n' \
+                             'input = self.input.read()\n' \
+                             'self.output.write(input, True)\n' \
+                             'input = input[:-1]\n' \
+                             'chars = list(input[:max_length].lower())\n' \
                              'pos = 1\n' \
                              'for char in chars:\n' \
                              '    self.memory.write_byte(operands[0] + pos, ord(char))\n' \
