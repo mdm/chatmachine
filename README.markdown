@@ -5,7 +5,7 @@ __Goals:__
 
  * Be fast enough to run Inform 7 games
  * A debugger
- * Interfaces for console, Faceboob Chat and Skype
+ * Interfaces for console, Facebook Chat and Skype
  * Correctness
 
 __Current features:__

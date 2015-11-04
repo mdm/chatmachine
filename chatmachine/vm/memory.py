@@ -37,9 +37,9 @@ class MemoryV1:
         self.data[address + 1] = value & 0xFF
 
     def decode_zscii(self, code):
-        if (code == 0):
-            char = ''
-        elif (code == 13):
+        #if (code == 0):
+        char = ''
+        if (code == 13):
             char = '\\n'
         elif (32 <= code <= 126):
             char = chr(code)

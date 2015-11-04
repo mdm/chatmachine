@@ -268,15 +268,18 @@ class DecoderV1(object):
         self.code['dec_chk'] = 'if (operands[0] == 0):\n' \
                                '    value = self.stack.pop()\n' \
                                '    value -= 1\n' \
-                               '    self.stack.push(value & 0xffff)\n' \
+                               '    value = value & 0xffff\n' \
+                               '    self.stack.push(value)\n' \
                                'elif (operands[0] < 0x10):\n' \
                                '    value = self.stack.get_local(operands[0] - 1)\n' \
                                '    value -= 1\n' \
-                               '    self.stack.set_local(operands[0] - 1, value & 0xffff)\n' \
+                               '    value = value & 0xffff\n' \
+                               '    self.stack.set_local(operands[0] - 1, value)\n' \
                                'else:\n' \
                                '    value = self.memory.read_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1))\n' \
                                '    value -= 1\n' \
-                               '    self.memory.write_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1), value & 0xffff)\n' \
+                               '    value = value & 0xffff\n' \
+                               '    self.memory.write_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1), value)\n' \
                                'if (value & 0x8000):\n' \
                                '    value -= 0x10000\n' \
                                'if (operands[1] & 0x8000):\n' \
@@ -316,15 +319,18 @@ class DecoderV1(object):
         self.code['inc_chk'] = 'if (operands[0] == 0):\n' \
                                '    value = self.stack.pop()\n' \
                                '    value += 1\n' \
-                               '    self.stack.push(value & 0xffff)\n' \
+                               '    value = value & 0xffff\n' \
+                               '    self.stack.push(value)\n' \
                                'elif (operands[0] < 0x10):\n' \
                                '    value = self.stack.get_local(operands[0] - 1)\n' \
                                '    value += 1\n' \
-                               '    self.stack.set_local(operands[0] - 1, value & 0xffff)\n' \
+                               '    value = value & 0xffff\n' \
+                               '    self.stack.set_local(operands[0] - 1, value)\n' \
                                'else:\n' \
                                '    value = self.memory.read_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1))\n' \
                                '    value += 1\n' \
-                               '    self.memory.write_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1), value & 0xffff)\n' \
+                               '    value = value & 0xffff\n' \
+                               '    self.memory.write_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1), value)\n' \
                                'if (value & 0x8000):\n' \
                                '    value -= 0x10000\n' \
                                'if (operands[1] & 0x8000):\n' \

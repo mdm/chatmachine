@@ -25,7 +25,7 @@ class TestMemory(unittest.TestCase):
 
     def test_decode_string(self):
         self.data.dump_string(0xf304)
-        string, address = self.data.decode_string(0xf304)
+        string, address = self.data.decode_string(0xf304, '\n')
         print '##%s##%x' % (string, address)
         self.fail()
 

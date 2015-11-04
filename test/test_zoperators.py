@@ -3,6 +3,7 @@ import unittest
 import chatmachine.vm.memory
 import chatmachine.vm.stack
 import chatmachine.vm.streams
+import chatmachine.console.streams
 import chatmachine.vm.processor
 
 
@@ -15,7 +16,7 @@ class TestOperatorV1(unittest.TestCase):
     def setUp(self):
         self.memory = chatmachine.vm.memory.MemoryV1('data/zork1-5.z5')
         self.stack = chatmachine.vm.stack.Stack()
-        self.input = chatmachine.vm.streams.KeyboardInputStreamV1()
+        self.input = chatmachine.console.streams.KeyboardInputStreamV1()
         self.output = MockOutputStreamV1()
 
         self.processor = chatmachine.vm.processor.ProcessorV1(self.memory, self.stack, self.input, self.output)
@@ -225,6 +226,9 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(next, 0x4ac1)
         self.assertEqual(self.memory.read_word(self.processor.header.get_globals_table_location() + (0x0b << 1)), 0xffff)
         
+    def test_dec_chk_underflow(self):
+        self.fail()
+        
     def test_div_both_positive(self):
         self.memory.write_word(self.processor.header.get_globals_table_location() + (0x01 << 1), 11)
         self.stack.push(2)
@@ -420,6 +424,9 @@ class TestOperatorV1(unittest.TestCase):
         self.assertEqual(instruction.next, 0x63be)
         self.assertEqual(self.stack.get_local(0), 0x8000)
         self.assertEqual(next, 0x63c1)
+    
+    def test_inc_chk_overflow(self):
+        self.fail()
    
     def test_insert_obj_first_child(self):
         self.fail()
@@ -1107,8 +1114,8 @@ class TestDecoderV1(unittest.TestCase):
     def setUp(self):
         self.memory = chatmachine.vm.memory.MemoryV1('data/zork1-5.z5')
         self.stack = chatmachine.vm.stack.Stack()
-        self.input = chatmachine.vm.streams.KeyboardInputStreamV1()
-        self.output = chatmachine.vm.streams.ScreenOutputStreamV1()
+        self.input = chatmachine.console.streams.KeyboardInputStreamV1()
+        self.output = chatmachine.console.streams.ScreenOutputStreamV1()
 
         self.processor = chatmachine.vm.processor.ProcessorV1(self.memory, self.stack, self.input, self.output)
         

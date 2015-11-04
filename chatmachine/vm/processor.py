@@ -40,11 +40,14 @@ class ProcessorV1(object):
         start = pc
         count = 0
         self.running = True
+        self.debugging = True
+        instructions = {}
         
         while (self.running):
             try:
                 if (pc in self.cache) and (len(block) == 0):
-                    logging.debug('%x: (cached block)' % pc)
+                    #logging.debug('%x: (cached block)' % pc)
+                    logging.debug('%x: %s' % (pc, str(instructions[pc])))
                     pc = self.execute(self.cache[pc])
                     start = pc
                 else:
@@ -61,6 +64,7 @@ class ProcessorV1(object):
                         #logging.debug('\n' + '\n'.join(block))
                         compiled = compile('\n'.join(block), '<jit>', 'exec')   
                         self.cache[start] = compiled
+                        instructions[start] = instruction
                         pc = self.execute(compiled)
                         block = []
                         start = pc
@@ -74,4 +78,4 @@ class ProcessorV1(object):
                 print assembled
                 print self.memory.read_word(self.header.get_globals_table_location() + (0x26 << 1))
                 raise
-
+    

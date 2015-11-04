@@ -14,7 +14,8 @@ class FileOutputStreamV1(OutputStream):
         self.file.write(string)
         
     def __del__(self):
-        self.file.close()
+        if self.active:
+            self.file.close()
 
 class MemoryOutputStreamV3(OutputStream):
     pass
