@@ -21,4 +21,4 @@ class ScreenOutputStreamV1(vm.streams.OutputStream):
 class KeyboardInputStreamV1(vm.streams.InputStream):
     def read(self):
         return raw_input() + '\n'
-
+        

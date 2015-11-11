@@ -368,7 +368,7 @@ class ObjectTableV1:
         property_info_addr = properties_table + 1 + 2 * short_name_words
         number, size = self.get_property_info_forwards(property_info_addr)
         
-        if (property__number == 0):
+        if (property_number == 0):
             return number
         else:
             while (number > 0):

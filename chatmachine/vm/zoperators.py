@@ -300,7 +300,7 @@ class DecoderV1(object):
                            '    operands[1] -= 0x10000\n' \
                            'result = int(float(operands[0])/operands[1]) & 0xffff\n' # C-style integer division
         self.code['get_child'] = 'result = self.object_table.get_object_child(operands[0])\n'
-        self.code['get_next_prop'] = 'raise NotImplementedError, "get_next_prop"\n'
+        self.code['get_next_prop'] = 'result = self.object_table.get_next_property_number(operands[0], operands[1])\n'
         self.code['get_parent'] = 'result = self.object_table.get_object_parent(operands[0])\n'
         self.code['get_prop'] = 'result = self.object_table.get_property_data(operands[0], operands[1])\n'
         self.code['get_prop_addr'] = 'result = self.object_table.get_property_data_addr(operands[0], operands[1])\n'
@@ -315,7 +315,6 @@ class DecoderV1(object):
                            'else:\n' \
                            '    value = self.memory.read_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1))\n' \
                            '    self.memory.write_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1), (value + 1) & 0xffff)\n'
-                           #'raise NotImplementedError, "inc"\n'
         self.code['inc_chk'] = 'if (operands[0] == 0):\n' \
                                '    value = self.stack.pop()\n' \
                                '    value += 1\n' \
@@ -369,7 +368,12 @@ class DecoderV1(object):
                           'result = (operands[0] < operands[1])\n'
         self.code['jump'] = 'next = (%d + operands[0] - 2) & 0xffff\n'
         self.code['jz'] = 'result = (operands[0] == 0)\n'
-        self.code['load'] = 'raise NotImplementedError, "load"\n'
+        self.code['load'] = 'if (operands[0] == 0):\n' \
+                            '    result = self.stack.peek()\n' \
+                            'elif (operands[0] < 0x10):\n' \
+                            '    result = self.stack.get_local(operands[0] - 1)\n' \
+                            'else:\n' \
+                            '    result = self.memory.read_word(self.header.get_globals_table_location() + ((operands[0] - 0x10) << 1))\n'
         self.code['loadb'] = 'result = self.memory.read_byte(operands[0] + operands[1])\n'
         self.code['loadw'] = 'result = self.memory.read_word(operands[0] + (operands[1] << 1))\n'
         self.code['mod'] = 'if (operands[0] & 0x8000):\n' \
@@ -413,7 +417,7 @@ class DecoderV1(object):
                               '    else:\n' \
                               '        random.seed(None)\n' \
                               '    result = 0\n'
-        self.code['remove_obj'] = 'raise NotImplementedError, "remove_obj"\n'
+        self.code['remove_obj'] = 'self.object_table.set_object_parent(operands[0], 0)\n'
         self.code['restart'] = 'raise NotImplementedError, "restart"\n'
         self.code['restore'] = 'raise NotImplementedError, "restore"\n'
         self.code['ret'] = 'result = operands[0]\n'
