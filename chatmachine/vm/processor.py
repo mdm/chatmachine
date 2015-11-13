@@ -24,6 +24,8 @@ class ProcessorV1(object):
     def execute(self, instruction):
         next = None
         exec(instruction)
+        if next == 0x5791:
+            print '!!!'
         return next
     
     def debug(self):

@@ -411,6 +411,7 @@ class DecoderV1(object):
                               '    operands[0] -= 0x10000\n' \
                               'if (operands[0] > 0):\n' \
                               '    result = random.randint(1, operands[0])\n' \
+                              '    result = 1\n' \
                               'else:\n' \
                               '    if (operands[0] < 0):\n' \
                               '        random.seed(operands[0])\n' \

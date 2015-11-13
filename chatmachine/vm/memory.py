@@ -106,11 +106,12 @@ class MemoryV1:
     def tokenize(self, text, parse, dictionary = None, flag = False):
         if dictionary == None:
             dictionary = self.get_default_dictionary()
-        seperators = dictionary.get_word_separators()
+        separators = dictionary.get_word_separators()
         words = []
         current = []
         pos = 1
         start = pos
+        print self.read_byte(text + 1)
         char = chr(self.read_byte(text + pos))
         while not char == '\0':
             if char == ' ':
@@ -118,7 +119,7 @@ class MemoryV1:
                     words.append((start, ''.join(current)))
                     current = []
                 start = pos + 1
-            elif char in seperators:
+            elif char in separators:
                 if len(current) > 0:
                     words.append((start, ''.join(current)))
                     current = []
@@ -129,8 +130,7 @@ class MemoryV1:
             pos += 1
             char = chr(self.read_byte(text + pos))
         if len(current) > 0:
-            words.append((start, "".join(current)))
-        
+            words.append((start, ''.join(current)))
         alphabet2 = ' 0123456789.,!?_#\'\"/\\<-:()'
         #alphabet2[17] = '\\\''
         #alphabet2[18] = '\\\"'
@@ -139,7 +139,7 @@ class MemoryV1:
         #words = [(0, 'pdp10'), (1, 'r2d2'), (2, 'test'), (3, 'longtest'), (4, 'storm-')]
         #print '$$$', words
         words = words[:self.read_byte(parse)]
-        #print '$$$', words
+        #print '$$$', words, self.read_byte(parse)
         self.write_byte(parse + 1, len(words)) #TODO: handle security?
         token = []
         shifting = -1
@@ -162,7 +162,7 @@ class MemoryV1:
             token.extend([5]  * (6 - len(token)))
             encoded = [(token[0] << 10) + (token[1] << 5) + token[2], (token[3] << 10) + (token[4] << 5) + token[5]]
             if not token[5] == 3:
-             encoded[1] = encoded[1] | 0x8000
+                encoded[1] = encoded[1] | 0x8000
             #print token, encoded
             address = 0
             for i in range(1, abs(dictionary.get_num_entries()) + 1): # optimize for sorted dicts
@@ -174,7 +174,7 @@ class MemoryV1:
                     break
             #print '!!!', hex(address), len(word[1]), word[0]
             self.write_word(parse + pos, address)
-            self.write_byte(parse + pos + 2, len(word[1]) + 1)
+            self.write_byte(parse + pos + 2, len(word[1]))
             self.write_byte(parse + pos + 3, word[0])
             pos += 4
             token = []
