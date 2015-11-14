@@ -313,12 +313,27 @@ class ObjectTableV1:
     def set_object_child(self, object_number, child):
         object_addr = self.get_object_addr(object_number)
         self.memory.write_byte(object_addr + 6, child)
+        
+    def unlink_object(self, object_number):
+        parent = self.get_object_parent(object_number)
+        self.set_object_parent(object_number, 0)
+        if not parent == 0:
+            parent_first_child = self.get_object_child(parent)
+            next_sibling = self.get_object_sibling(object_number)
+            self.set_object_sibling(object_number, 0)
+            if (parent_first_child == object_number):
+                self.set_object_child(parent, next_sibling)
+            else:
+                previous_sibling = parent_first_child
+                previoud_sibling_sibling = self.get_object_sibling(previous_sibling)
+                while not previoud_sibling_sibling == object_number:
+                    previous_sibling = previous_sibling_sibling
+                    previoud_sibling_sibling = self.get_object_sibling(previous_sibling)
+                self.set_object_sibling(previous_sibling, next_sibling)
 
     def get_object_properties_table(self, object_number):
         object_addr = self.get_object_addr(object_number)
-
         properties_table = self.memory.read_word(object_addr + 7)
-        
         return properties_table
 
     def get_object_short_name(self, object_number):

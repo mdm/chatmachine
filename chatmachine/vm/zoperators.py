@@ -335,21 +335,11 @@ class DecoderV1(object):
                                'if (operands[1] & 0x8000):\n' \
                                '    operands[1] -= 0x10000\n' \
                                'result = value > operands[1]\n'
-        self.code['insert_obj'] = 'parent = self.object_table.get_object_parent(operands[0])\n' \
-                                  'if not (parent == 0):\n' \
-                                  '    parent_first_child = self.object_table.get_object_child(parent)\n' \
-                                  '    sibling = self.object_table.get_object_sibling(operands[0])\n' \
-                                  '    if (parent_first_child == operands[0]):\n' \
-                                  '        self.object_table.set_object_child(parent, sibling)\n' \
-                                  '    else:\n' \
-                                  '        parent_child = parent_first_child\n' \
-                                  '        while not (parent_child == operands[0]):\n' \
-                                  '            parent_child = self.object_table.get_object_sibling(parent_child)\n' \
-                                  '        self.object_table.set_object_sibling(parent_child, sibling)\n' \
+        self.code['insert_obj'] = 'self.object_table.unlink_object(operands[0])\n' \
                                   'self.object_table.set_object_parent(operands[0], operands[1])\n' \
                                   'sibling = self.object_table.get_object_child(operands[1])\n' \
                                   'self.object_table.set_object_child(operands[1], operands[0])\n' \
-                                  'self.object_table.set_object_sibling(operands[0], sibling)\n' #TODO stop closing sibling chain at sibling 0
+                                  'self.object_table.set_object_sibling(operands[0], sibling)\n'
         self.code['je'] = 'result = False\n' \
                           'for operand in operands[1:]:\n' \
                           '    if (operand == operands[0]):\n' \
@@ -418,7 +408,7 @@ class DecoderV1(object):
                               '    else:\n' \
                               '        random.seed(None)\n' \
                               '    result = 0\n'
-        self.code['remove_obj'] = 'self.object_table.set_object_parent(operands[0], 0)\n'
+        self.code['remove_obj'] = 'self.object_table.unlink_object(operands[0])\n'
         self.code['restart'] = 'raise NotImplementedError, "restart"\n'
         self.code['restore'] = 'raise NotImplementedError, "restore"\n'
         self.code['ret'] = 'result = operands[0]\n'
