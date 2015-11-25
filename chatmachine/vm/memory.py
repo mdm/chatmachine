@@ -55,42 +55,43 @@ class MemoryV1:
         current = 0
         constructing = -2 # nice hack from gnusto: -2: not constructing multi-zchar zscii, -1: constructing, n>=0: read 1 byte
         zscii = []
+        zchars = []
         while True:
             word = self.read_word(address)
-            zchars = [(word & 0x7c00) >> 10, (word & 0x3e0) >> 5, word & 0x1f]
-            for zchar in zchars:
-                if (constructing == -2):
-                    if (zchar == 0):
-                        zscii.append(' ')
-                    elif (zchar == 1):
-                        zscii.append(newline)
-                    elif (zchar == 2):
-                        previous = current
-                        current = (current + 1) % 3
-                    elif (zchar == 3):
-                        previous = current
-                        current = (current + 2) % 3
-                    elif (zchar == 4):
-                        current = (current + 1) % 3
-                        previous = current
-                    elif (zchar == 5):
-                        current = (current + 2) % 3
-                        previous = current
-                    elif (current == 2) and (zchar == 6):
-                        constructing = -1
-                    else:
-                        zscii.append(alphabets[current][zchar - 6])
-                        current = previous
-                elif (constructing == -1):
-                    constructing = zchar << 5
-                else:
-                    code = constructing + zchar
-                    zscii.append(self.decode_zscii(code))
-                    constructing = -2
+            zchars.extend([(word & 0x7c00) >> 10, (word & 0x3e0) >> 5, word & 0x1f])
             address += 2
             if (word & 0x8000):
                 break
-                
+        for zchar in zchars:
+            if (constructing == -2):
+                if (zchar == 0):
+                    zscii.append(' ')
+                elif (zchar == 1):
+                    zscii.append(newline)
+                elif (zchar == 2):
+                    previous = current
+                    current = (current + 1) % 3
+                elif (zchar == 3):
+                    previous = current
+                    current = (current + 2) % 3
+                elif (zchar == 4):
+                    current = (current + 1) % 3
+                    previous = current
+                elif (zchar == 5):
+                    current = (current + 2) % 3
+                    previous = current
+                elif (current == 2) and (zchar == 6):
+                    constructing = -1
+                else:
+                    zscii.append(alphabets[current][zchar - 6])
+                    current = previous
+            elif (constructing == -1):
+                constructing = zchar << 5
+            else:
+                code = constructing + zchar
+                zscii.append(self.decode_zscii(code))
+                current = previous
+                constructing = -2
         return ''.join(zscii), address
 
     def dump_string(self, address):
@@ -111,7 +112,7 @@ class MemoryV1:
         current = []
         pos = 1
         start = pos
-        print self.read_byte(text + 1)
+        #print self.read_byte(text + 1)
         char = chr(self.read_byte(text + pos))
         while not char == '\0':
             if char == ' ':
@@ -325,10 +326,10 @@ class ObjectTableV1:
                 self.set_object_child(parent, next_sibling)
             else:
                 previous_sibling = parent_first_child
-                previoud_sibling_sibling = self.get_object_sibling(previous_sibling)
-                while not previoud_sibling_sibling == object_number:
+                previous_sibling_sibling = self.get_object_sibling(previous_sibling)
+                while not previous_sibling_sibling == object_number:
                     previous_sibling = previous_sibling_sibling
-                    previoud_sibling_sibling = self.get_object_sibling(previous_sibling)
+                    previous_sibling_sibling = self.get_object_sibling(previous_sibling)
                 self.set_object_sibling(previous_sibling, next_sibling)
 
     def get_object_properties_table(self, object_number):
