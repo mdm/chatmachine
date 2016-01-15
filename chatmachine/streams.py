@@ -1,3 +1,5 @@
+import sys
+
 class OutputStream(object):
     def write(self, string):
         pass
@@ -39,7 +41,8 @@ class ScreenOutputStreamV1(OutputStream):
 class KeyboardInputStreamV1(InputStream):
     def read(self):
         return raw_input() + '\n'
-        class MemoryOutputStreamV3(OutputStream):
+
+class MemoryOutputStreamV3(OutputStream):
     pass
 
 class OutputDemuxV1(OutputStream):

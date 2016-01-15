@@ -1,25 +1,24 @@
 import unittest
 
-import chatmachine.vm.memory
-import chatmachine.vm.stack
-import chatmachine.vm.streams
-import chatmachine.console.streams
-import chatmachine.vm.processor
+import chatmachine.memory
+import chatmachine.stack
+import chatmachine.streams
+import chatmachine.processor
 
 
-class MockOutputStreamV1(chatmachine.vm.streams.OutputStream):
+class MockOutputStreamV1(chatmachine.streams.OutputStream):
     def write(self, string):
         self.string = string
 
 
 class TestOperatorV1(unittest.TestCase):
     def setUp(self):
-        self.memory = chatmachine.vm.memory.MemoryV1('data/zork1-5.z5')
-        self.stack = chatmachine.vm.stack.Stack()
-        self.input = chatmachine.console.streams.KeyboardInputStreamV1()
+        self.memory = chatmachine.memory.MemoryV1('data/zork1-5.z5')
+        self.stack = chatmachine.stack.Stack()
+        self.input = chatmachine.streams.KeyboardInputStreamV1()
         self.output = MockOutputStreamV1()
 
-        self.processor = chatmachine.vm.processor.ProcessorV1(self.memory, self.stack, self.input, self.output)
+        self.processor = chatmachine.processor.ProcessorV1(self.memory, self.stack, self.input, self.output)
         
     def test_add_both_positive_no_overflow(self):
         self.memory.write_word(self.processor.header.get_globals_table_location() + (0x72 << 1), 1000 - 0xb4)
@@ -1112,12 +1111,12 @@ class TestOperatorV1(unittest.TestCase):
 
 class TestDecoderV1(unittest.TestCase):
     def setUp(self):
-        self.memory = chatmachine.vm.memory.MemoryV1('data/zork1-5.z5')
-        self.stack = chatmachine.vm.stack.Stack()
-        self.input = chatmachine.console.streams.KeyboardInputStreamV1()
-        self.output = chatmachine.console.streams.ScreenOutputStreamV1()
+        self.memory = chatmachine.memory.MemoryV1('data/zork1-5.z5')
+        self.stack = chatmachine.stack.Stack()
+        self.input = chatmachine.streams.KeyboardInputStreamV1()
+        self.output = chatmachine.streams.ScreenOutputStreamV1()
 
-        self.processor = chatmachine.vm.processor.ProcessorV1(self.memory, self.stack, self.input, self.output)
+        self.processor = chatmachine.processor.ProcessorV1(self.memory, self.stack, self.input, self.output)
         
     def test_decode_calling(self):
         instruction = self.processor.decoder.decode_instruction(0x47ad)

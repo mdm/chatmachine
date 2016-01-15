@@ -1,10 +1,10 @@
 import unittest
 
-import chatmachine.vm.memory
+import chatmachine.memory
 
 class TestMemory(unittest.TestCase):
     def setUp(self):
-        self.data = chatmachine.vm.memory.MemoryV1('data/zork1-5.z5')
+        self.data = chatmachine.memory.MemoryV1('data/zork1-5.z5')
 
     def test_read_byte_first(self):
         self.assertEquals(0x01, self.data.read_byte(0))
@@ -44,7 +44,7 @@ class TestMemory(unittest.TestCase):
     
 class TestHeader(unittest.TestCase):
     def setUp(self):
-        self.header = chatmachine.vm.memory.MemoryV1('data/zork1-5.z5').get_header()
+        self.header = chatmachine.memory.MemoryV1('data/zork1-5.z5').get_header()
 
     def test_get_z_version(self):
 	    self.assertEquals(self.header.get_z_version(), 1)
@@ -52,6 +52,6 @@ class TestHeader(unittest.TestCase):
 
 class TestObjectTable(unittest.TestCase):
     def setUp(self):
-        self.object_table = chatmachine.vm.memory.Memory('data/zork1-5.z5').get_object_table()
+        self.object_table = chatmachine.memory.Memory('data/zork1-5.z5').get_object_table()
 
 
