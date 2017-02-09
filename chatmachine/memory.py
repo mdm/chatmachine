@@ -2,9 +2,10 @@ import array
 
 class MemoryV1:
     def __init__(self, filename):
-        story_file = open(filename)
-        #self.data = ctypes.create_string_buffer(story_file.read())
+        self.story_filename = filename
+        story_file = open(self.story_filename)
         self.data = array.array('B', story_file.read())
+        story_file.close()
         self.header = HeaderV1(self)
         self.object_table = ObjectTableV1(self)
         self.dictionary = DictionaryV1(self, self.header.get_dictionary_location())
@@ -35,6 +36,54 @@ class MemoryV1:
         #struct.pack_into('>H', self.data, address, value)
         self.data[address] = value >> 8
         self.data[address + 1] = value & 0xFF
+
+    def compress(self):
+        story_file = open(self.story_filename)
+        original_data = array.array('B', story_file.read())
+        story_file.close()
+        result = array.array('B')
+        run = 0
+        for original, current in zip(original_data, self.data):
+            diff = original ^ current
+            if diff == 0:
+                run += 1
+                if run == 255:
+                    result.append(0)
+                    result.append(run)
+                    run = 0
+            else:
+                if run > 0:
+                    result.append(0)
+                    result.append(run)
+                run = 0
+                result.append(diff)
+        if run > 0:
+            result.append(0)
+            result.append(run)
+        return result
+
+    def uncompress(self, compressed):
+        story_file = open(self.story_filename)
+        original_data = array.array('B', story_file.read())
+        story_file.close()
+        backup = self.data
+        self.data = array.array('B')
+        pos_original = 0
+        pos_compressed = 0
+        while pos_compressed < len(compressed):
+            if compressed[pos_compressed] == 0:
+                for i in range(compressed[pos_compressed + 1]):
+                    self.data.append(original_data[pos_original + i])
+                pos_original += compressed[pos_compressed + 1]
+                pos_compressed += 2
+            else:
+                self.data.append(compressed[pos_compressed] ^ original_data[pos_original])
+                pos_original += 1
+                pos_compressed += 1
+        while pos_original < len(original_data):
+            self.data.append(original_data[pos_original])
+            pos_original += 1
+
 
     def decode_zscii(self, code):
         #if (code == 0):

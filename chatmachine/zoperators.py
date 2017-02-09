@@ -254,7 +254,7 @@ class DecoderV1(object):
         self.code = {}
         self.code['add'] = 'result = (operands[0] + operands[1]) & 0xffff\n'
         self.code['and'] = 'result = operands[0] & operands[1]\n'
-        #TODO: remove excepton below
+        #TODO: remove exception below
         self.code['call'] = 'if not (operands[0] == 0):\n' \
                             '    operands[0] <<= %d\n' \
                             '    num_locals = self.memory.read_byte(operands[0])\n' \
@@ -415,7 +415,10 @@ class DecoderV1(object):
         self.code['ret_popped'] = 'result = self.stack.pop()\n'
         self.code['rfalse'] = 'result = 0\n'
         self.code['rtrue'] = 'result = 1\n'
-        self.code['save'] = 'raise NotImplementedError, "save"\n'
+        self.code['save'] = 'filename = "test.sav"\n' \
+                            'self.memory.uncompress(self.memory.compress())\n' \
+                            '\n' \
+                            'raise NotImplementedError, "save"\n'
         self.code['set_attr'] = 'self.object_table.set_object_attribute(operands[0], operands[1])\n'
         self.code['sread'] = 'room = self.object_table.get_object_short_name(self.memory.read_word(self.header.get_globals_table_location()))\n' \
                              'score = self.memory.read_word(self.header.get_globals_table_location() + 2)\n' \

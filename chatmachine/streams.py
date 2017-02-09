@@ -1,4 +1,5 @@
 import sys
+import subprocess
 
 class OutputStream(object):
     def write(self, string):
