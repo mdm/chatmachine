@@ -43,7 +43,8 @@ class MemoryV1:
         story_file.close()
         result = array.array('B')
         run = 0
-        for original, current in zip(original_data, self.data):
+        end = self.get_header().get_static_memory_base()
+        for original, current in zip(original_data, self.data)[:end]:
             diff = original ^ current
             if diff == 0:
                 run += 1
