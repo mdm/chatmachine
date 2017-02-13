@@ -1,3 +1,5 @@
+import array
+
 class Stack:
     def __init__(self):
     	self.stack = [[]]
@@ -44,3 +46,72 @@ class Stack:
         print len(self.locals), self.locals[-1]
         print len(self.calls), self.calls[-1]
 
+    def print_all(self):
+        print len(self.stack), self.stack
+        print len(self.locals), self.locals
+        print len(self.calls), self.calls
+
+    def serialize(self):
+        result = array.array('B')
+        for i in range(6):
+            result.append(0)
+        result.append(len(self.stack[0]) >> 8)
+        result.append(len(self.stack[0]) & 0xFF)
+        for elem in self.stack[0]:
+            result.append(elem >> 8)
+            result.append(elem & 0xFF)
+        for i in range(len(self.calls)):
+            return_address, result_variable, arg_count = self.calls[i]
+            result.append(return_address >> 16)
+            result.append((return_address >> 8) & 0xFF)
+            result.append(return_address & 0xFF)
+            if result_variable == None:
+                result.append((1 << 4) + len(self.locals[i + 1]))
+                result.append(0)
+            else:
+                result.append(len(self.locals[i + 1]))
+                result.append(result_variable)
+            args = 0
+            for j in range(arg_count):
+                args += 1 << j
+            result.append(args)
+            result.append(len(self.stack[i + 1]) >> 8)
+            result.append(len(self.stack[i + 1]) & 0xFF)
+            for value in self.locals[i + 1]:
+                result.append(value >> 8)
+                result.append(value & 0xFF)
+            for value in self.stack[i + 1]:
+                result.append(value >> 8)
+                result.append(value & 0xFF)
+        return result
+
+    @staticmethod
+    def deserialize(serialized):
+        result = Stack()
+        pos = 0
+        while pos < len(serialized):
+            return_address = (serialized[pos] << 16) + (serialized[pos + 1] << 8) + serialized[pos + 2]
+            pos += 3
+            num_locals = serialized[pos] & 0xF
+            if serialized[pos] & (1 << 4):
+                result_variable = None
+            else:
+                result_variable = serialized[pos + 1]
+            pos += 2
+            arg_count = 0
+            for i in range(7):
+                if serialized[pos] & (1 << i):
+                    arg_count += 1
+            pos += 1
+            if not return_address == 0:
+                result.push_call([0] * num_locals, return_address, result_variable, arg_count)
+            num_words = (serialized[pos] << 8) + serialized[pos + 1]
+            pos += 2
+            for i in range(num_locals):
+                result.set_local(i, (serialized[pos] << 8) + serialized[pos + 1])
+                pos += 2
+            for i in range(num_words):
+                result.push((serialized[pos] << 8) + serialized[pos + 1])
+                pos += 2
+        return result
+        

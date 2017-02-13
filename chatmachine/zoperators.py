@@ -49,7 +49,7 @@ class Operator(object):
         if (self.is_call):
             if (self.store == None):
                 assembled += 'if not (operands[0] == 0):\n' \
-                			 '    self.stack.push_call(init_locals, %d, None, len(operands) - 1)\n' % self.next
+                             '    self.stack.push_call(init_locals, %d, None, len(operands) - 1)\n' % self.next
             else:
             	assembled += 'if (operands[0] == 0):\n'
                 if self.store == 0:
@@ -417,6 +417,9 @@ class DecoderV1(object):
         self.code['rtrue'] = 'result = 1\n'
         self.code['save'] = 'filename = "test.sav"\n' \
                             'self.memory.uncompress(self.memory.compress())\n' \
+                            'self.stack.print_all()\n' \
+                            'new_stack = self.stack.__class__.deserialize(self.stack.serialize())\n' \
+                            'new_stack.print_all()\n' \
                             '\n' \
                             'raise NotImplementedError, "save"\n'
         self.code['set_attr'] = 'self.object_table.set_object_attribute(operands[0], operands[1])\n'
