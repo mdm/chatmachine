@@ -85,9 +85,9 @@ class Stack:
                 result.append(value & 0xFF)
         return result
 
-    @staticmethod
-    def deserialize(serialized):
-        result = Stack()
+    @classmethod
+    def deserialize(cls, serialized):
+        result = cls()
         pos = 0
         while pos < len(serialized):
             return_address = (serialized[pos] << 16) + (serialized[pos + 1] << 8) + serialized[pos + 2]

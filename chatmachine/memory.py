@@ -1,14 +1,24 @@
 import array
 
 class MemoryV1:
-    def __init__(self, filename):
+    def __init__(self, filename, flags = None):
         self.story_filename = filename
         story_file = open(self.story_filename)
         self.data = array.array('B', story_file.read())
         story_file.close()
+        self.checksum = 0
+        for byte in self.data[0x40:]:
+            self.checksum += byte
+        self.checksum %= 0x10000
         self.header = HeaderV1(self)
         self.object_table = ObjectTableV1(self)
         self.dictionary = DictionaryV1(self, self.header.get_dictionary_location())
+
+    def get_story_filename(self):
+        return self.story_filename
+
+    def get_checksum(self):
+        return self.checksum
 
     def read_byte(self, address):
         #if not (0 <= address < len(self.data)): raise IndexError
@@ -37,7 +47,7 @@ class MemoryV1:
         self.data[address] = value >> 8
         self.data[address + 1] = value & 0xFF
 
-    def compress(self):
+    def serialize(self):
         story_file = open(self.story_filename)
         original_data = array.array('B', story_file.read())
         story_file.close()
@@ -63,28 +73,29 @@ class MemoryV1:
             result.append(run)
         return result
 
-    def uncompress(self, compressed):
-        story_file = open(self.story_filename)
-        original_data = array.array('B', story_file.read())
-        story_file.close()
-        backup = self.data
-        self.data = array.array('B')
+    @classmethod
+    def deserialize(cls, story_filename, flags, serialized):
+        result = cls(story_filename, flags)
         pos_original = 0
-        pos_compressed = 0
-        while pos_compressed < len(compressed):
-            if compressed[pos_compressed] == 0:
-                for i in range(compressed[pos_compressed + 1]):
-                    self.data.append(original_data[pos_original + i])
-                pos_original += compressed[pos_compressed + 1]
-                pos_compressed += 2
+        pos_serialized = 0
+        while pos_serialized < len(serialized):
+            if serialized[pos_serialized] == 0:
+                pos_original += serialized[pos_serialized + 1]
+                pos_serialized += 2
             else:
-                self.data.append(compressed[pos_compressed] ^ original_data[pos_original])
+                result.write_byte(pos_original, serialized[pos_serialized] ^ result.read_byte(pos_original))
                 pos_original += 1
-                pos_compressed += 1
-        while pos_original < len(original_data):
-            self.data.append(original_data[pos_original])
-            pos_original += 1
+                pos_serialized += 1
+        return result
 
+    def debug_compare(self, other):
+        print 'Lengths match:', len(self.data) == len(other.data)
+        mismatch = False
+        for a, b in zip(self.data, other.data):
+            if not a == b:
+                mismatch = True
+                break
+        print 'Data matches: ', not mismatch
 
     def decode_zscii(self, code):
         #if (code == 0):

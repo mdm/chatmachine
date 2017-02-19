@@ -1,6 +1,7 @@
 import zoperators
 import streams
 import random
+import array
 
 import logging
 logging.basicConfig(filename='debug.log',level=logging.DEBUG)
@@ -79,3 +80,59 @@ class ProcessorV1(object):
                 print self.memory.read_word(self.header.get_globals_table_location() + (0x26 << 1))
                 raise
     
+    def save_state(self, pc):
+        save_filename = self.memory.get_story_filename() + '.sav'
+        data = array.array('B')
+        data.fromstring('IFZS')
+        data.fromstring('IFhd')
+        data.fromlist([0, 0, 0, 13])
+        data.append(self.memory.read_byte(0x2))
+        data.append(self.memory.read_byte(0x3))
+        for i in range(6):
+            data.append(self.memory.read_byte(0x12 + i))
+        checksum = self.memory.get_checksum()
+        checksum = self.memory.read_word(0x1C)
+        data.append(checksum >> 8)
+        data.append(checksum & 0xFF)
+        data.append(pc >> 16)
+        data.append((pc >> 8) & 0xFF)
+        data.append(pc & 0xFF)
+        data.append(0) # pad byte
+        data.fromstring('CMem')
+        memory = self.memory.serialize()
+        length = len(memory)
+        data.append(length >> 24)
+        data.append((length >> 16) & 0xFF)
+        data.append((length >> 8) & 0xFF)
+        data.append(length & 0xFF)
+        data.extend(memory)
+        if length % 2 == 1:
+            data.append(0) # pad byte
+        data.fromstring('Stks')
+        stack = self.stack.serialize()
+        length = len(stack)
+        data.append(length >> 24)
+        data.append((length >> 16) & 0xFF)
+        data.append((length >> 8) & 0xFF)
+        data.append(length & 0xFF)
+        data.extend(stack)
+        if length % 2 == 1:
+            data.append(0) # pad byte
+        save_file = open(save_filename, 'wb')
+        save_file.write('FORM')
+        length = len(data)
+        save_file.write(chr(length >> 24))
+        save_file.write(chr((length >> 16) & 0xFF))
+        save_file.write(chr((length >> 8) & 0xFF))
+        save_file.write(chr(length & 0xFF))
+        save_file.write(data)
+        save_file.close()
+    
+    def restore_state(self):
+        story_filename = self.memory.get_story_filename()
+        flags = None
+        memory = None
+        stack = None
+        self.memory = self.memory.__class__.deserialize(story_filename, flags, memory)
+        self.stack = self.stack.__class__.deserialize(stack)
+

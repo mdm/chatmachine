@@ -30,7 +30,8 @@ class Operator(object):
     
     def assemble(self, debugging):
         #TODO: ommit operands for 0OPs
-        assembled = 'operands = []\n'
+        assembled = 'start = %d\n' % self.start
+        assembled += 'operands = []\n'
         for op_type, op_value in self.operands:
             if op_type == 'constant':
                 assembled += 'operands.append(%d)\n' % op_value
@@ -415,11 +416,7 @@ class DecoderV1(object):
         self.code['ret_popped'] = 'result = self.stack.pop()\n'
         self.code['rfalse'] = 'result = 0\n'
         self.code['rtrue'] = 'result = 1\n'
-        self.code['save'] = 'filename = "test.sav"\n' \
-                            'self.memory.uncompress(self.memory.compress())\n' \
-                            'self.stack.print_all()\n' \
-                            'new_stack = self.stack.__class__.deserialize(self.stack.serialize())\n' \
-                            'new_stack.print_all()\n' \
+        self.code['save'] = 'self.save_state(start + 1)\n' \
                             '\n' \
                             'raise NotImplementedError, "save"\n'
         self.code['set_attr'] = 'self.object_table.set_object_attribute(operands[0], operands[1])\n'
