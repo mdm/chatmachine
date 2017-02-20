@@ -90,7 +90,6 @@ class ProcessorV1(object):
         data.append(self.memory.read_byte(0x3))
         for i in range(6):
             data.append(self.memory.read_byte(0x12 + i))
-        checksum = self.memory.get_checksum()
         checksum = self.memory.read_word(0x1C)
         data.append(checksum >> 8)
         data.append(checksum & 0xFF)
@@ -100,6 +99,7 @@ class ProcessorV1(object):
         data.append(0) # pad byte
         data.fromstring('CMem')
         memory = self.memory.serialize()
+        self.memory.__class__.deserialize('data/zork1-5.z5', None, memory)
         length = len(memory)
         data.append(length >> 24)
         data.append((length >> 16) & 0xFF)

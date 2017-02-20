@@ -58,19 +58,22 @@ class MemoryV1:
             diff = original ^ current
             if diff == 0:
                 run += 1
-                if run == 255:
+                if run == 256:
                     result.append(0)
-                    result.append(run)
+                    result.append(run - 1)
                     run = 0
             else:
                 if run > 0:
                     result.append(0)
-                    result.append(run)
+                    result.append(run - 1)
                 run = 0
                 result.append(diff)
         if run > 0:
             result.append(0)
-            result.append(run)
+            result.append(run - 1)
+#        while result[-2] == 0:
+#            result.pop()
+#            result.pop()
         return result
 
     @classmethod
@@ -80,7 +83,7 @@ class MemoryV1:
         pos_serialized = 0
         while pos_serialized < len(serialized):
             if serialized[pos_serialized] == 0:
-                pos_original += serialized[pos_serialized + 1]
+                pos_original += serialized[pos_serialized + 1] + 1
                 pos_serialized += 2
             else:
                 result.write_byte(pos_original, serialized[pos_serialized] ^ result.read_byte(pos_original))
