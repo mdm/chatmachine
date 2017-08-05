@@ -11,7 +11,7 @@ for line1 in part1:
                 break
             start2 += 1
         if start2 > smax:
-            print start1, start2, start1 + start2
+            print(start1, start2, start1 + start2)
             smax = start2
     start1 += 1
    

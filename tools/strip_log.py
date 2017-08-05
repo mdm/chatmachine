@@ -6,4 +6,4 @@ logfile.close()
 
 for line in loglines:
     match = re.match('DEBUG:root:(.*):', line)
-    print match.group(1)
+    print(match.group(1))

@@ -1,5 +1,5 @@
-import zoperators
-import streams
+from . import zoperators
+from . import streams
 import random
 import array
 
@@ -23,9 +23,9 @@ class ProcessorV1(object):
         self.debugging = False
     
     def execute(self, instruction):
-        next = None
+        next_address = None
         exec(instruction)
-        return next
+        return next_address
     
     def debug(self):
         self.debugging = True
@@ -59,7 +59,7 @@ class ProcessorV1(object):
                     #if instruction.name == 'call':
                     #    raise NotImplementedError, 'untested call'
                     if continuable:
-                        pc = instruction.next
+                        pc = instruction.next_address
                     else:
                         #logging.debug(' %d, %d' % (start, pc))
                         #logging.debug('\n' + '\n'.join(block))
@@ -71,13 +71,13 @@ class ProcessorV1(object):
                         start = pc
                 count += 1
             except Exception:
-                print count, 'instructions were executed.', self.debugging
-                print 'calls:', self.stack.calls
-                print 'locals:', self.stack.locals
-                print 'stack:', self.stack.stack
-                print '0x%x' % instruction.start, str(instruction)
-                print assembled
-                print self.memory.read_word(self.header.get_globals_table_location() + (0x26 << 1))
+                print(count, 'instructions were executed.', self.debugging)
+                print('calls:', self.stack.calls)
+                print('locals:', self.stack.locals)
+                print('stack:', self.stack.stack)
+                print('0x%x' % instruction.start, str(instruction))
+                print(assembled)
+                print(self.memory.read_word(self.header.get_globals_table_location() + (0x26 << 1)))
                 raise
     
     def save_state(self, pc):

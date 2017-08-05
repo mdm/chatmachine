@@ -42,14 +42,14 @@ class Stack:
 	    return self.calls.pop()
 
     def print_current(self):
-        print len(self.stack), self.stack[-1]
-        print len(self.locals), self.locals[-1]
-        print len(self.calls), self.calls[-1]
+        print(len(self.stack), self.stack[-1])
+        print(len(self.locals), self.locals[-1])
+        print(len(self.calls), self.calls[-1])
 
     def print_all(self):
-        print len(self.stack), self.stack
-        print len(self.locals), self.locals
-        print len(self.calls), self.calls
+        print(len(self.stack), self.stack)
+        print(len(self.locals), self.locals)
+        print(len(self.calls), self.calls)
 
     def serialize(self):
         result = array.array('B')

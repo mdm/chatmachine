@@ -41,7 +41,7 @@ class ScreenOutputStreamV1(OutputStream):
        
 class KeyboardInputStreamV1(InputStream):
     def read(self):
-        return raw_input() + '\n'
+        return input() + '\n'
 
 class MemoryOutputStreamV3(OutputStream):
     pass

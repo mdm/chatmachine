@@ -24,8 +24,8 @@ class Operator(object):
     def store_variable(self, variable):
         self.store = variable
         
-    def next(self, address, branch = None):
-        self.next = address
+    def next_address(self, address, branch = None):
+        self.next_address = address
         self.branch = branch
     
     def assemble(self, debugging):
@@ -50,7 +50,7 @@ class Operator(object):
         if (self.is_call):
             if (self.store == None):
                 assembled += 'if not (operands[0] == 0):\n' \
-                             '    self.stack.push_call(init_locals, %d, None, len(operands) - 1)\n' % self.next
+                             '    self.stack.push_call(init_locals, %d, None, len(operands) - 1)\n' % self.next_address
             else:
             	assembled += 'if (operands[0] == 0):\n'
                 if self.store == 0:
@@ -59,9 +59,9 @@ class Operator(object):
                     assembled += '    self.stack.set_local(%d, 0)\n' % (self.store - 1)
                 else:
                     assembled += '    self.memory.write_word(self.header.get_globals_table_location() + %d, 0)\n' % ((self.store - 0x10) << 1)
-                assembled += '    next = %d\n' \
+                assembled += '    next_address = %d\n' \
                              'else:\n' \
-                             '    self.stack.push_call(init_locals, %d, %d, len(operands) - 1)\n' % (self.next, self.next, self.store)
+                             '    self.stack.push_call(init_locals, %d, %d, len(operands) - 1)\n' % (self.next_address, self.next_address, self.store)
         else:
             if not (self.store == None):
                 if self.store == 0:
@@ -83,11 +83,11 @@ class Operator(object):
                           '            self.stack.set_local(result_variable - 1, result)\n' \
                           '        else:\n' \
                           '            self.memory.write_word(self.header.get_globals_table_location() + ((result_variable - 0x10) << 1), result)\n' \
-                          '    next = return_address\n' % self.branch[1]
+                          '    next_address = return_address\n' % self.branch[1]
             else:
-                assembled += '    next = %d\n' % ((self.next + self.branch[1] - 2) & 0xffff)
+                assembled += '    next_address = %d\n' % ((self.next_address + self.branch[1] - 2) & 0xffff)
             assembled += 'else:\n' \
-                      '    next = %d\n' % self.next
+                      '    next_address = %d\n' % self.next_address
         
         if(self.is_return):
             assembled += 'return_address, result_variable, _ = self.stack.pop_call()\n' \
@@ -98,11 +98,11 @@ class Operator(object):
                          '        self.stack.set_local(result_variable - 1, result)\n' \
                          '    else:\n' \
                          '        self.memory.write_word(self.header.get_globals_table_location() + ((result_variable - 0x10) << 1), result)\n' \
-                         'next = return_address\n'
+                         'next_address = return_address\n'
         
         continuable = (self.branch == None) and not self.is_call and not self.is_return and not (self.name == 'jump')
         if debugging and continuable:
-            assembled += 'next = %d\n' % self.next
+            assembled += 'next_address = %d\n' % self.next_address
             return assembled, False
         else:
             return assembled, continuable
@@ -164,7 +164,7 @@ class Operator(object):
             elif (self.branch[1] == 1):
                 parts.append('RTRUE')
             else:
-                parts.append('%x' % ((self.next + self.branch[1] - 2) & 0xffff))
+                parts.append('%x' % ((self.next_address + self.branch[1] - 2) & 0xffff))
 
         return ''.join(parts)
 
@@ -264,7 +264,7 @@ class DecoderV1(object):
                             '    init_locals = operands[1:(num_locals + 1)]\n' \
                             '    while len(init_locals) < num_locals:\n' \
                             '        init_locals.append(self.memory.read_word(operands[0] + (len(init_locals) << 1) + 1))\n' \
-                            '    next = operands[0] + (len(init_locals) << 1) + 1\n' % self.packed_address_shift
+                            '    next_address = operands[0] + (len(init_locals) << 1) + 1\n' % self.packed_address_shift
         self.code['clear_attr'] = 'self.object_table.clear_object_attribute(operands[0], operands[1])\n'
         self.code['dec_chk'] = 'if (operands[0] == 0):\n' \
                                '    value = self.stack.pop()\n' \
@@ -357,7 +357,7 @@ class DecoderV1(object):
                           'if (operands[1] & 0x8000):\n' \
                           '    operands[1] -= 0x10000\n' \
                           'result = (operands[0] < operands[1])\n'
-        self.code['jump'] = 'next = (%d + operands[0] - 2) & 0xffff\n'
+        self.code['jump'] = 'next_address = (%d + operands[0] - 2) & 0xffff\n'
         self.code['jz'] = 'result = (operands[0] == 0)\n'
         self.code['load'] = 'if (operands[0] == 0):\n' \
                             '    result = self.stack.peek()\n' \
@@ -540,7 +540,7 @@ class DecoderV1(object):
             opcode = type & 0xF
             name = self.names['1OP'][opcode]
             if (name == 'jump'):
-                raise NotImplementedError, "'jump' with small constant offset"
+                raise NotImplementedError("'jump' with small constant offset")
             operator = Operator(address, name, self.code[name])
             operator.load_constant(self.memory.read_byte(address + 1))
             address += 2
@@ -591,9 +591,9 @@ class DecoderV1(object):
         if name in self.effects['branch']:
             (condition, offset, bytes) = self.decode_branching(address)
             address += bytes
-            operator.next(address, (condition, offset))       
+            operator.next_address(address, (condition, offset))       
         else:
-            operator.next(address, None)
+            operator.next_address(address, None)
         
         if name in self.effects['call']:
             operator.do_call()
