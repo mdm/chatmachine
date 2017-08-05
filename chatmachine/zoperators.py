@@ -540,7 +540,7 @@ class DecoderV1(object):
             opcode = type & 0xF
             name = self.names['1OP'][opcode]
             if (name == 'jump'):
-                raise NotImplementedError, "'jump' with small constant offset"
+                raise NotImplementedError("'jump' with small constant offset")
             operator = Operator(address, name, self.code[name])
             operator.load_constant(self.memory.read_byte(address + 1))
             address += 2

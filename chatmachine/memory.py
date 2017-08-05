@@ -89,13 +89,13 @@ class MemoryV1:
         return result
 
     def debug_compare(self, other):
-        print 'Lengths match:', len(self.data) == len(other.data)
+        print('Lengths match:', len(self.data) == len(other.data))
         mismatch = False
         for a, b in zip(self.data, other.data):
             if not a == b:
                 mismatch = True
                 break
-        print 'Data matches: ', not mismatch
+        print('Data matches: ', not mismatch)
 
     def decode_zscii(self, code):
         #if (code == 0):
@@ -163,7 +163,7 @@ class MemoryV1:
             address += 2
             if (word & 0x8000):
                 break
-        print zchars
+        print(zchars)
     
     def tokenize(self, text, parse, dictionary = None, flag = False):
         if dictionary == None:
@@ -469,7 +469,7 @@ class ObjectTableV1:
             elif (size == 2):
                 return self.memory.read_word(property_data_addr)
             else:
-                print 'ERROR: size > 2. get_prop undefined.'
+                print('ERROR: size > 2. get_prop undefined.')
                 
     def set_property_data(self, object_number, property_number, value):
         property_data_addr = self.get_property_data_addr(object_number, property_number)
@@ -480,7 +480,7 @@ class ObjectTableV1:
         elif (size == 2):
             self.memory.write_word(property_data_addr, value)
         else:
-            print 'ERROR: size > 2. set_prop undefined.'
+            print('ERROR: size > 2. set_prop undefined.')
     
     def dump_dot_file(self, filename, num_objects):
         dotfile = open(filename, 'wb')

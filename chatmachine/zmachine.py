@@ -2,10 +2,10 @@ import sys
 import time
 import cProfile
 
-import memory
-import stack
-import streams
-import processor
+from . import memory
+from . import stack
+from . import streams
+from . import processor
 
 
 memory = memory.MemoryV1(sys.argv[1])
@@ -22,6 +22,6 @@ processor = processor.ProcessorV1(memory, stack, input, output)
 #cProfile.run(processor.run(), profile)
 
 processor.run()
-print 'Goodbye'
+print('Goodbye')
 
 
