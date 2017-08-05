@@ -23,9 +23,9 @@ class ProcessorV1(object):
         self.debugging = False
     
     def execute(self, instruction):
-        next = None
+        next_address = None
         exec(instruction)
-        return next
+        return next_address
     
     def debug(self):
         self.debugging = True
@@ -59,7 +59,7 @@ class ProcessorV1(object):
                     #if instruction.name == 'call':
                     #    raise NotImplementedError, 'untested call'
                     if continuable:
-                        pc = instruction.next
+                        pc = instruction.next_address
                     else:
                         #logging.debug(' %d, %d' % (start, pc))
                         #logging.debug('\n' + '\n'.join(block))
