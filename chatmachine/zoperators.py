@@ -52,14 +52,14 @@ class Operator(object):
                 assembled += 'if not (operands[0] == 0):\n' \
                              '    self.stack.push_call(init_locals, %d, None, len(operands) - 1)\n' % self.next_address
             else:
-            	assembled += 'if (operands[0] == 0):\n'
+                assembled += 'if (operands[0] == 0):\n'
                 if self.store == 0:
                     assembled += '    self.stack.push(0)\n'
                 elif (self.store < 0x10):
                     assembled += '    self.stack.set_local(%d, 0)\n' % (self.store - 1)
                 else:
                     assembled += '    self.memory.write_word(self.header.get_globals_table_location() + %d, 0)\n' % ((self.store - 0x10) << 1)
-                assembled += '    next_address = %d\n' \
+                assembled += '    self.next_address = %d\n' \
                              'else:\n' \
                              '    self.stack.push_call(init_locals, %d, %d, len(operands) - 1)\n' % (self.next_address, self.next_address, self.store)
         else:
@@ -83,11 +83,11 @@ class Operator(object):
                           '            self.stack.set_local(result_variable - 1, result)\n' \
                           '        else:\n' \
                           '            self.memory.write_word(self.header.get_globals_table_location() + ((result_variable - 0x10) << 1), result)\n' \
-                          '    next_address = return_address\n' % self.branch[1]
+                          '    self.next_address = return_address\n' % self.branch[1]
             else:
-                assembled += '    next_address = %d\n' % ((self.next_address + self.branch[1] - 2) & 0xffff)
+                assembled += '    self.next_address = %d\n' % ((self.next_address + self.branch[1] - 2) & 0xffff)
             assembled += 'else:\n' \
-                      '    next_address = %d\n' % self.next_address
+                      '    self.next_address = %d\n' % self.next_address
         
         if(self.is_return):
             assembled += 'return_address, result_variable, _ = self.stack.pop_call()\n' \
@@ -98,11 +98,11 @@ class Operator(object):
                          '        self.stack.set_local(result_variable - 1, result)\n' \
                          '    else:\n' \
                          '        self.memory.write_word(self.header.get_globals_table_location() + ((result_variable - 0x10) << 1), result)\n' \
-                         'next_address = return_address\n'
+                         'self.next_address = return_address\n'
         
         continuable = (self.branch == None) and not self.is_call and not self.is_return and not (self.name == 'jump')
         if debugging and continuable:
-            assembled += 'next_address = %d\n' % self.next_address
+            assembled += 'self.next_address = %d\n' % self.next_address
             return assembled, False
         else:
             return assembled, continuable
@@ -260,11 +260,11 @@ class DecoderV1(object):
                             '    operands[0] <<= %d\n' \
                             '    num_locals = self.memory.read_byte(operands[0])\n' \
                             '    if (len(operands) - 1 > num_locals):\n' \
-                            '        raise NotImplementedError, "test more args than locals"\n' \
+                            '        raise NotImplementedError("test more args than locals")\n' \
                             '    init_locals = operands[1:(num_locals + 1)]\n' \
                             '    while len(init_locals) < num_locals:\n' \
                             '        init_locals.append(self.memory.read_word(operands[0] + (len(init_locals) << 1) + 1))\n' \
-                            '    next_address = operands[0] + (len(init_locals) << 1) + 1\n' % self.packed_address_shift
+                            '    self.next_address = operands[0] + (len(init_locals) << 1) + 1\n' % self.packed_address_shift
         self.code['clear_attr'] = 'self.object_table.clear_object_attribute(operands[0], operands[1])\n'
         self.code['dec_chk'] = 'if (operands[0] == 0):\n' \
                                '    value = self.stack.pop()\n' \
@@ -357,7 +357,7 @@ class DecoderV1(object):
                           'if (operands[1] & 0x8000):\n' \
                           '    operands[1] -= 0x10000\n' \
                           'result = (operands[0] < operands[1])\n'
-        self.code['jump'] = 'next_address = (%d + operands[0] - 2) & 0xffff\n'
+        self.code['jump'] = 'self.next_address = (%d + operands[0] - 2) & 0xffff\n'
         self.code['jz'] = 'result = (operands[0] == 0)\n'
         self.code['load'] = 'if (operands[0] == 0):\n' \
                             '    result = self.stack.peek()\n' \
@@ -410,15 +410,15 @@ class DecoderV1(object):
                               '        random.seed(None)\n' \
                               '    result = 0\n'
         self.code['remove_obj'] = 'self.object_table.unlink_object(operands[0])\n'
-        self.code['restart'] = 'raise NotImplementedError, "restart"\n'
-        self.code['restore'] = 'raise NotImplementedError, "restore"\n'
+        self.code['restart'] = 'raise NotImplementedError("restart")\n'
+        self.code['restore'] = 'raise NotImplementedError("restore")\n'
         self.code['ret'] = 'result = operands[0]\n'
         self.code['ret_popped'] = 'result = self.stack.pop()\n'
         self.code['rfalse'] = 'result = 0\n'
         self.code['rtrue'] = 'result = 1\n'
         self.code['save'] = 'self.save_state(start + 1)\n' \
                             '\n' \
-                            'raise NotImplementedError, "save"\n'
+                            'raise NotImplementedError("save")\n'
         self.code['set_attr'] = 'self.object_table.set_object_attribute(operands[0], operands[1])\n'
         self.code['sread'] = 'room = self.object_table.get_object_short_name(self.memory.read_word(self.header.get_globals_table_location()))\n' \
                              'score = self.memory.read_word(self.header.get_globals_table_location() + 2)\n' \

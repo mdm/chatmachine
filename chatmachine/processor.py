@@ -21,11 +21,11 @@ class ProcessorV1(object):
         self.cache = {}
         self.running = False
         self.debugging = False
+        self.next_address = None
     
     def execute(self, instruction):
-        next_address = None
-        exec(instruction)
-        return next_address
+        exec(instruction, globals(),{'self': self}) # TODO: call var processor
+        return self.next_address
     
     def debug(self):
         self.debugging = True

@@ -1,11 +1,13 @@
+#!/usr/bin/python3
+
 import sys
 import time
 import cProfile
 
-from . import memory
-from . import stack
-from . import streams
-from . import processor
+from chatmachine import memory
+from chatmachine import stack
+from chatmachine import streams
+from chatmachine import processor
 
 
 memory = memory.MemoryV1(sys.argv[1])

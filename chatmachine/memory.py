@@ -3,7 +3,7 @@ import array
 class MemoryV1:
     def __init__(self, filename, flags = None):
         self.story_filename = filename
-        story_file = open(self.story_filename)
+        story_file = open(self.story_filename, 'rb')
         self.data = array.array('B', story_file.read())
         story_file.close()
         self.checksum = 0

@@ -2,7 +2,7 @@ import array
 
 class Stack:
     def __init__(self):
-    	self.stack = [[]]
+        self.stack = [[]]
         self.locals = [[]]
         self.calls = []
 
@@ -32,8 +32,8 @@ class Stack:
 #        #print self.locals
 
     def push_call(self, init_locals, return_address, result_variable, arg_count):
-    	self.stack.append([])
-    	self.locals.append(init_locals)
+        self.stack.append([])
+        self.locals.append(init_locals)
         self.calls.append((return_address, result_variable, arg_count))
 	
     def pop_call(self):
